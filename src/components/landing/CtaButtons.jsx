@@ -6,10 +6,10 @@ function CtaButtons({ loginText, signupText }) {
 
   const loginIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-<path d="M7.41675 6.29995C7.67508 3.29995 9.21675 2.07495 12.5917 2.07495H12.7001C16.4251 2.07495 17.9167 3.56662 17.9167 7.29162V12.725C17.9167 16.45 16.4251 17.9416 12.7001 17.9416H12.5917C9.24175 17.9416 7.70008 16.7333 7.42508 13.7833" stroke="#374151" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M1.66675 10H12.4001" stroke="#374151" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M10.5417 7.20825L13.3334 9.99992L10.5417 12.7916" stroke="#374151" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+      <path d="M7.41675 6.29995C7.67508 3.29995 9.21675 2.07495 12.5917 2.07495H12.7001C16.4251 2.07495 17.9167 3.56662 17.9167 7.29162V12.725C17.9167 16.45 16.4251 17.9416 12.7001 17.9416H12.5917C9.24175 17.9416 7.70008 16.7333 7.42508 13.7833" stroke="#374151" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M1.66675 10H12.4001" stroke="#374151" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M10.5417 7.20825L13.3334 9.99992L10.5417 12.7916" stroke="#374151" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
   )
 
   const signupIcon = (

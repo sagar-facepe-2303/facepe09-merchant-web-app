@@ -1,7 +1,10 @@
+import { useNavigate } from 'react-router-dom'
 import facePeLogo from '../assets/FacePe Logo SVG.svg'
 import { Button, Input } from '../components/common'
 
 function LoginPage() {
+  const navigate = useNavigate()
+
   return (
     <main className="login-page">
       <section className="login-shell">
@@ -39,7 +42,7 @@ function LoginPage() {
                 <input id="remember-me" type="checkbox" />
                 <span>Remember me</span>
               </label>
-              <button type="button" className="forgot-link">
+              <button type="button" className="forgot-link" onClick={() => navigate('/forgot-password')}>
                 Forgot password?
               </button>
             </div>

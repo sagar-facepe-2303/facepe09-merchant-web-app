@@ -1,13 +1,21 @@
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
+import ResetPasswordPage from './pages/ResetPasswordPage'
 import SignupPage from './pages/SignupPage'
 import VerifyEmailPage from './pages/VerifyEmailPage'
 import VerifyPhonePage from './pages/VerifyPhonePage'
 import ConnectGatewayPage from './pages/ConnectGatewayPage'
+import EnterSecurityCodePage from './pages/EnterSecurityCodePage'
+import NewPasswordPage  from './pages/NewPasswordPage'
+import PasswordUpdatedPage from './pages/PasswordUpdatedPage'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './styles/theme.css'
 import './styles/landing.css'
 import './styles/login.css'
+import './styles/reset-password.css'
+import './styles/security-code.css'
+import './styles/new-password.css'
+import './styles/password-updated.css'
 import './styles/signup.css'
 import './styles/verify-email.css'
 import './styles/verify-phone.css'
@@ -30,6 +38,10 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/forgot-password" element={<ResetPasswordPage />} />
+        <Route path="/forgot-password/verify-code" element={<EnterSecurityCodePage />} />
+        <Route path="/forgot-password/new-password" element={<NewPasswordPage />} />
+        <Route path="/forgot-password/success" element={<PasswordUpdatedPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/signup/verify-email" element={<VerifyEmailPage />} />
         <Route path="/signup/verify-phone" element={<VerifyPhonePage />} />
