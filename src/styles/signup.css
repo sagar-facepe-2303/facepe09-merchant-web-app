@@ -123,18 +123,27 @@
 
 .signup-head h1 {
   margin: 0;
-  font-size: 48px;
-  line-height: 1.18;
-  letter-spacing: -0.03em;
-  color: #101427;
+  color: #101828;
+  text-align: center;
+  font-family: Satoshi;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 }
 
 .signup-head p {
   margin: 6px 0 0;
-  font-size: 31px;
+  /* font-size: 31px;
   line-height: 1.3;
   letter-spacing: -0.02em;
-  color: #5f6b81;
+  color: #5f6b81; */
+  text-align: center;
+  font-family: Satoshi;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .signup-card {

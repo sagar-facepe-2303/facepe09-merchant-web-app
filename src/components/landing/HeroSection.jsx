@@ -6,7 +6,7 @@ function HeroSection({ brand, headingLead, headingBrand, headingMid, headingHigh
       <BrandLogo brand={brand} />
       <h1 className="hero-title">
         {headingLead}
-        <span className="hero-title-accent">{headingBrand}</span>
+        <span className="">{headingBrand}</span>
         {headingMid}
         <span className="hero-title-accent">{headingHighlight}</span>
       </h1>

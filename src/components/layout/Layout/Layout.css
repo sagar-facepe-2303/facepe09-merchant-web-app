@@ -1,0 +1,24 @@
+/* Dashboard Layout */
+.dashboard-layout {
+  min-height: 100vh;
+  background: #f8f9fb;
+}
+
+/* Dashboard Main Content */
+.dashboard-main {
+  padding: 2rem;
+}
+
+/* Dashboard Container */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Page Title */
+.dashboard-page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-900);
+  margin-bottom: 1.5rem;
+}

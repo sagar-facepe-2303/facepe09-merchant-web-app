@@ -13,6 +13,16 @@ import './styles/verify-email.css'
 import './styles/verify-phone.css'
 import './styles/connect-gateway.css'
 
+// Common component styles
+import './components/common/Button/Button.css'
+import './components/common/Input/Input.css'
+import './components/common/Loader/Loader.css'
+import './components/common/Card/Card.css'
+
+// Layout component styles
+import './components/layout/Header/Header.css'
+import './components/layout/Layout/Layout.css'
+
 function App() {
   return (
     <BrowserRouter>

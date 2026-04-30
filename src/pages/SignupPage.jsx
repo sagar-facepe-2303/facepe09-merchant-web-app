@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import facePeLogo from '../assets/FacePe Logo SVG.svg'
+import { Button, Input } from '../components/common'
 
 function SignupPage() {
   const navigate = useNavigate()
@@ -76,54 +77,66 @@ function SignupPage() {
             }}
           >
             <div className="signup-grid">
-              <div className="field-wrap">
-                <label htmlFor="business-name">
-                  Business name <span>*</span>
-                </label>
-                <input id="business-name" type="text" placeholder="Walmart Inc" />
-                <small>Ful name not neede</small>
-              </div>
+              <Input
+                id="business-name"
+                name="businessName"
+                type="text"
+                label="Business name"
+                placeholder="Walmart Inc"
+                required
+                helper="Full name not needed"
+              />
 
-              <div className="field-wrap">
-                <label htmlFor="admin-name">
-                  Admin name <span>*</span>
-                </label>
-                <input id="admin-name" type="text" placeholder="4817XXX77" />
-              </div>
+              <Input
+                id="admin-name"
+                name="adminName"
+                type="text"
+                label="Admin name"
+                placeholder="John Doe"
+                required
+              />
 
-              <div className="field-wrap">
-                <label htmlFor="business-tax-id">
-                  Business Tax ID <span>*</span>
-                </label>
-                <input id="business-tax-id" type="text" placeholder="4817XXX77" />
-                <small>Ful name not neede.</small>
-              </div>
+              <Input
+                id="business-tax-id"
+                name="businessTaxId"
+                type="text"
+                label="Business Tax ID"
+                placeholder="4817XXX77"
+                required
+                helper="Enter your business tax ID"
+              />
 
-              <div className="field-wrap">
-                <label htmlFor="business-url">
-                  Business Website URL <span>*</span>
-                </label>
-                <input id="business-url" type="url" placeholder="www.walmart.com" />
-              </div>
+              <Input
+                id="business-url"
+                name="businessUrl"
+                type="url"
+                label="Business Website URL"
+                placeholder="www.walmart.com"
+                required
+              />
             </div>
 
-            <div className="field-wrap">
-              <label htmlFor="business-email">
-                Email <span>*</span>
-              </label>
-              <input id="business-email" type="email" placeholder="admin@walmart.com" />
-            </div>
+            <Input
+              id="business-email"
+              name="businessEmail"
+              type="email"
+              label="Email"
+              placeholder="admin@walmart.com"
+              required
+            />
 
-            <div className="field-wrap">
-              <label htmlFor="business-password">
-                Password <span>*</span>
-              </label>
-              <input id="business-password" type="password" placeholder="********" />
-            </div>
+            <Input
+              id="business-password"
+              name="businessPassword"
+              type="password"
+              label="Password"
+              placeholder="********"
+              required
+            />
 
-            <button type="submit" className="signup-submit">
+            <Button type="submit" variant="primary" fullWidth>
               Continue
-            </button>
+            </Button>
           </form>
         </section>
       </section>

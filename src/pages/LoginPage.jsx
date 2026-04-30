@@ -1,4 +1,5 @@
 import facePeLogo from '../assets/FacePe Logo SVG.svg'
+import { Button, Input } from '../components/common'
 
 function LoginPage() {
   return (
@@ -13,26 +14,20 @@ function LoginPage() {
           <p className="login-subtitle">Enter your credentials to access your account</p>
 
           <form className="login-form" onSubmit={(event) => event.preventDefault()}>
-            <label className="login-label" htmlFor="email">
-              Email
-            </label>
-            <input
+            <Input
               id="email"
               name="email"
               type="email"
-              className="login-input"
+              label="Email"
               placeholder="admin@gmail.com"
               autoComplete="email"
             />
 
-            <label className="login-label" htmlFor="password">
-              Password
-            </label>
-            <input
+            <Input
               id="password"
               name="password"
               type="password"
-              className="login-input"
+              label="Password"
               placeholder="********"
               autoComplete="current-password"
             />
@@ -42,14 +37,14 @@ function LoginPage() {
                 <input id="remember-me" type="checkbox" />
                 <span>Remember me</span>
               </label>
-              <button type="button" className="forgot-link">
+              <Button type="button" variant="ghost" className="forgot-link">
                 Forgot password?
-              </button>
+              </Button>
             </div>
 
-            <button type="submit" className="login-submit">
+            <Button type="submit" variant="primary" fullWidth>
               Sign In
-            </button>
+            </Button>
           </form>
         </section>
       </section>

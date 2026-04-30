@@ -1,0 +1,127 @@
+/* Button Base Styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Button Sizes */
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.btn-md {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+.btn-lg {
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+}
+
+/* Default to md if no size specified */
+.btn:not(.btn-sm):not(.btn-lg) {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+/* Button Variants */
+.btn-primary {
+  background: var(--brand-gradient);
+  color: #ffffff;
+  border: 1px solid transparent;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--brand-gradient-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(111, 77, 255, 0.3);
+}
+
+.btn-light,
+.btn-outline {
+  background: var(--surface-0);
+  color: #1f2231;
+  border: 1px solid #dde0ea;
+}
+
+.btn-light:hover:not(:disabled),
+.btn-outline:hover:not(:disabled) {
+  background: #f8f9fb;
+  border-color: #c8b2ff;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: #ffffff;
+  border: 1px solid transparent;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-700);
+  border: 1px solid transparent;
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: #f3ecff;
+  color: var(--brand-600);
+}
+
+/* Full Width */
+.btn-full-width {
+  width: 100%;
+}
+
+/* Button Icon */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.btn-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Loading Spinner */
+.btn-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: btn-spin 0.8s linear infinite;
+}
+
+.btn-loading .btn-icon {
+  display: none;
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
