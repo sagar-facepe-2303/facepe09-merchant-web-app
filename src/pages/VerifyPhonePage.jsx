@@ -107,7 +107,11 @@ function VerifyPhonePage() {
             </button>
           </p>
 
-          <button type="button" className="verify-phone-submit">
+          <button
+            type="button"
+            className="verify-phone-submit"
+            onClick={() => navigate('/signup/connect-gateway')}
+          >
             Verify Phone Number
           </button>
 

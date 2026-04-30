@@ -3,6 +3,7 @@ import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import VerifyEmailPage from './pages/VerifyEmailPage'
 import VerifyPhonePage from './pages/VerifyPhonePage'
+import ConnectGatewayPage from './pages/ConnectGatewayPage'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './styles/theme.css'
 import './styles/landing.css'
@@ -10,6 +11,7 @@ import './styles/login.css'
 import './styles/signup.css'
 import './styles/verify-email.css'
 import './styles/verify-phone.css'
+import './styles/connect-gateway.css'
 
 function App() {
   return (
@@ -20,6 +22,7 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/signup/verify-email" element={<VerifyEmailPage />} />
         <Route path="/signup/verify-phone" element={<VerifyPhonePage />} />
+        <Route path="/signup/connect-gateway" element={<ConnectGatewayPage />} />
       </Routes>
     </BrowserRouter>
   )
