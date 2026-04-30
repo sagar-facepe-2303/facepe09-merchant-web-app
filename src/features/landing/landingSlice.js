@@ -24,7 +24,6 @@ const initialState = {
       title: 'Transaction Logs',
       description: 'Search payments in seconds. Filter, export, and reconcile easily.',
       icon: 'document',
-      highlighted: true,
     },
     {
       id: 'gateway-setup',
