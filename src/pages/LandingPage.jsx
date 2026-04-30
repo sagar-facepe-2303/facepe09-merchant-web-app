@@ -9,13 +9,17 @@ function LandingPage() {
 
   return (
     <main className="landing-page">
-      <HeroSection
-        brand={landing.brand}
-        headingPrefix={landing.headingPrefix}
-        headingHighlight={landing.headingHighlight}
-        subText={landing.subText}
-      />
-      <CtaButtons loginText={landing.ctas.login} signupText={landing.ctas.signup} />
+      <div className="landing-hero-stack">
+        <HeroSection
+          brand={landing.brand}
+          headingLead={landing.headingLead}
+          headingBrand={landing.headingBrand}
+          headingMid={landing.headingMid}
+          headingHighlight={landing.headingHighlight}
+          subText={landing.subText}
+        />
+        <CtaButtons loginText={landing.ctas.login} signupText={landing.ctas.signup} />
+      </div>
       <FeatureGrid items={landing.features} />
     </main>
   )

@@ -2,7 +2,9 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   brand: 'FacePe',
-  headingPrefix: 'Monitor your FacePe devices &',
+  headingLead: 'Monitor your ',
+  headingBrand: 'FacePe',
+  headingMid: ' devices & ',
   headingHighlight: 'transactions',
   subText:
     'One dashboard for all terminals. Track payments in real-time, detect outages early, and keep checkout running 24/7.',
@@ -22,6 +24,7 @@ const initialState = {
       title: 'Transaction Logs',
       description: 'Search payments in seconds. Filter, export, and reconcile easily.',
       icon: 'document',
+      highlighted: true,
     },
     {
       id: 'gateway-setup',

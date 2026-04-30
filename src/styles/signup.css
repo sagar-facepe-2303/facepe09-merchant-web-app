@@ -14,28 +14,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  color: var(--brand-600);
   margin-bottom: 34px;
 }
 
-.signup-brand-mark {
-  width: 40px;
-  height: 40px;
-  display: inline-grid;
-  place-items: center;
-}
-
-.signup-brand-mark svg {
-  width: 100%;
-  height: 100%;
-}
-
-.signup-brand-text {
-  font-size: 48px;
-  line-height: 1;
-  letter-spacing: 0;
-  font-weight: 500;
+.signup-brand-image {
+  height: 48px;
+  width: auto;
+  display: block;
 }
 
 .signup-steps {
@@ -265,8 +250,8 @@
     margin-bottom: 18px;
   }
 
-  .signup-brand-text {
-    font-size: 40px;
+  .signup-brand-image {
+    height: 42px;
   }
 
   .signup-steps {
