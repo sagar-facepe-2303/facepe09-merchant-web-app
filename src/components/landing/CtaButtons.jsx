@@ -1,7 +1,15 @@
+import { useNavigate } from 'react-router-dom'
+
 function CtaButtons({ loginText, signupText }) {
+  const navigate = useNavigate()
+
   return (
     <div className="cta-buttons">
-      <button type="button" className="btn btn-light btn-theme-outline">
+      <button
+        type="button"
+        className="btn btn-light btn-theme-outline"
+        onClick={() => navigate('/login')}
+      >
         <span className="btn-icon" aria-hidden="true">
           <svg viewBox="0 0 20 20" focusable="false">
             <path

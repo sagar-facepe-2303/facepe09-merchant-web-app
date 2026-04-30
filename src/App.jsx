@@ -1,9 +1,19 @@
 import LandingPage from './pages/LandingPage'
+import LoginPage from './pages/LoginPage'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './styles/theme.css'
 import './styles/landing.css'
+import './styles/login.css'
 
 function App() {
-  return <LandingPage />
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App
