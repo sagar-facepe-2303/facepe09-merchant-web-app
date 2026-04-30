@@ -234,6 +234,9 @@
   font-size: 17px;
   line-height: 1.1;
   cursor: pointer;
+  
+  
+  
 }
 
 .gateway-secondary-btn {
@@ -244,7 +247,7 @@
 
 .gateway-primary-btn {
   border: 0;
-  background: linear-gradient(97deg, #8b66ff 0%, #3f2bff 100%);
+ background: linear-gradient(90deg, #9C6CFE 0.01%, #5000EA 98%);
   color: #ffffff;
 }
 
