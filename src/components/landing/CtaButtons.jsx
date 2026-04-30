@@ -20,7 +20,11 @@ function CtaButtons({ loginText, signupText }) {
         </span>
         {loginText}
       </button>
-      <button type="button" className="btn btn-primary btn-theme-primary">
+      <button
+        type="button"
+        className="btn btn-primary btn-theme-primary"
+        onClick={() => navigate('/signup')}
+      >
         <span className="btn-icon" aria-hidden="true">
           <svg viewBox="0 0 20 20" focusable="false">
             <path
