@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 
-function SignupPage() {
+function VerifyEmailPage() {
   const navigate = useNavigate()
 
   return (
-    <main className="signup-page">
+    <main className="verify-page">
       <section className="signup-shell">
         <header className="signup-brand" aria-label="FacePe">
           <span className="signup-brand-mark" aria-hidden="true">
@@ -18,7 +18,7 @@ function SignupPage() {
         </header>
 
         <ol className="signup-steps" aria-label="Signup progress">
-          <li className="signup-step signup-step-active">
+          <li className="signup-step signup-step-complete">
             <span className="step-bubble">01</span>
             <span className="step-icon" aria-hidden="true">
               <svg viewBox="0 0 20 20" focusable="false">
@@ -30,7 +30,7 @@ function SignupPage() {
             </span>
             <span className="step-label">Create account</span>
           </li>
-          <li className="signup-step">
+          <li className="signup-step signup-step-active">
             <span className="step-bubble">02</span>
             <span className="step-icon" aria-hidden="true">
               <svg viewBox="0 0 20 20" focusable="false">
@@ -68,73 +68,67 @@ function SignupPage() {
           </li>
         </ol>
 
-        <section className="signup-head">
-          <h1>Set up your merchant account</h1>
-          <p>Enter your business details to get started.</p>
-        </section>
+        <section className="verify-card">
+          <h1>Verify your Email ID</h1>
+          <p className="verify-subtext">We&apos;ve sent a verification code to</p>
+          <p className="verify-email">admin@walmart.com</p>
 
-        <section className="signup-card">
-          <form
-            className="signup-form"
-            onSubmit={(event) => {
-              event.preventDefault()
-              navigate('/signup/verify-email')
-            }}
-          >
-            <div className="signup-grid">
-              <div className="field-wrap">
-                <label htmlFor="business-name">
-                  Business name <span>*</span>
-                </label>
-                <input id="business-name" type="text" placeholder="Walmart Inc" />
-                <small>Ful name not neede</small>
-              </div>
+          <label className="verify-code-label" htmlFor="verify-digit-1">
+            Verification Code
+          </label>
+          <div className="verify-code-row">
+            <input id="verify-digit-1" maxLength={1} defaultValue="2" inputMode="numeric" />
+            <input maxLength={1} defaultValue="2" inputMode="numeric" />
+            <input maxLength={1} defaultValue="2" inputMode="numeric" />
+            <input maxLength={1} defaultValue="2" inputMode="numeric" />
+            <input maxLength={1} defaultValue="2" inputMode="numeric" />
+            <input maxLength={1} defaultValue="2" inputMode="numeric" />
+          </div>
 
-              <div className="field-wrap">
-                <label htmlFor="admin-name">
-                  Admin name <span>*</span>
-                </label>
-                <input id="admin-name" type="text" placeholder="4817XXX77" />
-              </div>
-
-              <div className="field-wrap">
-                <label htmlFor="business-tax-id">
-                  Business Tax ID <span>*</span>
-                </label>
-                <input id="business-tax-id" type="text" placeholder="4817XXX77" />
-                <small>Ful name not neede.</small>
-              </div>
-
-              <div className="field-wrap">
-                <label htmlFor="business-url">
-                  Business Website URL <span>*</span>
-                </label>
-                <input id="business-url" type="url" placeholder="www.walmart.com" />
-              </div>
+          <div className="verify-note">
+            <span className="verify-note-icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" focusable="false">
+                <path
+                  d="M4.4 5.2A2.2 2.2 0 0 1 6.6 3h6.8a2.2 2.2 0 0 1 2.2 2.2v9.6a2.2 2.2 0 0 1-2.2 2.2H6.6a2.2 2.2 0 0 1-2.2-2.2V5.2Zm1.8.1V6l3.8 2.5L13.8 6v-.7H6.2Zm7.6 2.8-3.3 2.2a1 1 0 0 1-1.1 0L6.2 8.1v7.1h7.6V8.1Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            <div>
+              <p>The verification code may take up to 2 minutes to arrive.</p>
+              <p>Please check your spam folder if you don&apos;t see it.</p>
             </div>
+          </div>
 
-            <div className="field-wrap">
-              <label htmlFor="business-email">
-                Email <span>*</span>
-              </label>
-              <input id="business-email" type="email" placeholder="admin@walmart.com" />
-            </div>
-
-            <div className="field-wrap">
-              <label htmlFor="business-password">
-                Password <span>*</span>
-              </label>
-              <input id="business-password" type="password" placeholder="********" />
-            </div>
-
-            <button type="submit" className="signup-submit">
-              Continue
+          <p className="verify-resend">
+            Didn&apos;t receive the code?{' '}
+            <button type="button" className="verify-link">
+              Resend Code
             </button>
-          </form>
+          </p>
+
+          <button
+            type="button"
+            className="verify-submit"
+            onClick={() => navigate('/signup/verify-phone')}
+          >
+            Verify Email
+          </button>
+
+          <button type="button" className="verify-back" onClick={() => navigate('/signup')}>
+            <span aria-hidden="true">&larr;</span> Back to Account Setup
+          </button>
         </section>
+
+        <p className="verify-support">
+          Having trouble?{' '}
+          <button type="button" className="verify-link">
+            Contact Support
+          </button>
+        </p>
       </section>
     </main>
   )
 }
 
-export default SignupPage
+export default VerifyEmailPage
