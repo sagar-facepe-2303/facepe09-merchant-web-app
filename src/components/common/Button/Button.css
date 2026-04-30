@@ -42,15 +42,15 @@
 
 /* Button Variants */
 .btn-primary {
-  background: var(--brand-gradient);
+  background: linear-gradient(90deg, #9C6CFE 0.01%, #5000EA 98%);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.10), 0 4px 6px -4px rgba(0, 0, 0, 0.10);
   color: #ffffff;
   border: 1px solid transparent;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: var(--brand-gradient-hover);
+  background: linear-gradient(90deg, #8B5CF6 0.01%, #4C1FD6 98%);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(111, 77, 255, 0.3);
 }
 
 .btn-light,

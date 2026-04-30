@@ -10,8 +10,10 @@ function LoginPage() {
         </header>
 
         <section className="login-card" aria-label="Sign in form">
-          <h1 className="login-title">Welcome Back</h1>
-          <p className="login-subtitle">Enter your credentials to access your account</p>
+          <div className="login-intro">
+            <h1 className="login-title">Welcome Back</h1>
+            <p className="login-subtitle">Enter your credentials to access your account</p>
+          </div>
 
           <form className="login-form" onSubmit={(event) => event.preventDefault()}>
             <Input
@@ -37,12 +39,12 @@ function LoginPage() {
                 <input id="remember-me" type="checkbox" />
                 <span>Remember me</span>
               </label>
-              <Button type="button" variant="ghost" className="forgot-link">
+              <button type="button" className="forgot-link">
                 Forgot password?
-              </Button>
+              </button>
             </div>
 
-            <Button type="submit" variant="primary" fullWidth>
+            <Button type="submit" variant="primary" fullWidth className="login-submit">
               Sign In
             </Button>
           </form>
