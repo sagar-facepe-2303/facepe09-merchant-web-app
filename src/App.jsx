@@ -18,6 +18,7 @@ import './components/common/Button/Button.css'
 import './components/common/Input/Input.css'
 import './components/common/Loader/Loader.css'
 import './components/common/Card/Card.css'
+import './components/common/StepHeader/StepHeader.css'
 
 // Layout component styles
 import './components/layout/Header/Header.css'

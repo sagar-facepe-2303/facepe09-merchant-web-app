@@ -139,7 +139,7 @@
   height: 46px;
   border: 0;
   border-radius: 8px;
-  background: linear-gradient(97deg, #8b66ff 0%, #3f2bff 100%);
+  background: linear-gradient(90deg, #9C6CFE 0.01%, #5000EA 98%);
   color: #ffffff;
   font-size: 14px;
   font-weight: 500;
@@ -166,6 +166,10 @@
   text-align: center;
   font-size: 14px;
   color: #8d94a8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
 @media (max-width: 1024px) {

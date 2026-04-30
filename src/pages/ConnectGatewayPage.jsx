@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import facePeLogo from '../assets/FacePe Logo SVG.svg'
+import { StepHeader } from '../components/common'
 
 function ConnectGatewayPage() {
   const navigate = useNavigate()
@@ -11,56 +12,7 @@ function ConnectGatewayPage() {
           <img className="signup-brand-image" src={facePeLogo} alt="FacePe" />
         </header>
 
-        <ol className="signup-steps" aria-label="Signup progress">
-          <li className="signup-step signup-step-complete">
-            <span className="step-bubble">01</span>
-            <span className="step-icon" aria-hidden="true">
-              <svg viewBox="0 0 20 20" focusable="false">
-                <path
-                  d="M4.3 5.1a2 2 0 0 1 2-2h7.4a2 2 0 0 1 2 2v9.8a2 2 0 0 1-2 2H6.3a2 2 0 0 1-2-2V5.1Zm2 .1v9.6h7.2V5.2H6.3Zm1.1 2a.8.8 0 0 1 .8-.8h3.6a.8.8 0 0 1 0 1.6H8.2a.8.8 0 0 1-.8-.8Zm0 2.8a.8.8 0 0 1 .8-.8h3.6a.8.8 0 0 1 0 1.6H8.2a.8.8 0 0 1-.8-.8Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-            <span className="step-label">Create account</span>
-          </li>
-          <li className="signup-step signup-step-complete">
-            <span className="step-bubble">02</span>
-            <span className="step-icon" aria-hidden="true">
-              <svg viewBox="0 0 20 20" focusable="false">
-                <path
-                  d="M4 5.4a2.2 2.2 0 0 1 2.2-2.2h7.6A2.2 2.2 0 0 1 16 5.4v9.2a2.2 2.2 0 0 1-2.2 2.2H6.2A2.2 2.2 0 0 1 4 14.6V5.4Zm1.8.2v.3L10 8.7l4.2-2.8v-.3H5.8Zm8.4 2.4L10.5 10a1 1 0 0 1-1 0L5.8 8v6.6h8.4V8Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-            <span className="step-label">Verify email</span>
-          </li>
-          <li className="signup-step signup-step-complete">
-            <span className="step-bubble">03</span>
-            <span className="step-icon" aria-hidden="true">
-              <svg viewBox="0 0 20 20" focusable="false">
-                <path
-                  d="M7.4 4.1a2.2 2.2 0 0 1 2.2-2.2h.8a2.2 2.2 0 0 1 2.2 2.2v1.4h.8a2 2 0 0 1 2 2v1.8a9.7 9.7 0 0 1-9.7 9.7H4a2 2 0 0 1-2-2v-1a2 2 0 0 1 1.6-2l2.2-.4a1 1 0 0 1 1 .4l1 1.3a6.9 6.9 0 0 0 2.8-2.8l-1.2-.9a1 1 0 0 1-.4-1l.4-2.2a2 2 0 0 1 2-1.6h1v-.8H9.2V4.1a.4.4 0 0 1 .4-.4h.8a.4.4 0 0 1 .4.4v1.4H7.4V4.1Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-            <span className="step-label">Verify phone</span>
-          </li>
-          <li className="signup-step signup-step-active">
-            <span className="step-bubble">04</span>
-            <span className="step-icon" aria-hidden="true">
-              <svg viewBox="0 0 20 20" focusable="false">
-                <path
-                  d="M3.3 5.2a2 2 0 0 1 2-2h9.4a2 2 0 0 1 2 2v9.6a2 2 0 0 1-2 2H5.3a2 2 0 0 1-2-2V5.2Zm2 .1v.9h9.4v-.9H5.3Zm9.4 2.6H5.3v6.9h9.4V7.9Zm-7.6 1.3a.8.8 0 0 1 .8-.8h4.2a.8.8 0 1 1 0 1.6H7.9a.8.8 0 0 1-.8-.8Zm0 2.4a.8.8 0 0 1 .8-.8h2.3a.8.8 0 1 1 0 1.6H7.9a.8.8 0 0 1-.8-.8Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-            <span className="step-label">Connect gateway</span>
-          </li>
-        </ol>
+        <StepHeader currentStep={4} />
 
         <section className="gateway-card">
           <div className="gateway-content">
@@ -73,11 +25,9 @@ function ConnectGatewayPage() {
 
             <label className="gateway-label" htmlFor="gateway-select">
               <span className="gateway-label-icon" aria-hidden="true">
-                <svg viewBox="0 0 20 20" focusable="false">
-                  <path
-                    d="M3 5.2A2.2 2.2 0 0 1 5.2 3h9.6A2.2 2.2 0 0 1 17 5.2v9.6a2.2 2.2 0 0 1-2.2 2.2H5.2A2.2 2.2 0 0 1 3 14.8V5.2Zm2 .1v2.4h10V5.3H5Zm10 4.2H5v5.2h10V9.5Z"
-                    fill="currentColor"
-                  />
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M13.334 3.3335H2.66732C1.93094 3.3335 1.33398 3.93045 1.33398 4.66683V11.3335C1.33398 12.0699 1.93094 12.6668 2.66732 12.6668H13.334C14.0704 12.6668 14.6673 12.0699 14.6673 11.3335V4.66683C14.6673 3.93045 14.0704 3.3335 13.334 3.3335Z" stroke="#6A7282" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M1.33398 6.6665H14.6673" stroke="#6A7282" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </span>
               Select Payment Gateway
@@ -88,15 +38,22 @@ function ConnectGatewayPage() {
               </select>
             </div>
 
-            <h2 className="gateway-section-title">API Credentials</h2>
+            <h2 className="gateway-section-title">
+              <span className="gateway-section-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M12.916 6.25016L14.8327 8.16683C14.9885 8.31952 15.1979 8.40504 15.416 8.40504C15.6341 8.40504 15.8436 8.31952 15.9993 8.16683L17.7493 6.41683C17.902 6.26105 17.9876 6.05162 17.9876 5.8335C17.9876 5.61537 17.902 5.40594 17.7493 5.25016L15.8327 3.3335" stroke="#8200DB" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M17.5 1.66675L9.5 9.66675" stroke="#8200DB" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M6.24935 17.5002C8.78065 17.5002 10.8327 15.4481 10.8327 12.9168C10.8327 10.3855 8.78065 8.3335 6.24935 8.3335C3.71804 8.3335 1.66602 10.3855 1.66602 12.9168C1.66602 15.4481 3.71804 17.5002 6.24935 17.5002Z" stroke="#8200DB" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
+              API Credentials
+            </h2>
 
             <label className="gateway-label" htmlFor="publishable-key">
               <span className="gateway-label-icon" aria-hidden="true">
-                <svg viewBox="0 0 20 20" focusable="false">
-                  <path
-                    d="M8.2 3.1a3 3 0 0 1 3.6 0l4.1 3a3 3 0 0 1 0 4.8l-4.1 3a3 3 0 0 1-3.6 0l-4.1-3a3 3 0 0 1 0-4.8l4.1-3Zm.8 1.7-4.1 3a1 1 0 0 0 0 1.6l4.1 3a1 1 0 0 0 1.2 0l4.1-3a1 1 0 0 0 0-1.6l-4.1-3a1 1 0 0 0-1.2 0Z"
-                    fill="currentColor"
-                  />
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M12.6667 7.33325H3.33333C2.59695 7.33325 2 7.93021 2 8.66659V13.3333C2 14.0696 2.59695 14.6666 3.33333 14.6666H12.6667C13.403 14.6666 14 14.0696 14 13.3333V8.66659C14 7.93021 13.403 7.33325 12.6667 7.33325Z" stroke="#6A7282" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M4.66602 7.3335V4.66683C4.66602 3.78277 5.01721 2.93493 5.64233 2.30981C6.26745 1.68469 7.11529 1.3335 7.99935 1.3335C8.8834 1.3335 9.73125 1.68469 10.3564 2.30981C10.9815 2.93493 11.3327 3.78277 11.3327 4.66683V7.3335" stroke="#6A7282" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </span>
               API Key (Publishable Key)<span className="required-mark">*</span>
@@ -106,11 +63,9 @@ function ConnectGatewayPage() {
 
             <label className="gateway-label" htmlFor="secret-key">
               <span className="gateway-label-icon" aria-hidden="true">
-                <svg viewBox="0 0 20 20" focusable="false">
-                  <path
-                    d="M10 2.8A3.2 3.2 0 0 0 6.8 6v1.2H6A2.2 2.2 0 0 0 3.8 9.4v6.2A2.2 2.2 0 0 0 6 17.8h8a2.2 2.2 0 0 0 2.2-2.2V9.4A2.2 2.2 0 0 0 14 7.2h-.8V6A3.2 3.2 0 0 0 10 2.8Zm-1.4 4.4V6a1.4 1.4 0 1 1 2.8 0v1.2H8.6Z"
-                    fill="currentColor"
-                  />
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M12.6667 7.33325H3.33333C2.59695 7.33325 2 7.93021 2 8.66659V13.3333C2 14.0696 2.59695 14.6666 3.33333 14.6666H12.6667C13.403 14.6666 14 14.0696 14 13.3333V8.66659C14 7.93021 13.403 7.33325 12.6667 7.33325Z" stroke="#6A7282" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M4.66602 7.3335V4.66683C4.66602 3.78277 5.01721 2.93493 5.64233 2.30981C6.26745 1.68469 7.11529 1.3335 7.99935 1.3335C8.8834 1.3335 9.73125 1.68469 10.3564 2.30981C10.9815 2.93493 11.3327 3.78277 11.3327 4.66683V7.3335" stroke="#6A7282" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </span>
               API Secret (Secret Key)<span className="required-mark">*</span>
@@ -118,10 +73,10 @@ function ConnectGatewayPage() {
             <input id="secret-key" className="gateway-input" placeholder="sk_live_...." />
             <p className="gateway-help">Your secret API key (will be encrypted and stored securely)</p>
 
-            <label className="gateway-label" htmlFor="webhook-url">
+            {/* <label className="gateway-label" htmlFor="webhook-url">
               Webhook URL
-            </label>
-            <div className="webhook-row">
+            </label> */}
+            {/* <div className="webhook-row">
               <input
                 id="webhook-url"
                 className="gateway-input"
@@ -131,11 +86,26 @@ function ConnectGatewayPage() {
               <button type="button" className="gateway-copy-btn">
                 Copy
               </button>
-            </div>
+            </div> */}
             <p className="gateway-help">Add this webhook URL to your square dashboard</p>
 
             <div className="gateway-note gateway-note-success">
-              <p className="note-title">Secure Connection</p>
+              <p className="note-title">
+                <span className="note-title-icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <g clipPath="url(#clip0_1_7746)">
+                      <path d="M9.99935 18.3332C14.6017 18.3332 18.3327 14.6022 18.3327 9.99984C18.3327 5.39746 14.6017 1.6665 9.99935 1.6665C5.39698 1.6665 1.66602 5.39746 1.66602 9.99984C1.66602 14.6022 5.39698 18.3332 9.99935 18.3332Z" stroke="#00A63E" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M7.5 9.99992L9.16667 11.6666L12.5 8.33325" stroke="#00A63E" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_1_7746">
+                        <rect width="20" height="20" fill="white"/>
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </span>
+                Secure Connection
+              </p>
               <ul>
                 <li>All credentials are encrypted using AES-256 encryption</li>
                 <li>We never store your secret keys in plain text</li>
@@ -144,7 +114,23 @@ function ConnectGatewayPage() {
             </div>
 
             <div className="gateway-note gateway-note-warning">
-              <p className="note-title">Important Security Guidelines</p>
+              <p className="note-title">
+                <span className="note-title-icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <g clipPath="url(#clip0_1_7761)">
+                      <path d="M9.99935 18.3332C14.6017 18.3332 18.3327 14.6022 18.3327 9.99984C18.3327 5.39746 14.6017 1.6665 9.99935 1.6665C5.39698 1.6665 1.66602 5.39746 1.66602 9.99984C1.66602 14.6022 5.39698 18.3332 9.99935 18.3332Z" stroke="#D08700" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M10 6.66663V9.99996" stroke="#D08700" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M10 13.3334H10.0083" stroke="#D08700" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_1_7761">
+                        <rect width="20" height="20" fill="white"/>
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </span>
+                Important Security Guidelines
+              </p>
               <ul>
                 <li>Never share your API credentials with anyone</li>
                 <li>Use live keys only in production environment</li>
