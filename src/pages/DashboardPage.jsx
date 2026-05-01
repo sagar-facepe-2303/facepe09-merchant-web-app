@@ -1,12 +1,14 @@
 import Layout from '../components/layout/Layout/Layout'
 import Sidebar from '../components/layout/Sidebar/Sidebar'
+import DashboardHeader from '../components/layout/DashboardHeader/DashboardHeader'
 
 function DashboardPage() {
   return (
     <div className="dashboard-page">
       <Sidebar />
       <div className="dashboard-content">
-        {/* <Layout>
+        <Layout>
+          <DashboardHeader currentPage="Dashboard" currentPagePath="/dashboard" />
           <div className="dashboard-welcome">
             <h1 className="dashboard-title">Welcome back, John!</h1>
             <p className="dashboard-subtitle">Here's what's happening with your store today.</p>
@@ -113,7 +115,7 @@ function DashboardPage() {
               </div>
             </div>
           </div>
-        </Layout> */}
+        </Layout>
       </div>
     </div>
   )

@@ -4,6 +4,7 @@ import ResetPasswordPage from './pages/ResetPasswordPage'
 import SignupPage from './pages/SignupPage'
 import VerifyEmailPage from './pages/VerifyEmailPage'
 import VerifyPhonePage from './pages/VerifyPhonePage'
+import TransactionsPage from './pages/TransactionsPage'
 import ConnectGatewayPage from './pages/ConnectGatewayPage'
 import EnterSecurityCodePage from './pages/EnterSecurityCodePage'
 import NewPasswordPage  from './pages/NewPasswordPage'
@@ -34,6 +35,7 @@ import './components/common/StepHeader/StepHeader.css'
 import './components/layout/Header/Header.css'
 import './components/layout/Layout/Layout.css'
 import './components/layout/Sidebar/Sidebar.css'
+import './components/layout/DashboardHeader/DashboardHeader.css'
 
 function App() {
   return (
@@ -46,6 +48,7 @@ function App() {
         <Route path="/forgot-password/new-password" element={<NewPasswordPage />} />
         <Route path="/forgot-password/success" element={<PasswordUpdatedPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/transactions" element={<TransactionsPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/signup/verify-email" element={<VerifyEmailPage />} />
         <Route path="/signup/verify-phone" element={<VerifyPhonePage />} />

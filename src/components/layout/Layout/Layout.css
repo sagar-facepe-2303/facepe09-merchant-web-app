@@ -1,12 +1,16 @@
 /* Dashboard Layout */
 .dashboard-layout {
   min-height: 100vh;
-  background: #f8f9fb;
+  margin: 20px;
+  border-radius: 12px 0 0 0;
+border: 1px solid #E7E7E7;
+background: #FFF;
 }
 
 /* Dashboard Main Content */
 .dashboard-main {
-  padding: 2rem;
+  /* padding: 2rem; */
+ 
 }
 
 /* Dashboard Container */

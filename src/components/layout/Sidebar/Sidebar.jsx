@@ -22,8 +22,8 @@ function Sidebar() {
         <path d="M29.7067 18.6048H27.1478L23.9515 21.8011H28.3923V24.2065H21.5531L15.0396 30.72H19.285L22.3673 27.4074H29.6951C29.9596 27.4074 30.2216 27.3553 30.466 27.2541C30.7104 27.1528 30.9325 27.0044 31.1196 26.8174C31.3066 26.6303 31.455 26.4082 31.5562 26.1638C31.6575 25.9194 31.7096 25.6574 31.7096 25.3929V20.6194C31.7096 20.0871 31.4989 19.5764 31.1236 19.199C30.7484 18.8215 30.239 18.6079 29.7067 18.6048Z" fill="white"/>
       </g>
       <defs>
-        <filter id="filter0_d_1_10740" x="-0.000136554" y="-5.36442e-06" width="47.36" height="47.36" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-          <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+        <filter id="filter0_d_1_10740" x="-0.000136554" y="-5.36442e-06" width="47.36" height="47.36" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+          <feFlood floodOpacity="0" result="BackgroundImageFix"/>
           <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
           <feOffset dx="0.32" dy="1.92"/>
           <feGaussianBlur stdDeviation="3.84"/>
@@ -33,8 +33,8 @@ function Sidebar() {
           <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_10740" result="shape"/>
         </filter>
         <linearGradient id="paint0_linear_1_10740" x1="9.36936" y1="6.79851" x2="28.4067" y2="33.4301" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#8F66F3"/>
-          <stop offset="1" stop-color="#490ADF"/>
+          <stop stopColor="#8F66F3"/>
+          <stop offset="1" stopColor="#490ADF"/>
         </linearGradient>
       </defs>
     </svg>
