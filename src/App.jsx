@@ -48,7 +48,7 @@ function App() {
         <Route path="/forgot-password/new-password" element={<NewPasswordPage />} />
         <Route path="/forgot-password/success" element={<PasswordUpdatedPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/transactions" element={<TransactionsPage />} />
+        <Route path="/dashboard/transactions" element={<TransactionsPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/signup/verify-email" element={<VerifyEmailPage />} />
         <Route path="/signup/verify-phone" element={<VerifyPhonePage />} />

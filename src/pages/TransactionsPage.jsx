@@ -11,7 +11,9 @@ function TransactionsPage() {
     <div className="transactions-page">
       <Sidebar />
       <div className="transactions-content">
+<div className='transaction-main'>
         <DashboardHeader currentPage="Transactions" currentPagePath="/transactions" />
+
 
         <div className="transactions-title-section">
           <div className="transactions-title-text">
@@ -29,8 +31,10 @@ function TransactionsPage() {
           <StatusDonut />
           <VolumeBarChart />
         </div>
+      
 
         <TransactionsTable />
+          </div>
       </div>
     </div>
   )

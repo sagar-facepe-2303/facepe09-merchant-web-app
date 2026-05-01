@@ -7,11 +7,11 @@ function Sidebar() {
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: '📊', path: '/dashboard' },
-    { id: 'transactions', label: 'Transactions', icon: '💳', path: '/transactions' },
-    { id: 'customers', label: 'Customers', icon: '👥', path: '/customers' },
-    { id: 'products', label: 'Products', icon: '📦', path: '/products' },
-    { id: 'analytics', label: 'Analytics', icon: '📈', path: '/analytics' },
-    { id: 'settings', label: 'Settings', icon: '⚙️', path: '/settings' },
+    { id: 'transactions', label: 'Transactions', icon: '💳', path: '/dashboard/transactions' },
+    { id: 'customers', label: 'Customers', icon: '👥', path: '/dashboard/customers' },
+    { id: 'products', label: 'Products', icon: '📦', path: '/dashboard/products' },
+    { id: 'analytics', label: 'Analytics', icon: '📈', path: '/dashboard/analytics' },
+    { id: 'settings', label: 'Settings', icon: '⚙️', path: '/dashboard/settings' },
   ]
 
   const logoSvg = (
@@ -110,9 +110,9 @@ function Sidebar() {
           <ul className="sidebar-menu">
             <li className="sidebar-menu-item">
               <Link
-                to="/transactions"
-                className={`sidebar-link ${isActive('/transactions') ? 'active' : ''}`}
-                aria-current={isActive('/transactions') ? 'page' : undefined}
+                to="/dashboard/transactions"
+                className={`sidebar-link ${isActive('/dashboard/transactions') ? 'active' : ''}`}
+                aria-current={isActive('/dashboard/transactions') ? 'page' : undefined}
               >
                 <span className="sidebar-icon" aria-hidden="true">{transactionsIcon}</span>
                 <span className="sidebar-label">Transactions</span>
@@ -127,9 +127,9 @@ function Sidebar() {
           <ul className="sidebar-menu">
             <li className="sidebar-menu-item">
               <Link
-                to="/settings"
-                className={`sidebar-link ${isActive('/settings') ? 'active' : ''}`}
-                aria-current={isActive('/settings') ? 'page' : undefined}
+                to="/dashboard/settings"
+                className={`sidebar-link ${isActive('/dashboard/settings') ? 'active' : ''}`}
+                aria-current={isActive('/dashboard/settings') ? 'page' : undefined}
               >
                 <span className="sidebar-icon" aria-hidden="true">{settingsIcon}</span>
                 <span className="sidebar-label">Settings</span>
