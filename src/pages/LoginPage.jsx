@@ -18,7 +18,10 @@ function LoginPage() {
             <p className="login-subtitle">Enter your credentials to access your account</p>
           </div>
 
-          <form className="login-form" onSubmit={(event) => event.preventDefault()}>
+          <form className="login-form" onSubmit={(event) => {
+            event.preventDefault()
+            navigate('/dashboard')
+          }}>
             <Input
               id="email"
               name="email"

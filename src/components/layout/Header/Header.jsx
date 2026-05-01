@@ -17,10 +17,10 @@ function Header({
 
   return (
     <header className={classes}>
-      <div className="header-brand" onClick={() => navigate('/')}>
+      {/* <div className="header-brand" onClick={() => navigate('/')}>
         <span className="header-logo">FP</span>
         <span className="header-brand-text">FacePe</span>
-      </div>
+      </div> */}
 
       {showNav && (
         <nav className="header-nav">
