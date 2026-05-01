@@ -63,36 +63,6 @@ function Sidebar() {
         </button>
       </div>
 
-
-      {/* <nav className="sidebar-nav" aria-label="Main navigation">
-        <ul className="sidebar-menu">
-          {menuItems.map((item) => (
-            <li key={item.id} className="sidebar-menu-item">
-              <Link
-                to={item.path}
-                className={`sidebar-link ${location.pathname === item.path ? 'sidebar-link-active' : ''}`}
-              >
-                <span className="sidebar-icon" aria-hidden="true">
-                  {item.icon}
-                </span>
-                <span className="sidebar-label">{item.label}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav> */}
-
-      {/* <div className="sidebar-footer">
-        <div className="sidebar-user">
-          <div className="sidebar-user-avatar">
-            <span>JD</span>
-          </div>
-          <div className="sidebar-user-info">
-            <p className="sidebar-user-name">John Doe</p>
-            <p className="sidebar-user-email">john@example.com</p>
-          </div>
-        </div>
-      </div> */}
     </aside>
   )
 }
