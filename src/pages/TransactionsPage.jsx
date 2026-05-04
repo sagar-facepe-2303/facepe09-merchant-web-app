@@ -1,7 +1,7 @@
 import Sidebar from '../components/layout/Sidebar/Sidebar'
 import DashboardHeader from '../components/layout/DashboardHeader/DashboardHeader'
 import RevenueChart from '../components/transactions/RevenueChart'
-import StatusDonut from '../components/transactions/StatusDonut'
+import StatusBreakdownCard from '../components/transactions/StatusBreakdownCard'
 import VolumeBarChart from '../components/transactions/VolumeBarChart'
 import TransactionsTable from '../components/transactions/TransactionsTable'
 import './transactions.css'
@@ -28,7 +28,7 @@ function TransactionsPage() {
 
         <div className="transactions-cards">
           <RevenueChart />
-          <StatusDonut />
+          <StatusBreakdownCard />
           <VolumeBarChart />
         </div>
       
