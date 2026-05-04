@@ -1,9 +1,18 @@
+import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
-function Sidebar() {
+function Sidebar({ onToggle }) {
   const location = useLocation()
+  const [isCollapsed, setIsCollapsed] = useState(false)
 
   const isActive = (path) => location.pathname === path
+
+  const handleToggle = () => {
+    setIsCollapsed(!isCollapsed)
+    if (onToggle) {
+      onToggle(!isCollapsed)
+    }
+  }
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: '📊', path: '/dashboard' },
@@ -85,19 +94,21 @@ function Sidebar() {
   )
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
       {/* Header */}
       <div className="sidebar-header">
         <div className="sidebar-logo-section">
           <div className="sidebar-logo-wrapper">
             {logoSvg}
           </div>
-          <div className="sidebar-brand-text">
-            <h2 className="sidebar-brand-name">FacePe</h2>
-            <p className="sidebar-brand-subtitle">Admin console</p>
-          </div>
+          {!isCollapsed && (
+            <div className="sidebar-brand-text">
+              <h2 className="sidebar-brand-name">FacePe</h2>
+              <p className="sidebar-brand-subtitle">Admin console</p>
+            </div>
+          )}
         </div>
-        <button className="sidebar-toggle" aria-label="Toggle sidebar">
+        <button className="sidebar-toggle" onClick={handleToggle} aria-label="Toggle sidebar">
           {menuToggleIcon}
         </button>
       </div>
@@ -106,7 +117,7 @@ function Sidebar() {
       <nav className="sidebar-nav" aria-label="Main navigation">
         {/* MAIN Section */}
         <div className="sidebar-section">
-          <span className="sidebar-section-label">MAIN</span>
+          {!isCollapsed && <span className="sidebar-section-label">MAIN</span>}
           <ul className="sidebar-menu">
             <li className="sidebar-menu-item">
               <Link
@@ -115,7 +126,7 @@ function Sidebar() {
                 aria-current={isActive('/dashboard/transactions') ? 'page' : undefined}
               >
                 <span className="sidebar-icon" aria-hidden="true">{transactionsIcon}</span>
-                <span className="sidebar-label">Transactions</span>
+                {!isCollapsed && <span className="sidebar-label">Transactions</span>}
               </Link>
             </li>
           </ul>
@@ -123,7 +134,7 @@ function Sidebar() {
 
         {/* SYSTEM Section */}
         <div className="sidebar-section">
-          <span className="sidebar-section-label">SYSTEM</span>
+          {!isCollapsed && <span className="sidebar-section-label">SYSTEM</span>}
           <ul className="sidebar-menu">
             <li className="sidebar-menu-item">
               <Link
@@ -132,7 +143,7 @@ function Sidebar() {
                 aria-current={isActive('/dashboard/settings') ? 'page' : undefined}
               >
                 <span className="sidebar-icon" aria-hidden="true">{settingsIcon}</span>
-                <span className="sidebar-label">Settings</span>
+                {!isCollapsed && <span className="sidebar-label">Settings</span>}
               </Link>
             </li>
           </ul>
@@ -145,29 +156,31 @@ function Sidebar() {
           <li className="sidebar-menu-item">
             <Link to="/help" className="sidebar-link">
               <span className="sidebar-icon" aria-hidden="true">{helpIcon}</span>
-              <span className="sidebar-label">Help</span>
+              {!isCollapsed && <span className="sidebar-label">Help</span>}
             </Link>
           </li>
           <li className="sidebar-menu-item">
             <Link to="/feedback" className="sidebar-link">
               <span className="sidebar-icon" aria-hidden="true">{feedbackIcon}</span>
-              <span className="sidebar-label">Feedback</span>
+              {!isCollapsed && <span className="sidebar-label">Feedback</span>}
             </Link>
           </li>
         </ul>
 
-        <div className="sidebar-user-card">
-          <div className="sidebar-user-avatar">
-            <span>JD</span>
+        {!isCollapsed && (
+          <div className="sidebar-user-card">
+            <div className="sidebar-user-avatar">
+              <span>JD</span>
+            </div>
+            <div className="sidebar-user-info">
+              <p className="sidebar-user-name">John Doe</p>
+              <p className="sidebar-user-role">Admin</p>
+            </div>
+            <button className="sidebar-logout" aria-label="Logout">
+              {logoutIcon}
+            </button>
           </div>
-          <div className="sidebar-user-info">
-            <p className="sidebar-user-name">John Doe</p>
-            <p className="sidebar-user-role">Admin</p>
-          </div>
-          <button className="sidebar-logout" aria-label="Logout">
-            {logoutIcon}
-          </button>
-        </div>
+        )}
       </div>
     </aside>
   )

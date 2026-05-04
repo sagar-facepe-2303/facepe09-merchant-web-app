@@ -276,3 +276,22 @@
     transform: translateX(0);
   }
 }
+
+/* Collapsed State */
+.sidebar.collapsed {
+  width: 80px;
+  transition: width 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-link {
+  justify-content: center;
+  padding: 10px;
+}
+
+.sidebar.collapsed .sidebar-footer-menu {
+  align-items: center;
+}
+
+.sidebar.collapsed .sidebar-footer-menu .sidebar-link {
+  justify-content: center;
+}

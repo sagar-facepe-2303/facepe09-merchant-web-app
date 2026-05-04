@@ -5,15 +5,21 @@ import StatusBreakdownCard from '../components/transactions/StatusBreakdownCard'
 import VolumeBarChart from '../components/transactions/VolumeBarChart'
 import TransactionsTable from '../components/transactions/TransactionsTable'
 import './transactions.css'
+import { useState } from 'react'
 
 function TransactionsPage() {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
+
+  const handleSidebarToggle = (collapsed) => {
+    setIsSidebarCollapsed(collapsed)
+  }
+
   return (
     <div className="transactions-page">
-      <Sidebar />
-      <div className="transactions-content">
+      <Sidebar onToggle={handleSidebarToggle} />
+      <div className={`transactions-content ${isSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
 <div className='transaction-main'>
         <DashboardHeader currentPage="Transactions" currentPagePath="/transactions" />
-
 
         <div className="transactions-title-section">
           <div className="transactions-title-text">

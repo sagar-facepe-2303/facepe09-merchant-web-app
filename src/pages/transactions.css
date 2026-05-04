@@ -19,7 +19,11 @@ background: #FFF;
   background: #f9fafb;
 padding-top: 20px;
     padding-left: 20px;
+  transition: margin-left 0.3s ease;
+}
 
+.transactions-content.sidebar-collapsed {
+  margin-left: 80px;
 }
 
 /* Header */
