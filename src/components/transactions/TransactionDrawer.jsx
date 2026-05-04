@@ -25,28 +25,26 @@ function TransactionDrawer({ isOpen, onClose, transaction }) {
       <div className="transaction-drawer">
         {/* Header */}
         <div className="drawer-header">
-          <div className="drawer-header-content">
-            <h2 className="drawer-title">Transaction Details</h2>
-            <div className="drawer-id-section">
-              <span className="drawer-id">{transaction.id}</span>
-              <button 
-                className="copy-id-btn" 
-                onClick={handleCopyId}
-                aria-label="Copy transaction ID"
-              >
-                {isCopied ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M13.3333 5.33333V10.6667C13.3333 11.0203 13.1929 11.3594 12.9428 11.6095C12.6928 11.8595 12.3536 12 12 12H4" stroke="#10B981" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M5.33333 8.66667L2.66667 6L5.33333 3.33333" stroke="#10B981" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M10.6667 10.6667V6.66667C10.6667 6.31305 10.5262 5.97391 10.2761 5.72386C10.0261 5.47381 9.68696 5.33333 9.33333 5.33333H5.33333" stroke="#8C93A1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M6.66667 3.33333L4 6L6.66667 8.66667" stroke="#8C93A1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                )}
-              </button>
-            </div>
+          <h2 className="drawer-title">Transaction ID</h2>
+          <div className="drawer-id-section">
+            <span className="drawer-id">{transaction.id}</span>
+            <button 
+              className="copy-id-btn" 
+              onClick={handleCopyId}
+              aria-label="Copy transaction ID"
+            >
+              {isCopied ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M13.3333 5.33333V10.6667C13.3333 11.0203 13.1929 11.3594 12.9428 11.6095C12.6928 11.8595 12.3536 12 12 12H4" stroke="#10B981" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M5.33333 8.66667L2.66667 6L5.33333 3.33333" stroke="#10B981" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M10.6667 10.6667V6.66667C10.6667 6.31305 10.5262 5.97391 10.2761 5.72386C10.0261 5.47381 9.68696 5.33333 9.33333 5.33333H5.33333" stroke="#8C93A1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M6.66667 3.33333L4 6L6.66667 8.66667" stroke="#8C93A1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              )}
+            </button>
           </div>
           <button className="drawer-close-btn" onClick={onClose} aria-label="Close drawer">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -108,8 +106,8 @@ function TransactionDrawer({ isOpen, onClose, transaction }) {
               {transaction.timeline && transaction.timeline.map((item, index) => (
                 <div key={index} className="timeline-item">
                   <div className="timeline-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM8 15L3 10L4.41 8.59L8 12.17L15.59 4.58L17 6L8 15Z" fill="#10B981"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <path d="M8.5 2.5L4 7L1.5 4.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
                   <div className="timeline-content">
