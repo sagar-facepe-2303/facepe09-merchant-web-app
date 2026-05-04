@@ -1,18 +1,48 @@
+import { useState } from 'react'
 import StatusBadge from './StatusBadge'
 
 function TransactionsTable() {
+  const [filters, setFilters] = useState({
+    date: '',
+    amount: '',
+    kiosk: '',
+    processor: '',
+    status: ''
+  })
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 7
+
   const transactions = [
-    { id: '#TXN-001', date: 'Jan 15, 2024 10:30 AM', amount: '$250.00', kiosk: 'Kiosk-001', processor: 'Stripe', status: 'success' },
-    { id: '#TXN-002', date: 'Jan 15, 2024 11:45 AM', amount: '$180.00', kiosk: 'Kiosk-002', processor: 'PayPal', status: 'success' },
-    { id: '#TXN-003', date: 'Jan 15, 2024 12:20 PM', amount: '$320.00', kiosk: 'Kiosk-001', processor: 'Stripe', status: 'pending' },
-    { id: '#TXN-004', date: 'Jan 15, 2024 01:15 PM', amount: '$450.00', kiosk: 'Kiosk-003', processor: 'Square', status: 'failed' },
-    { id: '#TXN-005', date: 'Jan 15, 2024 02:30 PM', amount: '$210.00', kiosk: 'Kiosk-002', processor: 'Stripe', status: 'success' },
-    { id: '#TXN-006', date: 'Jan 15, 2024 03:45 PM', amount: '$380.00', kiosk: 'Kiosk-001', processor: 'PayPal', status: 'success' },
-    { id: '#TXN-007', date: 'Jan 15, 2024 04:20 PM', amount: '$290.00', kiosk: 'Kiosk-003', processor: 'Stripe', status: 'pending' },
-    { id: '#TXN-008', date: 'Jan 15, 2024 05:10 PM', amount: '$520.00', kiosk: 'Kiosk-002', processor: 'Square', status: 'failed' },
-    { id: '#TXN-009', date: 'Jan 15, 2024 06:30 PM', amount: '$340.00', kiosk: 'Kiosk-001', processor: 'Stripe', status: 'success' },
-    { id: '#TXN-010', date: 'Jan 15, 2024 07:45 PM', amount: '$410.00', kiosk: 'Kiosk-003', processor: 'PayPal', status: 'success' },
+    { id: '#13123AEW', datetime: '14:32:15 • 25.03.2026', amount: '$30.00', kiosk: 'JGL124', processor: 'PayPal', status: 'Successful' },
+    { id: '#13123AEF', datetime: '15:45:20 • 25.03.2026', amount: '$45.50', kiosk: 'ABC456', processor: 'Stripe', status: 'Successful' },
+    { id: '#13123AEG', datetime: '16:22:10 • 25.03.2026', amount: '$120.00', kiosk: 'ZXC123', processor: 'PayPal', status: 'Pending' },
+    { id: '#13123AEH', datetime: '17:10:05 • 25.03.2026', amount: '$75.25', kiosk: 'JGL124', processor: 'Stripe', status: 'Failed' },
+    { id: '#13123AEI', datetime: '18:30:45 • 25.03.2026', amount: '$200.00', kiosk: 'ABC456', processor: 'PayPal', status: 'Successful' },
+    { id: '#13123AEJ', datetime: '19:15:30 • 25.03.2026', amount: '$55.00', kiosk: 'ZXC123', processor: 'Stripe', status: 'Successful' },
+    { id: '#13123AEK', datetime: '20:42:15 • 25.03.2026', amount: '$95.75', kiosk: 'JGL124', processor: 'PayPal', status: 'Pending' },
+    { id: '#13123AEL', datetime: '21:20:00 • 25.03.2026', amount: '$150.00', kiosk: 'ABC456', processor: 'Stripe', status: 'Successful' },
+    { id: '#13123AEM', datetime: '22:05:40 • 25.03.2026', amount: '$80.50', kiosk: 'ZXC123', processor: 'PayPal', status: 'Failed' },
+    { id: '#13123AEN', datetime: '23:18:25 • 25.03.2026', amount: '$110.00', kiosk: 'JGL124', processor: 'Stripe', status: 'Successful' },
   ]
+
+  const filteredTransactions = transactions.filter(transaction => {
+    if (filters.date && !transaction.datetime.includes(filters.date)) return false
+    if (filters.amount && !transaction.amount.includes(filters.amount)) return false
+    if (filters.kiosk && transaction.kiosk !== filters.kiosk) return false
+    if (filters.processor && transaction.processor !== filters.processor) return false
+    if (filters.status && transaction.status !== filters.status) return false
+    return true
+  })
+
+  const indexOfLastItem = currentPage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const currentItems = filteredTransactions.slice(indexOfFirstItem, indexOfLastItem)
+  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage)
+
+  const handleFilterChange = (field, value) => {
+    setFilters(prev => ({ ...prev, [field]: value }))
+    setCurrentPage(1)
+  }
 
   return (
     <div className="transactions-table-section">
@@ -28,13 +58,78 @@ function TransactionsTable() {
               <path d="M11.0996 11.0996L13.9996 13.9996" stroke="#8C93A1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
-          <button className="table-action-btn" aria-label="Filter">
+          <button className="table-action-btn filters-btn" aria-label="Filter">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M2.66699 3.33301H13.3337" stroke="#8C93A1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M3.33301 6.66667H12.6663" stroke="#8C93A1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M5.33301 10H10.6663" stroke="#8C93A1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
+            <span>Filters</span>
           </button>
+        </div>
+      </div>
+      
+      {/* Filter Section */}
+      <div className="transactions-filters">
+        <div className="filter-field">
+          <label>Search by Date</label>
+          <input 
+            type="date" 
+            value={filters.date}
+            onChange={(e) => handleFilterChange('date', e.target.value)}
+            className="filter-input"
+          />
+        </div>
+        <div className="filter-field">
+          <label>Search by Amount</label>
+          <div className="filter-input-with-prefix">
+            <span className="input-prefix">$</span>
+            <input 
+              type="text" 
+              placeholder="0.00"
+              value={filters.amount}
+              onChange={(e) => handleFilterChange('amount', e.target.value)}
+              className="filter-input"
+            />
+          </div>
+        </div>
+        <div className="filter-field">
+          <label>Search by Kiosk</label>
+          <select 
+            value={filters.kiosk}
+            onChange={(e) => handleFilterChange('kiosk', e.target.value)}
+            className="filter-input"
+          >
+            <option value="">All</option>
+            <option value="JGL124">JGL124</option>
+            <option value="ABC456">ABC456</option>
+            <option value="ZXC123">ZXC123</option>
+          </select>
+        </div>
+        <div className="filter-field">
+          <label>Search by Processor</label>
+          <select 
+            value={filters.processor}
+            onChange={(e) => handleFilterChange('processor', e.target.value)}
+            className="filter-input"
+          >
+            <option value="">All</option>
+            <option value="PayPal">PayPal</option>
+            <option value="Stripe">Stripe</option>
+          </select>
+        </div>
+        <div className="filter-field">
+          <label>Search by Status</label>
+          <select 
+            value={filters.status}
+            onChange={(e) => handleFilterChange('status', e.target.value)}
+            className="filter-input"
+          >
+            <option value="">All</option>
+            <option value="Successful">Successful</option>
+            <option value="Pending">Pending</option>
+            <option value="Failed">Failed</option>
+          </select>
         </div>
       </div>
       
@@ -51,15 +146,15 @@ function TransactionsTable() {
             </tr>
           </thead>
           <tbody>
-            {transactions.map((transaction) => (
+            {currentItems.map((transaction) => (
               <tr key={transaction.id}>
                 <td className="table-id">{transaction.id}</td>
-                <td className="table-date">{transaction.date}</td>
+                <td className="table-date">{transaction.datetime}</td>
                 <td className="table-amount">{transaction.amount}</td>
                 <td className="table-kiosk">{transaction.kiosk}</td>
                 <td className="table-processor">{transaction.processor}</td>
                 <td className="table-status">
-                  <StatusBadge status={transaction.status} />
+                  <StatusBadge status={transaction.status.toLowerCase()} />
                 </td>
               </tr>
             ))}
@@ -67,11 +162,35 @@ function TransactionsTable() {
         </table>
       </div>
 
-      <div className="transactions-table-pagination">
-        <button className="pagination-btn">1</button>
-        <button className="pagination-btn">2</button>
-        <button className="pagination-btn">3</button>
-        <button className="pagination-btn pagination-btn-next">Next</button>
+      <div className="transactions-table-footer">
+        <div className="transactions-table-info">
+          Showing {indexOfFirstItem + 1} - {Math.min(indexOfLastItem, filteredTransactions.length)} of {filteredTransactions.length} results
+        </div>
+        <div className="transactions-table-pagination">
+          <button 
+            className="pagination-btn" 
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button 
+              key={page} 
+              className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+              onClick={() => setCurrentPage(page)}
+            >
+              {page}
+            </button>
+          ))}
+          <button 
+            className="pagination-btn pagination-btn-next"
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   )

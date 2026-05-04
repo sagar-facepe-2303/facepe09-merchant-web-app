@@ -457,8 +457,8 @@ padding-top: 20px;
 .transactions-table-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 16px;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .transactions-table-title-section {
@@ -469,14 +469,14 @@ padding-top: 20px;
   margin: 0 0 4px;
   font-size: 16px;
   font-weight: 600;
-  color: #100824;
+  color: #1A1C29;
   font-family: 'Satoshi', sans-serif;
 }
 
 .transactions-table-subtitle {
   margin: 0;
   font-size: 13px;
-  color: #8c93a1;
+  color: #6B7280;
   font-family: 'Inter', sans-serif;
 }
 
@@ -489,17 +489,87 @@ padding-top: 20px;
   border: 1px solid #e7e7e7;
   background: #ffffff;
   border-radius: 8px;
-  padding: 8px;
+  padding: 8px 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 6px;
   transition: all 0.2s ease;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  color: #1A1C29;
 }
 
 .table-action-btn:hover {
   background: #f3f4f6;
   border-color: #d1d5db;
+}
+
+.filters-btn span {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Filter Section */
+.transactions-filters {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-field label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6B7280;
+  font-family: 'Inter', sans-serif;
+}
+
+.filter-input {
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #e7e7e7;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  color: #1A1C29;
+  background: #ffffff;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.filter-input:focus {
+  border-color: #9c6cfe;
+}
+
+.filter-input::placeholder {
+  color: #8c93a1;
+}
+
+.filter-input-with-prefix {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-prefix {
+  position: absolute;
+  left: 12px;
+  color: #6B7280;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+}
+
+.filter-input-with-prefix .filter-input {
+  padding-left: 28px;
 }
 
 .transactions-table-wrapper {
@@ -557,11 +627,22 @@ padding-top: 20px;
   font-family: 'Satoshi', sans-serif;
 }
 
+.transactions-table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.transactions-table-info {
+  font-size: 13px;
+  color: #6B7280;
+  font-family: 'Inter', sans-serif;
+}
+
 .transactions-table-pagination {
   display: flex;
-  justify-content: flex-end;
   gap: 8px;
-  margin-top: 16px;
 }
 
 .pagination-btn {
@@ -574,12 +655,12 @@ padding-top: 20px;
   font-size: 14px;
   font-weight: 500;
   font-family: 'Inter', sans-serif;
-  color: #100824;
+  color: #1A1C29;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.pagination-btn:hover {
+.pagination-btn:hover:not(:disabled) {
   background: #f3f4f6;
   border-color: #d1d5db;
 }
@@ -588,6 +669,11 @@ padding-top: 20px;
   background: #6d28d9;
   color: #ffffff;
   border-color: #6d28d9;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .pagination-btn-next {
