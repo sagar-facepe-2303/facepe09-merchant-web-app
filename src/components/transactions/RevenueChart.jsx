@@ -1,24 +1,41 @@
+import { useEffect, useState } from 'react'
 import ChartCard from './ChartCard'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart, ReferenceLine } from 'recharts'
+import revenueResponse from '../../data/revenueData.json'
 
 function RevenueChart() {
+  const [period, setPeriod] = useState('week')
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // Simulate API call - replace with real fetch when backend is ready
+    // e.g. fetch(`/api/revenue?period=${period}`).then(r => r.json()).then(...)
+    const fetchRevenue = async () => {
+      setLoading(true)
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 300))
+        setData(revenueResponse[period].data)
+      } catch (err) {
+        console.error('Failed to load revenue data:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchRevenue()
+  }, [period])
+
   const weekDropdown = (
-    <select className="chart-dropdown">
-      <option>Week</option>
-      <option>Month</option>
-      <option>Year</option>
+    <select
+      className="chart-dropdown"
+      value={period}
+      onChange={(e) => setPeriod(e.target.value)}
+    >
+      <option value="week">Week</option>
+      <option value="month">Month</option>
+      <option value="year">Year</option>
     </select>
   )
-
-  const data = [
-    { name: 'Mon', value: 650 },
-    { name: 'Tue', value: 720 },
-    { name: 'Wed', value: 680 },
-    { name: 'Thu', value: 890 },
-    { name: 'Fri', value: 990 },
-    { name: 'Sat', value: 750 },
-    { name: 'Sun', value: 800 },
-  ]
 
   return (
     <ChartCard 
