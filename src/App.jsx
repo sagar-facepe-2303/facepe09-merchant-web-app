@@ -12,6 +12,7 @@ import EnterSecurityCodePage from './pages/EnterSecurityCodePage'
 import NewPasswordPage  from './pages/NewPasswordPage'
 import PasswordUpdatedPage from './pages/PasswordUpdatedPage'
 import DashboardPage from './pages/DashboardPage'
+import SettingsPage from './pages/SettingsPage'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './styles/theme.css'
 import './styles/landing.css'
@@ -51,6 +52,7 @@ function App() {
         <Route path="/forgot-password/success" element={<PasswordUpdatedPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/dashboard/transactions" element={<TransactionsPage />} />
+        <Route path="/dashboard/settings" element={<SettingsPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/signup/verify-email" element={<VerifyEmailPage />} />
         <Route path="/signup/verify-phone" element={<VerifyPhonePage />} />
