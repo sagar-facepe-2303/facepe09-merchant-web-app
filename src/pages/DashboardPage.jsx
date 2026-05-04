@@ -1,12 +1,19 @@
 import Layout from '../components/layout/Layout/Layout'
 import Sidebar from '../components/layout/Sidebar/Sidebar'
 import DashboardHeader from '../components/layout/DashboardHeader/DashboardHeader'
+import { useState } from 'react'
 
 function DashboardPage() {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
+
+  const handleSidebarToggle = (collapsed) => {
+    setIsSidebarCollapsed(collapsed)
+  }
+
   return (
     <div className="dashboard-page">
-      <Sidebar />
-      <div className="dashboard-content">
+      <Sidebar onToggle={handleSidebarToggle} />
+      <div className={`dashboard-content ${isSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
         <Layout>
           <DashboardHeader currentPage="Dashboard" currentPagePath="/dashboard" />
           <div className="dashboard-welcome">
