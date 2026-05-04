@@ -1,0 +1,44 @@
+{
+  "status": "success",
+  "week": {
+    "period": "week",
+    "max": 10000,
+    "data": [
+      { "name": "Mon", "failed": 1500, "pending": 2000, "successful": 3500 },
+      { "name": "Tue", "failed": 1800, "pending": 2200, "successful": 4000 },
+      { "name": "Wed", "failed": 1600, "pending": 2100, "successful": 3800 },
+      { "name": "Thu", "failed": 2000, "pending": 2500, "successful": 4500 },
+      { "name": "Fri", "failed": 2200, "pending": 2800, "successful": 5500 },
+      { "name": "Sat", "failed": 1700, "pending": 2300, "successful": 4000 },
+      { "name": "Sun", "failed": 1500, "pending": 2000, "successful": 3700 }
+    ]
+  },
+  "month": {
+    "period": "month",
+    "max": 50000,
+    "data": [
+      { "name": "Week 1", "failed": 8000, "pending": 11000, "successful": 19000 },
+      { "name": "Week 2", "failed": 9500, "pending": 12000, "successful": 22000 },
+      { "name": "Week 3", "failed": 8800, "pending": 11500, "successful": 20500 },
+      { "name": "Week 4", "failed": 10500, "pending": 13000, "successful": 24000 }
+    ]
+  },
+  "year": {
+    "period": "year",
+    "max": 200000,
+    "data": [
+      { "name": "Jan", "failed": 32000, "pending": 45000, "successful": 78000 },
+      { "name": "Feb", "failed": 35000, "pending": 48000, "successful": 85000 },
+      { "name": "Mar", "failed": 33000, "pending": 46000, "successful": 80000 },
+      { "name": "Apr", "failed": 38000, "pending": 52000, "successful": 92000 },
+      { "name": "May", "failed": 41000, "pending": 55000, "successful": 99000 },
+      { "name": "Jun", "failed": 36000, "pending": 50000, "successful": 88000 },
+      { "name": "Jul", "failed": 43000, "pending": 58000, "successful": 105000 },
+      { "name": "Aug", "failed": 45000, "pending": 60000, "successful": 110000 },
+      { "name": "Sep", "failed": 39000, "pending": 53000, "successful": 96000 },
+      { "name": "Oct", "failed": 44000, "pending": 59000, "successful": 108000 },
+      { "name": "Nov", "failed": 47000, "pending": 62000, "successful": 116000 },
+      { "name": "Dec", "failed": 50000, "pending": 65000, "successful": 125000 }
+    ]
+  }
+}

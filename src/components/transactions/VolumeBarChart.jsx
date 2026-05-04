@@ -1,24 +1,40 @@
+import { useEffect, useState } from 'react'
 import ChartCard from './ChartCard'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import volumeResponse from '../../data/volumeData.json'
 
 function VolumeBarChart() {
+  const [period, setPeriod] = useState('week')
+  const [data, setData] = useState([])
+  const [maxValue, setMaxValue] = useState(10000)
+
+  useEffect(() => {
+    // Simulate API call - replace with real fetch when backend is ready
+    // e.g. fetch(`/api/volume?period=${period}`).then(r => r.json()).then(...)
+    const fetchVolume = async () => {
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 300))
+        const periodData = volumeResponse[period]
+        setData(periodData.data)
+        setMaxValue(periodData.max)
+      } catch (err) {
+        console.error('Failed to load volume data:', err)
+      }
+    }
+    fetchVolume()
+  }, [period])
+
   const weekDropdown = (
-    <select className="chart-dropdown">
-      <option>Week</option>
-      <option>Month</option>
-      <option>Year</option>
+    <select
+      className="chart-dropdown"
+      value={period}
+      onChange={(e) => setPeriod(e.target.value)}
+    >
+      <option value="week">Week</option>
+      <option value="month">Month</option>
+      <option value="year">Year</option>
     </select>
   )
-
-  const data = [
-    { name: 'Mon', failed: 1500, pending: 2000, successful: 3500, max: 10000 },
-    { name: 'Tue', failed: 1800, pending: 2200, successful: 4000, max: 10000 },
-    { name: 'Wed', failed: 1600, pending: 2100, successful: 3800, max: 10000 },
-    { name: 'Thu', failed: 2000, pending: 2500, successful: 4500, max: 10000 },
-    { name: 'Fri', failed: 2200, pending: 2800, successful: 5500, max: 10000 },
-    { name: 'Sat', failed: 1700, pending: 2300, successful: 4000, max: 10000 },
-    { name: 'Sun', failed: 1500, pending: 2000, successful: 3700, max: 10000 },
-  ]
 
   return (
     <ChartCard 
@@ -59,7 +75,7 @@ function VolumeBarChart() {
               tickLine={false}
               axisLine={false}
               tickFormatter={(v) => v === 0 ? '0k' : v / 1000 + 'k'}
-              domain={[0, 10000]}
+              domain={[0, maxValue]}
             />
             <Tooltip 
               contentStyle={{ 

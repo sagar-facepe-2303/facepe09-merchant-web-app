@@ -1,12 +1,35 @@
+import { useEffect, useState } from 'react'
 import ChartCard from './ChartCard'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
+import statusBreakdownResponse from '../../data/statusBreakdownData.json'
+
+const COLOR_MAP = {
+  Success: '#16A34A',
+  Pending: '#D97706',
+  Failed: '#DC2626'
+}
 
 function StatusDonut() {
-  const data = [
-    { name: 'Success', value: 120, color: '#16A34A' },
-    { name: 'Pending', value: 40, color: '#D97706' },
-    { name: 'Failed', value: 20, color: '#DC2626' },
-  ]
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    // Simulate API call - replace with real fetch when backend is ready
+    // e.g. fetch('/api/status-breakdown?period=week').then(r => r.json()).then(...)
+    const fetchStatus = async () => {
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 300))
+        const mapped = statusBreakdownResponse.week.data.map((item) => ({
+          name: item.name,
+          value: item.value,
+          color: COLOR_MAP[item.name] || item.fill
+        }))
+        setData(mapped)
+      } catch (err) {
+        console.error('Failed to load status breakdown:', err)
+      }
+    }
+    fetchStatus()
+  }, [])
 
   const total = data.reduce((sum, item) => sum + item.value, 0)
 

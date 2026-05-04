@@ -1,0 +1,30 @@
+{
+  "status": "success",
+  "week": {
+    "period": "week",
+    "totals": { "success": 180, "pending": 10, "failed": 10 },
+    "data": [
+      { "name": "Success", "value": 180, "fill": "#A3D18B" },
+      { "name": "Pending", "value": 10, "fill": "#F59E0B" },
+      { "name": "Failed", "value": 10, "fill": "#EF4444" }
+    ]
+  },
+  "month": {
+    "period": "month",
+    "totals": { "success": 720, "pending": 45, "failed": 35 },
+    "data": [
+      { "name": "Success", "value": 720, "fill": "#A3D18B" },
+      { "name": "Pending", "value": 45, "fill": "#F59E0B" },
+      { "name": "Failed", "value": 35, "fill": "#EF4444" }
+    ]
+  },
+  "year": {
+    "period": "year",
+    "totals": { "success": 8640, "pending": 540, "failed": 420 },
+    "data": [
+      { "name": "Success", "value": 8640, "fill": "#A3D18B" },
+      { "name": "Pending", "value": 540, "fill": "#F59E0B" },
+      { "name": "Failed", "value": 420, "fill": "#EF4444" }
+    ]
+  }
+}
