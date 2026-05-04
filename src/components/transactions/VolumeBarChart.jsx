@@ -1,58 +1,49 @@
 import ChartCard from './ChartCard'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
 function VolumeBarChart() {
+  const data = [
+    { name: 'Mon', success: 45, pending: 12, failed: 8 },
+    { name: 'Tue', success: 52, pending: 15, failed: 10 },
+    { name: 'Wed', success: 48, pending: 14, failed: 12 },
+    { name: 'Thu', success: 65, pending: 18, failed: 15 },
+    { name: 'Fri', success: 78, pending: 20, failed: 18 },
+    { name: 'Sat', success: 55, pending: 16, failed: 11 },
+    { name: 'Sun', success: 50, pending: 14, failed: 9 },
+  ]
+
   return (
     <ChartCard 
       title="Transaction volume" 
       subtitle="Transaction peaked on Friday"
     >
       <div className="volume-bar-chart">
-        <svg viewBox="0 0 280 120" className="chart-svg">
-          <g className="bar-group">
-            <rect x="10" y="60" width="20" height="40" fill="#16A34A" rx="2"/>
-            <rect x="10" y="45" width="20" height="15" fill="#D97706" rx="2"/>
-            <rect x="10" y="35" width="20" height="10" fill="#DC2626" rx="2"/>
-          </g>
-          <g className="bar-group">
-            <rect x="50" y="50" width="20" height="50" fill="#16A34A" rx="2"/>
-            <rect x="50" y="40" width="20" height="10" fill="#D97706" rx="2"/>
-            <rect x="50" y="30" width="20" height="10" fill="#DC2626" rx="2"/>
-          </g>
-          <g className="bar-group">
-            <rect x="90" y="55" width="20" height="45" fill="#16A34A" rx="2"/>
-            <rect x="90" y="45" width="20" height="10" fill="#D97706" rx="2"/>
-            <rect x="90" y="35" width="20" height="10" fill="#DC2626" rx="2"/>
-          </g>
-          <g className="bar-group">
-            <rect x="130" y="40" width="20" height="60" fill="#16A34A" rx="2"/>
-            <rect x="130" y="30" width="20" height="10" fill="#D97706" rx="2"/>
-            <rect x="130" y="20" width="20" height="10" fill="#DC2626" rx="2"/>
-          </g>
-          <g className="bar-group">
-            <rect x="170" y="30" width="20" height="70" fill="#16A34A" rx="2"/>
-            <rect x="170" y="20" width="20" height="10" fill="#D97706" rx="2"/>
-            <rect x="170" y="10" width="20" height="10" fill="#DC2626" rx="2"/>
-          </g>
-          <g className="bar-group">
-            <rect x="210" y="50" width="20" height="50" fill="#16A34A" rx="2"/>
-            <rect x="210" y="40" width="20" height="10" fill="#D97706" rx="2"/>
-            <rect x="210" y="30" width="20" height="10" fill="#DC2626" rx="2"/>
-          </g>
-          <g className="bar-group">
-            <rect x="250" y="55" width="20" height="45" fill="#16A34A" rx="2"/>
-            <rect x="250" y="45" width="20" height="10" fill="#D97706" rx="2"/>
-            <rect x="250" y="35" width="20" height="10" fill="#DC2626" rx="2"/>
-          </g>
-        </svg>
-        <div className="chart-x-axis">
-          <span>Mon</span>
-          <span>Tue</span>
-          <span>Wed</span>
-          <span>Thu</span>
-          <span>Fri</span>
-          <span>Sat</span>
-          <span>Sun</span>
-        </div>
+        <ResponsiveContainer width="100%" height={120}>
+          <BarChart data={data} barSize={12} barGap={4}>
+            <XAxis 
+              dataKey="name" 
+              axisLine={false}
+              tickLine={false}
+              tick={{ fontSize: 12, fill: '#8C93A1', fontFamily: 'Inter, sans-serif' }}
+              dy={8}
+            />
+            <YAxis hide={true} />
+            <CartesianGrid vertical={false} horizontal={false} />
+            <Tooltip 
+              contentStyle={{ 
+                backgroundColor: '#100824', 
+                border: 'none', 
+                borderRadius: '4px',
+                fontSize: '11px',
+                fontFamily: 'Inter, sans-serif',
+                color: '#ffffff'
+              }}
+            />
+            <Bar dataKey="success" fill="#16A34A" radius={[2, 2, 0, 0]} />
+            <Bar dataKey="pending" fill="#D97706" radius={[2, 2, 0, 0]} />
+            <Bar dataKey="failed" fill="#DC2626" radius={[2, 2, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
       <div className="bar-legend">
         <div className="legend-item">

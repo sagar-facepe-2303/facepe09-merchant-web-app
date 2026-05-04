@@ -1,4 +1,5 @@
 import ChartCard from './ChartCard'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart, ReferenceLine } from 'recharts'
 
 function RevenueChart() {
   const weekDropdown = (
@@ -9,6 +10,16 @@ function RevenueChart() {
     </select>
   )
 
+  const data = [
+    { name: 'Mon', value: 650 },
+    { name: 'Tue', value: 720 },
+    { name: 'Wed', value: 680 },
+    { name: 'Thu', value: 890 },
+    { name: 'Fri', value: 990 },
+    { name: 'Sat', value: 750 },
+    { name: 'Sun', value: 800 },
+  ]
+
   return (
     <ChartCard 
       title="Revenue Trend" 
@@ -16,38 +27,56 @@ function RevenueChart() {
       rightAction={weekDropdown}
     >
       <div className="revenue-chart">
-        <svg viewBox="0 0 280 120" className="chart-svg">
-          <defs>
-            <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#9C6CFE" stopOpacity="0.3"/>
-              <stop offset="100%" stopColor="#9C6CFE" stopOpacity="0"/>
-            </linearGradient>
-          </defs>
-          <path 
-            d="M0,100 Q30,95 60,80 T120,60 T180,40 T240,50 T280,30 L280,120 L0,120 Z" 
-            fill="url(#revenueGradient)"
-          />
-          <path 
-            d="M0,100 Q30,95 60,80 T120,60 T180,40 T240,50 T280,30" 
-            fill="none" 
-            stroke="#9C6CFE" 
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
-          <circle cx="180" cy="40" r="5" fill="#9C6CFE"/>
-          <foreignObject x="150" y="5" width="60" height="24">
-            <div className="chart-tooltip">$990 peak</div>
-          </foreignObject>
-        </svg>
-        <div className="chart-x-axis">
-          <span>Mon</span>
-          <span>Tue</span>
-          <span>Wed</span>
-          <span>Thu</span>
-          <span>Fri</span>
-          <span>Sat</span>
-          <span>Sun</span>
-        </div>
+        <ResponsiveContainer width="100%" height={250}>
+          <AreaChart data={data} margin={{ top: 10, right: 10, left: 20, bottom: 0 }}>
+            <defs>
+              <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#9C6CFE" stopOpacity="0.3"/>
+                <stop offset="100%" stopColor="#9C6CFE" stopOpacity="0"/>
+              </linearGradient>
+            </defs>
+            <CartesianGrid 
+              horizontal={true} 
+              vertical={false} 
+              stroke="#E7E7E7" 
+              strokeWidth={1}
+              strokeDasharray="0"
+            />
+            <XAxis 
+              dataKey="name" 
+              axisLine={false}
+              tickLine={false}
+              tick={{ fontSize: 12, fill: '#8C93A1', fontFamily: 'Inter, sans-serif' }}
+              dy={5}
+              interval={0}
+            />
+            <YAxis 
+              hide={true}
+              domain={[0, 1100]}
+            />
+            <Tooltip 
+              contentStyle={{ 
+                backgroundColor: '#100824', 
+                border: 'none', 
+                borderRadius: '4px',
+                fontSize: '11px',
+                fontFamily: 'Inter, sans-serif',
+                color: '#ffffff',
+                padding: '8px 12px'
+              }}
+              formatter={(value) => `$${value}`}
+            />
+            <Area 
+              type="monotone" 
+              dataKey="value" 
+              stroke="#9C6CFE" 
+              strokeWidth={2.5}
+              fill="url(#revenueGradient)"
+              dot={false}
+              activeDot={{ r: 5, fill: '#9C6CFE', stroke: '#ffffff', strokeWidth: 2 }}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
       </div>
     </ChartCard>
   )

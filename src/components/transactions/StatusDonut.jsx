@@ -1,23 +1,55 @@
 import ChartCard from './ChartCard'
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 
 function StatusDonut() {
+  const data = [
+    { name: 'Success', value: 120, color: '#16A34A' },
+    { name: 'Pending', value: 40, color: '#D97706' },
+    { name: 'Failed', value: 20, color: '#DC2626' },
+  ]
+
+  const total = data.reduce((sum, item) => sum + item.value, 0)
+
   return (
     <ChartCard 
       title="Status Breakdown" 
       subtitle="67% increased this week"
     >
       <div className="status-donut">
-        <svg viewBox="0 0 120 120" className="donut-chart">
-          <circle cx="60" cy="60" r="50" fill="none" stroke="#E7E7E7" strokeWidth="12"/>
-          <circle cx="60" cy="60" r="50" fill="none" stroke="#16A34A" strokeWidth="12" 
-            strokeDasharray="188 126" strokeDashoffset="0" transform="rotate(-90 60 60)"/>
-          <circle cx="60" cy="60" r="50" fill="none" stroke="#D97706" strokeWidth="12" 
-            strokeDasharray="63 251" strokeDashoffset="-188" transform="rotate(-90 60 60)"/>
-          <circle cx="60" cy="60" r="50" fill="none" stroke="#DC2626" strokeWidth="12" 
-            strokeDasharray="63 251" strokeDashoffset="-251" transform="rotate(-90 60 60)"/>
-        </svg>
+        <ResponsiveContainer width={120} height={120}>
+          <PieChart>
+            <Pie
+              data={data}
+              cx="50%"
+              cy="50%"
+              innerRadius={40}
+              outerRadius={50}
+              startAngle={90}
+              endAngle={-270}
+              paddingAngle={0}
+              dataKey="value"
+              stroke="none"
+            >
+              {data.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Pie>
+            <Tooltip 
+              contentStyle={{ 
+                backgroundColor: '#100824', 
+                border: 'none', 
+                borderRadius: '4px',
+                fontSize: '11px',
+                fontFamily: 'Inter, sans-serif',
+                color: '#ffffff',
+                padding: '8px 12px'
+              }}
+              formatter={(value, name) => [value, name]}
+            />
+          </PieChart>
+        </ResponsiveContainer>
         <div className="donut-center">
-          <span className="donut-value">180</span>
+          <span className="donut-value">{total}</span>
           <span className="donut-label">Total</span>
         </div>
       </div>
