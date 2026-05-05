@@ -271,6 +271,23 @@
   transition: width 0.3s ease;
 }
 
+.sidebar.collapsed .sidebar-header {
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar.collapsed .sidebar-logo-section {
+  justify-content: center;
+}
+
+.sidebar.collapsed .sidebar-toggle {
+  margin-top: 0;
+  transform: rotate(180deg);
+}
+
 .sidebar.collapsed .sidebar-link {
   justify-content: center;
   padding: 10px;
