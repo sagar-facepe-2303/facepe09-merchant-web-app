@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 import statusBreakdownResponse from '../../data/statusBreakdownData.json'
 import './StatusBreakdownCard.css'
 
@@ -7,6 +7,7 @@ function StatusBreakdownCard() {
   const [period, setPeriod] = useState('week')
   const [mainData, setMainData] = useState([])
   const [totals, setTotals] = useState({ success: 0, pending: 0, failed: 0 })
+  const [selected, setSelected] = useState({ name: 'Success', value: 0 })
 
   useEffect(() => {
     // Simulate API call - replace with real fetch when backend is ready
@@ -17,6 +18,7 @@ function StatusBreakdownCard() {
         const periodData = statusBreakdownResponse[period]
         setMainData(periodData.data)
         setTotals(periodData.totals)
+        setSelected({ name: 'Success', value: periodData.totals.success })
       } catch (err) {
         console.error('Failed to load status breakdown:', err)
       }
@@ -76,8 +78,42 @@ function StatusBreakdownCard() {
 
       {/* Chart Section */}
       <div className="status-breakdown-chart-wrapper">
-        <ResponsiveContainer width={300} height={200}>
+        <ResponsiveContainer width="100%" height="100%">
           <PieChart>
+            <Tooltip
+              cursor={{ fill: 'transparent' }}
+              content={({ active, payload }) => {
+                if (!active || !payload || !payload.length) return null
+                const item = payload[0]
+                if (!item?.name) return null
+                return (
+                  <div
+                    style={{
+                      background: '#100824',
+                      color: '#FFFFFF',
+                      fontFamily: 'Satoshi, sans-serif',
+                      fontSize: '12px',
+                      padding: '8px 12px',
+                      borderRadius: '6px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: '50%',
+                        background: item.payload?.fill || '#FFFFFF',
+                      }}
+                    />
+                    <span>{item.name}:</span>
+                    <strong>{item.value}</strong>
+                  </div>
+                )
+              }}
+            />
             {/* Background Track */}
             <Pie
               data={trackData}
@@ -85,8 +121,8 @@ function StatusBreakdownCard() {
               cy="100%"
               startAngle={180}
               endAngle={0}
-              innerRadius={110}
-              outerRadius={150}
+              innerRadius="70%"
+              outerRadius="100%"
               dataKey="value"
               stroke="none"
             >
@@ -99,21 +135,30 @@ function StatusBreakdownCard() {
               cy="100%"
               startAngle={180}
               endAngle={0}
-              innerRadius={110}
-              outerRadius={150}
+              innerRadius="70%"
+              outerRadius="100%"
               dataKey="value"
               stroke="none"
+              onClick={(data) => {
+                if (data && data.name) {
+                  setSelected({ name: data.name, value: data.value })
+                }
+              }}
             >
               {mainData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.fill} />
+                <Cell
+                  key={`cell-${index}`}
+                  fill={entry.fill}
+                  style={{ cursor: 'pointer' }}
+                />
               ))}
             </Pie>
           </PieChart>
         </ResponsiveContainer>
 
         {/* Floating Badge */}
-        <div className="status-breakdown-badge">
-          <span className="status-breakdown-badge-value">{totals.success}</span>
+        <div className="status-breakdown-badge" title={selected.name}>
+          <span className="status-breakdown-badge-value">{selected.value}</span>
         </div>
       </div>
     </div>

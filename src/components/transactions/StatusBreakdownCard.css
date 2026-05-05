@@ -105,9 +105,17 @@
 /* Chart Wrapper */
 .status-breakdown-chart-wrapper {
   margin-top: 20px;
-  display: flex;
-  justify-content: center;
   position: relative;
+  width: 100%;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 180px;
+}
+
+.status-breakdown-chart-wrapper .recharts-responsive-container {
+  width: 100% !important;
+  height: 100% !important;
 }
 
 /* Floating Badge */
@@ -121,9 +129,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  right: calc(50% - 150px + 130px);
-  top: 50%;
-  transform: translateY(-50%);
+  right: 10%;
+  bottom: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .status-breakdown-stats {
+    gap: 16px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .status-breakdown-chart-wrapper {
+    max-width: 260px;
+  }
+
+  .status-breakdown-badge {
+    width: 48px;
+    height: 48px;
+    right: 6%;
+  }
+
+  .status-breakdown-badge-value {
+    font-size: 16px;
+  }
 }
 
 .status-breakdown-badge-value {

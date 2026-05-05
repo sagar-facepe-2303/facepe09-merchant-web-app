@@ -60,7 +60,7 @@ function VolumeBarChart() {
       
       <div className="volume-bar-chart">
         <ResponsiveContainer width="100%" height={250}>
-          <BarChart data={data} barSize={12} barCategoryGap="40px" barGap={0} margin={{ top: 10, right: 0, left: 0, bottom: 20 }}>
+          <BarChart data={data} barSize={12} barCategoryGap="20%" barGap={0} margin={{ top: 10, right: 8, left: 0, bottom: 20 }}>
             <CartesianGrid vertical={false} horizontal={true} stroke="#E7E7E7" strokeWidth={1} />
             <XAxis 
               dataKey="name" 

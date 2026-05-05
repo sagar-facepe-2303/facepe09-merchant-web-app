@@ -34,15 +34,23 @@
 }
 
 @media (max-width: 768px) {
+  .transactions-page {
+    overflow-x: hidden;
+  }
+
   .transactions-content {
     margin-left: 0;
     padding-top: 64px;
     padding-left: 12px;
     padding-right: 12px;
+    min-width: 0;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
 
   .transaction-main {
     border-radius: 12px;
+    min-width: 0;
   }
 }
 
@@ -250,6 +258,12 @@
   border: 1px solid #e7e7e7;
   border-radius: 16px;
   padding: 20px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.transactions-cards > * {
+  min-width: 0;
 }
 
 .chart-card-header {
@@ -1064,29 +1078,96 @@
   .transactions-cards {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .transactions-filters {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .transactions-filters {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
-  .transactions-content {
-    margin-left: 0;
-  }
-
   .transactions-cards {
     grid-template-columns: 1fr;
+    padding-left: 4px;
+    padding-right: 4px;
   }
 
   .transactions-title-section {
     flex-direction: column;
-    gap: 16px;
+    align-items: flex-start !important;
+    gap: 12px;
   }
 
-  .transactions-header {
+  .transactions-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .transactions-actions .btn-primary,
+  .transactions-actions .btn-secondary {
+    flex: 1;
+  }
+
+  .transactions-header,
+  .transactions-table-header {
     flex-direction: column;
     gap: 16px;
     align-items: flex-start;
   }
 
+  .transactions-table-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .transactions-filters {
+    grid-template-columns: 1fr;
+  }
+
   .search-input {
     width: 100%;
+  }
+
+  .chart-card {
+    padding: 16px;
+  }
+
+  .chart-card-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .transactions-content {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .transactions-cards {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .chart-card {
+    padding: 14px 10px;
+  }
+
+  .chart-card-title {
+    font-size: 15px;
+  }
+
+  .volume-bar-chart .recharts-cartesian-axis-tick text {
+    font-size: 10px;
+  }
+
+  .bar-legend {
+    flex-wrap: wrap;
+    gap: 8px;
   }
 }
