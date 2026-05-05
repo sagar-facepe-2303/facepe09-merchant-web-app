@@ -1,5 +1,24 @@
 import { useState } from 'react'
 import { jsPDF } from 'jspdf'
+import facePeLogo from '../../assets/FacePe Logo SVG.svg'
+
+// Convert an SVG URL to a PNG data URL for embedding in jsPDF
+const svgUrlToPng = (url, width, height) =>
+  new Promise((resolve, reject) => {
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+    img.onload = () => {
+      const scale = 3 // higher resolution for crisp print
+      const canvas = document.createElement('canvas')
+      canvas.width = width * scale
+      canvas.height = height * scale
+      const ctx = canvas.getContext('2d')
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+      resolve(canvas.toDataURL('image/png'))
+    }
+    img.onerror = reject
+    img.src = url
+  })
 
 function TransactionDrawer({ isOpen, onClose, transaction }) {
   const [isCopied, setIsCopied] = useState(false)
@@ -12,27 +31,47 @@ function TransactionDrawer({ isOpen, onClose, transaction }) {
     setTimeout(() => setIsCopied(false), 2000)
   }
 
-  const handleDownloadPDF = () => {
+  const handleDownloadPDF = async () => {
     const doc = new jsPDF({ unit: 'pt', format: 'a4' })
     const pageWidth = doc.internal.pageSize.getWidth()
     const margin = 40
     let y = margin
 
-    // Brand header bar
-    doc.setFillColor(80, 0, 234)
-    doc.rect(0, 0, pageWidth, 70, 'F')
-    doc.setTextColor(255, 255, 255)
-    doc.setFont('helvetica', 'bold')
-    doc.setFontSize(20)
-    doc.text('FacePe', margin, 32)
-    doc.setFont('helvetica', 'normal')
-    doc.setFontSize(10)
-    doc.text('Transaction Receipt', margin, 50)
+    // Brand header bar (light background so the purple logo is clearly visible)
+    const headerHeight = 80
+    doc.setFillColor(245, 243, 255)
+    doc.rect(0, 0, pageWidth, headerHeight, 'F')
+    // Thin accent line at the bottom of the header
+    doc.setDrawColor(80, 0, 234)
+    doc.setLineWidth(2)
+    doc.line(0, headerHeight, pageWidth, headerHeight)
+    doc.setLineWidth(1)
 
-    // Generated date (right-aligned in header)
+    // FacePe logo (left side of header)
+    const logoSize = 40
+    const logoX = margin
+    const logoY = (headerHeight - logoSize) / 2
+    try {
+      const logoDataUrl = await svgUrlToPng(facePeLogo, logoSize, logoSize)
+      doc.addImage(logoDataUrl, 'PNG', logoX, logoY, logoSize, logoSize)
+    } catch (err) {
+      console.warn('Failed to embed logo in PDF:', err)
+    }
+
+    // "Transaction Receipt" title vertically centered next to the logo
+    const textX = logoX + logoSize + 14
+    const textBaselineY = headerHeight / 2 + 6 // vertical optical center for the font size
+    doc.setTextColor(16, 8, 36)
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(18)
+    doc.text('Transaction Receipt', textX, textBaselineY)
+
+    // Generated date (right-aligned, vertically centered)
     const generatedAt = new Date().toLocaleString()
+    doc.setTextColor(108, 109, 123)
+    doc.setFont('helvetica', 'normal')
     doc.setFontSize(9)
-    doc.text(`Generated: ${generatedAt}`, pageWidth - margin, 50, { align: 'right' })
+    doc.text(`Generated: ${generatedAt}`, pageWidth - margin, textBaselineY, { align: 'right' })
 
     y = 110
 
