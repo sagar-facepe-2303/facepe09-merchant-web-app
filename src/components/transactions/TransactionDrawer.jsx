@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { jsPDF } from 'jspdf'
 
 function TransactionDrawer({ isOpen, onClose, transaction }) {
   const [isCopied, setIsCopied] = useState(false)
@@ -12,8 +13,150 @@ function TransactionDrawer({ isOpen, onClose, transaction }) {
   }
 
   const handleDownloadPDF = () => {
-    // PDF generation temporarily disabled - will be re-enabled after fixing jsPDF import
-    alert('PDF download feature coming soon!')
+    const doc = new jsPDF({ unit: 'pt', format: 'a4' })
+    const pageWidth = doc.internal.pageSize.getWidth()
+    const margin = 40
+    let y = margin
+
+    // Brand header bar
+    doc.setFillColor(80, 0, 234)
+    doc.rect(0, 0, pageWidth, 70, 'F')
+    doc.setTextColor(255, 255, 255)
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(20)
+    doc.text('FacePe', margin, 32)
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(10)
+    doc.text('Transaction Receipt', margin, 50)
+
+    // Generated date (right-aligned in header)
+    const generatedAt = new Date().toLocaleString()
+    doc.setFontSize(9)
+    doc.text(`Generated: ${generatedAt}`, pageWidth - margin, 50, { align: 'right' })
+
+    y = 110
+
+    // Transaction ID block
+    doc.setTextColor(140, 147, 161)
+    doc.setFontSize(10)
+    doc.text('TRANSACTION ID', margin, y)
+    y += 16
+    doc.setTextColor(16, 8, 36)
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(16)
+    doc.text(String(transaction.id || ''), margin, y)
+    y += 30
+
+    // Amount + status summary card
+    doc.setDrawColor(231, 231, 231)
+    doc.setFillColor(249, 250, 251)
+    doc.roundedRect(margin, y, pageWidth - margin * 2, 80, 8, 8, 'FD')
+
+    doc.setTextColor(140, 147, 161)
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(10)
+    doc.text('AMOUNT', margin + 16, y + 22)
+    doc.setTextColor(16, 8, 36)
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(22)
+    doc.text(String(transaction.amount || ''), margin + 16, y + 50)
+
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(10)
+    doc.setTextColor(140, 147, 161)
+    doc.text('DATE / TIME', margin + 16, y + 68)
+    doc.setTextColor(16, 8, 36)
+    doc.setFontSize(10)
+    doc.text(String(transaction.datetime || ''), margin + 80, y + 68)
+
+    // Status pill (right side of card)
+    const status = String(transaction.status || '')
+    const statusColors = {
+      Successful: { bg: [232, 245, 233], fg: [22, 163, 74] },
+      Pending:   { bg: [255, 244, 214], fg: [217, 119, 6] },
+      Failed:    { bg: [254, 226, 226], fg: [220, 38, 38] },
+    }
+    const sc = statusColors[status] || { bg: [243, 244, 246], fg: [55, 65, 81] }
+    const pillW = 80
+    const pillH = 26
+    const pillX = pageWidth - margin - 16 - pillW
+    const pillY = y + 24
+    doc.setFillColor(...sc.bg)
+    doc.roundedRect(pillX, pillY, pillW, pillH, 13, 13, 'F')
+    doc.setTextColor(...sc.fg)
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(11)
+    doc.text(status, pillX + pillW / 2, pillY + 17, { align: 'center' })
+
+    y += 100
+
+    // Details
+    doc.setTextColor(16, 8, 36)
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(13)
+    doc.text('More Details', margin, y)
+    y += 18
+
+    const details = [
+      ['Processor Name', transaction.processor],
+      ['Processor ID', transaction.processorId || 'N/A'],
+      ['Currency Type', transaction.currency || 'USD'],
+      ['Kiosk Name', transaction.kiosk],
+      ['Device ID', transaction.deviceId || 'N/A'],
+      ['Face ID', transaction.faceId || 'N/A'],
+      ['Email ID', transaction.email || 'N/A'],
+    ]
+
+    doc.setFontSize(10)
+    details.forEach(([label, value]) => {
+      doc.setTextColor(140, 147, 161)
+      doc.setFont('helvetica', 'normal')
+      doc.text(String(label), margin, y)
+      doc.setTextColor(16, 8, 36)
+      doc.setFont('helvetica', 'bold')
+      doc.text(String(value ?? 'N/A'), pageWidth - margin, y, { align: 'right' })
+      y += 18
+      doc.setDrawColor(240, 240, 240)
+      doc.line(margin, y - 6, pageWidth - margin, y - 6)
+    })
+
+    y += 16
+
+    // Timeline
+    if (Array.isArray(transaction.timeline) && transaction.timeline.length) {
+      doc.setTextColor(16, 8, 36)
+      doc.setFont('helvetica', 'bold')
+      doc.setFontSize(13)
+      doc.text('Timeline', margin, y)
+      y += 18
+
+      doc.setFontSize(10)
+      transaction.timeline.forEach((item) => {
+        // Bullet
+        doc.setFillColor(80, 0, 234)
+        doc.circle(margin + 4, y - 3, 3, 'F')
+        doc.setTextColor(16, 8, 36)
+        doc.setFont('helvetica', 'bold')
+        doc.text(String(item.status || ''), margin + 16, y)
+        doc.setTextColor(140, 147, 161)
+        doc.setFont('helvetica', 'normal')
+        doc.text(String(item.time || ''), pageWidth - margin, y, { align: 'right' })
+        y += 18
+      })
+    }
+
+    // Footer
+    const footerY = doc.internal.pageSize.getHeight() - 30
+    doc.setDrawColor(231, 231, 231)
+    doc.line(margin, footerY - 12, pageWidth - margin, footerY - 12)
+    doc.setTextColor(140, 147, 161)
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(9)
+    doc.text('This is a system-generated receipt from FacePe.', margin, footerY)
+    doc.text('support@facepe.com', pageWidth - margin, footerY, { align: 'right' })
+
+    const safeId = String(transaction.id || 'transaction').replace(/[^a-zA-Z0-9-_]/g, '')
+    doc.save(`FacePe-Receipt-${safeId}.pdf`)
   }
 
   return (
