@@ -3,6 +3,7 @@ import Sidebar from '../components/layout/Sidebar/Sidebar'
 import DashboardHeader from '../components/layout/DashboardHeader/DashboardHeader'
 import MerchantProfileForm from '../components/settings/MerchantProfileForm'
 import SecurityPanel from '../components/settings/SecurityPanel'
+import NotificationPreferencesPanel from '../components/settings/NotificationPreferencesPanel'
 import './transactions.css'
 import '../components/settings/settings.css'
 
@@ -48,9 +49,7 @@ function SettingsPage() {
 
           {activeTab === 'profile' && <MerchantProfileForm />}
           {activeTab === 'security' && <SecurityPanel />}
-          {activeTab === 'notifications' && (
-            <div className="settings-placeholder-panel">Notification preferences coming soon.</div>
-          )}
+          {activeTab === 'notifications' && <NotificationPreferencesPanel />}
         </div>
       </div>
     </div>

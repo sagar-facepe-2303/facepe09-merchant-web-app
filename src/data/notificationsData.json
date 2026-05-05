@@ -1,0 +1,41 @@
+{
+  "status": "success",
+  "settings": {
+    "email": "admin@walmart.com",
+    "phone": "+1(555)900-1000",
+    "quietHoursStart": "10:00 AM",
+    "quietHoursEnd": "10:00 AM"
+  },
+  "groups": [
+    {
+      "id": "transaction",
+      "title": "Transaction Alerts",
+      "events": [
+        { "id": "txn-success", "label": "Transaction Successful", "email": false, "sms": true, "inApp": true },
+        { "id": "txn-failed", "label": "Transaction Failed", "email": false, "sms": true, "inApp": true },
+        { "id": "txn-high", "label": "High-Value Transaction (>$500)", "email": false, "sms": true, "inApp": true },
+        { "id": "txn-cancelled", "label": "Transaction Cancelled", "email": false, "sms": true, "inApp": true }
+      ]
+    },
+    {
+      "id": "system",
+      "title": "System Alerts",
+      "events": [
+        { "id": "kiosk-offline", "label": "Kiosk Goes Offline", "email": false, "sms": true, "inApp": true },
+        { "id": "kiosk-online", "label": "Kiosk Comes Back Online", "email": false, "sms": true, "inApp": true },
+        { "id": "processor-issue", "label": "Processor Connection Issue", "email": false, "sms": true, "inApp": true },
+        { "id": "system-updates", "label": "System Updates Available", "email": false, "sms": true, "inApp": true }
+      ]
+    },
+    {
+      "id": "reports",
+      "title": "Reports",
+      "events": [
+        { "id": "rep-offline", "label": "Kiosk Goes Offline", "email": false, "sms": true, "inApp": true },
+        { "id": "rep-online", "label": "Kiosk Comes Back Online", "email": false, "sms": true, "inApp": true },
+        { "id": "rep-processor", "label": "Processor Connection Issue", "email": false, "sms": true, "inApp": true },
+        { "id": "rep-updates", "label": "System Updates Available", "email": false, "sms": true, "inApp": true }
+      ]
+    }
+  ]
+}
