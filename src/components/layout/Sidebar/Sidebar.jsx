@@ -127,15 +127,17 @@ function Sidebar({ onToggle }) {
 
   return (
     <>
-      <button
-        type="button"
-        className="sidebar-mobile-toggle"
-        aria-label={isMobileOpen ? 'Close navigation' : 'Open navigation'}
-        aria-expanded={isMobileOpen}
-        onClick={isMobileOpen ? closeMobile : openMobile}
-      >
-        {isMobileOpen ? closeIcon : hamburgerIcon}
-      </button>
+      {!isMobileOpen && (
+        <button
+          type="button"
+          className="sidebar-mobile-toggle"
+          aria-label="Open navigation"
+          aria-expanded={isMobileOpen}
+          onClick={openMobile}
+        >
+          {hamburgerIcon}
+        </button>
+      )}
 
       {isMobileOpen && <div className="sidebar-backdrop" onClick={closeMobile} />}
 
@@ -155,6 +157,14 @@ function Sidebar({ onToggle }) {
         </div>
         <button className="sidebar-toggle" onClick={handleToggle} aria-label="Toggle sidebar">
           {menuToggleIcon}
+        </button>
+        <button
+          type="button"
+          className="sidebar-close-inline"
+          onClick={closeMobile}
+          aria-label="Close navigation"
+        >
+          {closeIcon}
         </button>
       </div>
 

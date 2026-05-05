@@ -339,10 +339,35 @@
   }
 }
 
+/* Inline close button (inside sidebar header) - hidden by default */
+.sidebar-close-inline {
+  display: none;
+  border: none;
+  background: transparent;
+  padding: 6px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  flex-shrink: 0;
+  margin-left: auto;
+  transition: background 0.2s ease;
+}
+
+.sidebar-close-inline:hover {
+  background: #f3f4f6;
+}
+
 /* Mobile (<=768px): off-canvas drawer */
 @media (max-width: 768px) {
   .sidebar-mobile-toggle {
     display: inline-flex;
+  }
+
+  /* Hide the external hamburger while the drawer is open (close button lives inside) */
+  .sidebar.mobile-open ~ .sidebar-mobile-toggle,
+  body:has(.sidebar.mobile-open) .sidebar-mobile-toggle {
+    display: none;
   }
 
   .sidebar {
@@ -380,5 +405,10 @@
   /* Hide the internal collapse toggle on mobile */
   .sidebar .sidebar-toggle {
     display: none;
+  }
+
+  /* Show the inline close button inside the header when drawer is open */
+  .sidebar.mobile-open .sidebar-close-inline {
+    display: inline-flex;
   }
 }
