@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Sidebar from '../components/layout/Sidebar/Sidebar'
 import DashboardHeader from '../components/layout/DashboardHeader/DashboardHeader'
 import MerchantProfileForm from '../components/settings/MerchantProfileForm'
+import SecurityPanel from '../components/settings/SecurityPanel'
 import './transactions.css'
 import '../components/settings/settings.css'
 
@@ -46,9 +47,7 @@ function SettingsPage() {
           </div>
 
           {activeTab === 'profile' && <MerchantProfileForm />}
-          {activeTab === 'security' && (
-            <div className="settings-placeholder-panel">Security settings coming soon.</div>
-          )}
+          {activeTab === 'security' && <SecurityPanel />}
           {activeTab === 'notifications' && (
             <div className="settings-placeholder-panel">Notification preferences coming soon.</div>
           )}

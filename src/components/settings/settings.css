@@ -15,7 +15,7 @@
 
 .settings-subtitle {
   margin: 4px 0 0;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   font-size: 12px;
   font-weight: 400;
   color: #767676;
@@ -37,7 +37,7 @@
   background: transparent;
   border: none;
   padding: 12px 0;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   font-size: 14px;
   font-weight: 500;
   color: #767676;
@@ -82,7 +82,7 @@
 
 .profile-image-title {
   margin: 0 0 16px;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   font-size: 13px;
   font-weight: 500;
   color: #374151;
@@ -135,7 +135,7 @@
   background: #F5F5F5;
   border: 1px solid #E5E5E5;
   border-radius: 4px;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   font-size: 13px;
   font-weight: 500;
   color: #374151;
@@ -178,7 +178,7 @@
 }
 
 .form-label {
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   font-size: 12px;
   font-weight: 400;
   color: #767676;
@@ -197,7 +197,7 @@
   background: #FFFFFF;
   border: 1px solid #E5E5E5;
   border-radius: 6px;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   font-size: 13px;
   color: #1A1C29;
   outline: none;
@@ -210,7 +210,7 @@
 }
 
 .form-hint {
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   font-size: 11px;
   color: #9CA3AF;
 }
@@ -262,23 +262,405 @@
 .update-details-btn {
   padding: 9px 20px;
   border-radius: 4px;
-background: linear-gradient(90deg, #9C6CFE 0.01%, #5000EA 98%);
+  background: linear-gradient(90deg, #9C6CFE 0.01%, #5000EA 98%);
   color: #FFFFFF;
   border: none;
   cursor: pointer;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
   color: #FFF;
-text-align: center;
-font-family: Satoshi;
-font-size: 14px;
-font-style: normal;
-font-weight: 500;
-line-height: normal;
+  text-align: center;
+  font-family: Satoshi;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 
 .update-details-btn:hover {
   box-shadow: 0 6px 16px rgba(73, 10, 223, 0.3);
   transform: translateY(-1px);
+}
+
+/* ==== Security Panel ==== */
+.security-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-left: 20px;
+}
+
+.security-card {
+  background: #FFFFFF;
+  border: 1px solid #E5E5E5;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgba(26, 24, 48, 0.04);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.security-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.security-card-header.with-toggle {
+  justify-content: space-between;
+}
+
+.security-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.security-card-title {
+  margin: 0;
+  color: #1A1830;
+  font-family: Satoshi;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 21px;
+}
+
+/* Change password grid */
+.security-password-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 24px;
+}
+
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper .form-input {
+  padding-right: 36px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.security-card-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-self: stretch;
+}
+
+.update-password-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border: none;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #9C6CFE 0.01%, #5000EA 98%);
+  color: #FFF;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.update-password-btn:hover {
+  box-shadow: 0 6px 16px rgba(73, 10, 223, 0.25);
+  transform: translateY(-1px);
+}
+
+/* Two-factor toggle */
+.tfa-toggle {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  background: #E5E5E5;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  padding: 0;
+}
+
+.tfa-toggle.on {
+  background: linear-gradient(90deg, #9C6CFE 0%, #5000EA 100%);
+}
+
+.tfa-toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  transition: left 0.2s ease;
+}
+
+.tfa-toggle.on .tfa-toggle-thumb {
+  left: 21px;
+}
+
+/* Two-factor body */
+.tfa-body {
+  background: #F5F3FF;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tfa-body-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tfa-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: #FFFFFF;
+  border: 1px solid #E5E5E5;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+
+  color: #1A1830;
+  text-align: center;
+  font-family: Satoshi;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 19.5px;
+}
+
+.tfa-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tfa-secondary-btn,
+.tfa-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.tfa-secondary-btn {
+  background: #FFFFFF;
+  border: 1px solid #E5E5E5;
+  color: #374151;
+}
+
+.tfa-secondary-btn:hover {
+  background: #F9FAFB;
+}
+
+.tfa-primary-btn {
+  background: #1A1830;
+  border: none;
+  color: #FFFFFF;
+}
+
+.tfa-primary-btn:hover {
+  background: #2A284A;
+}
+
+.tfa-content {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.tfa-qr-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-width: 280px;
+}
+
+.tfa-qr-box {
+  width: 108px;
+  height: 108px;
+  background: #FFFFFF;
+  border: 1px solid #E5E5E5;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  flex-shrink: 0;
+}
+
+.tfa-qr-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.tfa-qr-title {
+  margin: 0 0 4px;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1A1830;
+}
+
+.tfa-qr-subtitle {
+  margin: 0;
+  font-family: Satoshi;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.tfa-backup-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(110px, 1fr));
+  gap: 8px;
+  flex: 1;
+  min-width: 360px;
+}
+
+.tfa-backup-code {
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border: 1px solid #E5E5E5;
+  border-radius: 6px;
+  font-family: Satoshi;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1A1830;
+  letter-spacing: 0.5px;
+}
+
+/* Sessions */
+.sessions-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.session-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 4px;
+  border-bottom: 1px solid #F0F0F0;
+}
+
+.session-item:last-child {
+  border-bottom: none;
+}
+
+.session-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: #F5F5F5;
+  flex-shrink: 0;
+}
+
+.session-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.session-device {
+  font-family: Satoshi;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1A1830;
+}
+
+.session-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: Satoshi;
+  font-size: 12px;
+  color: #9CA3AF;
+}
+
+.session-meta-sep {
+  margin: 0 2px;
+}
+
+.session-meta-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.session-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-family: Satoshi;
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  cursor: default;
+}
+
+.session-badge.current {
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+
+.session-badge.revoke {
+  background: #FEE2E2;
+  color: #DC2626;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.session-badge.revoke:hover {
+  background: #FECACA;
 }
 
 /* Placeholder panels */
@@ -288,7 +670,7 @@ line-height: normal;
   border: 1px solid #E5E5E5;
   border-radius: 12px;
   text-align: center;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   font-size: 14px;
   color: #767676;
 }

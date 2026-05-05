@@ -1,0 +1,45 @@
+{
+  "status": "success",
+  "twoFactor": {
+    "enabled": true,
+    "qrValue": "otpauth://totp/Facepe:admin@walmart.com?secret=JBSWY3DPEHPK3PXP&issuer=Facepe",
+    "backupCodes": [
+      "A1B2-C3D4",
+      "A1B2-C3D4",
+      "A1B2-C3D4",
+      "A1B2-C3D4",
+      "A1B2-C3D4",
+      "A1B2-C3D4"
+    ]
+  },
+  "activeSessions": [
+    {
+      "id": "s1",
+      "device": "Chrome • macOS 14",
+      "lastActive": "Just now",
+      "location": "Bangalore",
+      "current": true
+    },
+    {
+      "id": "s2",
+      "device": "Safari • iPhone 15 Pro",
+      "lastActive": "2 hours ago",
+      "location": "Bangalore",
+      "current": false
+    },
+    {
+      "id": "s3",
+      "device": "Firefox • Windows 11",
+      "lastActive": "Yesterday 19:48",
+      "location": "Bangalore",
+      "current": false
+    },
+    {
+      "id": "s4",
+      "device": "Chrome • iPad Air",
+      "lastActive": "3 days ago",
+      "location": "Bangalore",
+      "current": false
+    }
+  ]
+}

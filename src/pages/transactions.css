@@ -52,7 +52,7 @@
   border: 1px solid #e7e7e7;
   border-radius: 8px;
   font-size: 14px;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   color: #100824;
   width: 240px;
   outline: none;
@@ -101,7 +101,7 @@
   color: #ffffff;
   font-size: 12px;
   font-weight: 600;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
 }
 
 /* Breadcrumb */
@@ -114,7 +114,7 @@
 .breadcrumb-item {
   font-size: 14px;
   color: #8c93a1;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -177,7 +177,7 @@
   border: 1px solid #e7e7e7;
   background: #ffffff;
   border-radius: 4px;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   cursor: pointer;
   transition: all 0.2s ease;
 
@@ -204,7 +204,7 @@
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   color: #ffffff;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -255,7 +255,7 @@
   margin: 0;
   font-size: 13px;
   color: #8c93a1;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
 }
 
 .chart-dropdown {
@@ -263,7 +263,7 @@
   border: 1px solid #e7e7e7;
   border-radius: 6px;
   font-size: 13px;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   color: #100824;
   background: #ffffff;
   cursor: pointer;
@@ -299,7 +299,7 @@
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 11px;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   text-align: center;
 }
 
@@ -313,7 +313,7 @@
 .chart-x-axis span {
   font-size: 12px;
   color: #8c93a1;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
 }
 
 /* Donut Chart */
@@ -361,7 +361,7 @@
 .donut-label {
   font-size: 12px;
   color: #8c93a1;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
 }
 
 .donut-legend {
@@ -409,7 +409,7 @@
 .legend-label {
   font-size: 12px;
   color: #6a7282;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
 }
 
 /* Bar Chart */
@@ -441,7 +441,7 @@
   border-radius: 12px;
   font-size: 12px;
   font-weight: 500;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
 }
 
 .status-badge-success {
@@ -493,7 +493,7 @@
   margin: 0;
   font-size: 13px;
   color: #6B7280;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
 }
 
 .transactions-table-actions {
@@ -512,7 +512,7 @@
   gap: 6px;
   transition: all 0.2s ease;
   font-size: 13px;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   color: #1A1C29;
 }
 
@@ -546,7 +546,7 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: #6B7280;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
 }
 
 .filter-input {
@@ -555,7 +555,7 @@
   border: 1px solid #e7e7e7;
   border-radius: 8px;
   font-size: 14px;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   color: #1A1C29;
   background: #ffffff;
   outline: none;
@@ -581,7 +581,7 @@
   left: 12px;
   color: #6B7280;
   font-size: 14px;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
 }
 
 .filter-input-with-prefix .filter-input {
@@ -607,7 +607,7 @@
   font-size: 12px;
   font-weight: 600;
   color: #8c93a1;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -630,7 +630,7 @@
   padding: 12px 16px;
   font-size: 14px;
   color: #100824;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
 }
 
 .table-id {
@@ -653,7 +653,7 @@
 .transactions-table-info {
   font-size: 13px;
   color: #6B7280;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
 }
 
 .transactions-table-pagination {
@@ -670,7 +670,7 @@
   border-radius: 6px;
   font-size: 14px;
   font-weight: 500;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   color: #1A1C29;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -771,7 +771,7 @@
 .drawer-id {
   font-size: 14px;
   color: #6B7280;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   font-weight: 500;
 }
 
@@ -835,7 +835,7 @@
 .summary-datetime {
   font-size: 14px;
   color: #6B7280;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   line-height: normal;
 }
 
@@ -850,7 +850,7 @@
   border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   background: #E8F5E9;
   color: #2E7D32;
 }
@@ -911,7 +911,7 @@
   font-size: 11px;
   color: #6B7280;
   font-weight: 500;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   line-height: normal;
 }
 
@@ -919,7 +919,7 @@
   font-size: 13px;
   color: #1A1C29;
   font-weight: 500;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   line-height: normal;
 }
 
@@ -985,14 +985,14 @@
   font-size: 13px;
   font-weight: 500;
   color: #1A1C29;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   line-height: normal;
 }
 
 .timeline-time {
   font-size: 13px;
   color: #6B7280;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   line-height: normal;
 }
 
@@ -1012,7 +1012,7 @@
   border-radius: 4px;
   font-size: 14px;
   font-weight: 600;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   cursor: pointer;
   display: flex;
   align-items: center;

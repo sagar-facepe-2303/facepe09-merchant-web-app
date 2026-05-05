@@ -19,7 +19,7 @@
 .breadcrumb-item {
   font-size: 14px;
   color: #8c93a1;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -58,7 +58,7 @@
   border: 1px solid #e7e7e7;
   border-radius: 8px;
   font-size: 14px;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   color: #100824;
   width: 240px;
   outline: none;
@@ -109,7 +109,7 @@
   color: #ffffff;
   font-size: 12px;
   font-weight: 600;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
 }
 
 /* Responsive */

@@ -45,7 +45,7 @@
   border-radius: 4px;
   background: #F8F8FB;
   font-size: 12px;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
   color: #100824;
   cursor: pointer;
   outline: none;
@@ -99,7 +99,7 @@
 .status-breakdown-stat-text {
   font-size: 14px;
   color: #6B7280;
-  font-family: 'Inter', sans-serif;
+  font-family: Satoshi;
 }
 
 /* Chart Wrapper */
