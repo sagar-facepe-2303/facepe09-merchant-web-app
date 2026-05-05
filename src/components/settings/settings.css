@@ -795,6 +795,91 @@
   border-color: #5000EA;
 }
 
+/* ==== Responsive ==== */
+@media (max-width: 768px) {
+  .settings-header,
+  .settings-tabs,
+  .security-panel,
+  .notifications-panel {
+    margin-left: 0;
+  }
+
+  .settings-tabs {
+    gap: 16px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .settings-tab {
+    white-space: nowrap;
+    font-size: 13px;
+  }
+
+  .merchant-profile-card {
+    padding: 20px 16px;
+  }
+
+  .settings-form-grid,
+  .security-password-grid,
+  .notif-settings-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .profile-image-row {
+    flex-wrap: wrap;
+  }
+
+  .security-card {
+    padding: 18px 16px;
+  }
+
+  .tfa-body-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tfa-header-actions {
+    flex-wrap: wrap;
+  }
+
+  .tfa-content {
+    flex-direction: column;
+  }
+
+  .tfa-qr-section,
+  .tfa-backup-grid {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .tfa-backup-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .session-item {
+    flex-wrap: wrap;
+  }
+
+  .notif-table-head,
+  .notif-table-row {
+    grid-template-columns: 1.4fr 70px 70px 70px;
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .notif-col-event {
+    word-break: break-word;
+  }
+}
+
+@media (max-width: 480px) {
+  .tfa-backup-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Placeholder panels */
 .settings-placeholder-panel {
   padding: 40px 28px;

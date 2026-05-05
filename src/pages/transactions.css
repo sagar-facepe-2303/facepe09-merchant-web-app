@@ -26,6 +26,26 @@
   margin-left: 80px;
 }
 
+/* Responsive sidebar offsets */
+@media (max-width: 1024px) {
+  .transactions-content {
+    margin-left: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  .transactions-content {
+    margin-left: 0;
+    padding-top: 64px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .transaction-main {
+    border-radius: 12px;
+  }
+}
+
 /* Header */
 .transactions-header {
   display: flex;

@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 function Sidebar({ onToggle }) {
   const location = useLocation()
   const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isMobileOpen, setIsMobileOpen] = useState(false)
 
   const isActive = (path) => location.pathname === path
 
@@ -13,6 +14,25 @@ function Sidebar({ onToggle }) {
       onToggle(!isCollapsed)
     }
   }
+
+  const openMobile = () => setIsMobileOpen(true)
+  const closeMobile = () => setIsMobileOpen(false)
+
+  // Auto close the mobile drawer on route change
+  useEffect(() => {
+    setIsMobileOpen(false)
+  }, [location.pathname])
+
+  // Lock body scroll while mobile drawer is open
+  useEffect(() => {
+    if (isMobileOpen) {
+      const prev = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+      return () => {
+        document.body.style.overflow = prev
+      }
+    }
+  }, [isMobileOpen])
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: '📊', path: '/dashboard' },
@@ -93,8 +113,33 @@ function Sidebar({ onToggle }) {
     </svg>
   )
 
+  const hamburgerIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none">
+      <path d="M4 7h16M4 12h16M4 17h16" stroke="#1A1830" strokeWidth="1.8" strokeLinecap="round"/>
+    </svg>
+  )
+
+  const closeIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none">
+      <path d="M6 6l12 12M18 6l-12 12" stroke="#1A1830" strokeWidth="1.8" strokeLinecap="round"/>
+    </svg>
+  )
+
   return (
-    <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+    <>
+      <button
+        type="button"
+        className="sidebar-mobile-toggle"
+        aria-label={isMobileOpen ? 'Close navigation' : 'Open navigation'}
+        aria-expanded={isMobileOpen}
+        onClick={isMobileOpen ? closeMobile : openMobile}
+      >
+        {isMobileOpen ? closeIcon : hamburgerIcon}
+      </button>
+
+      {isMobileOpen && <div className="sidebar-backdrop" onClick={closeMobile} />}
+
+      <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''} ${isMobileOpen ? 'mobile-open' : ''}`}>
       {/* Header */}
       <div className="sidebar-header">
         <div className="sidebar-logo-section">
@@ -182,7 +227,8 @@ function Sidebar({ onToggle }) {
           </div>
         )}
       </div>
-    </aside>
+      </aside>
+    </>
   )
 }
 
