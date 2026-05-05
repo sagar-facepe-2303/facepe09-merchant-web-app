@@ -1,6 +1,12 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function DashboardHeader({ currentPage, currentPagePath, userName = 'AD' }) {
+  const navigate = useNavigate()
+
+  const handleNotificationsClick = () => {
+    navigate('/dashboard/settings', { state: { tab: 'notifications' } })
+  }
+
   return (
     <header className="dashboard-header">
       <nav className="dashboard-breadcrumb" aria-label="Breadcrumb">
@@ -18,7 +24,7 @@ function DashboardHeader({ currentPage, currentPagePath, userName = 'AD' }) {
           </svg>
         </div>
 
-        <button className="notification-btn" aria-label="Notifications">
+        <button className="notification-btn" aria-label="Notifications" onClick={handleNotificationsClick}>
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
             <path d="M7.70047 15.75C7.96843 16.2141 8.4636 16.4999 8.99947 16.4999C9.53534 16.4999 10.0305 16.2141 10.2985 15.75M2.44597 11.4945C2.24578 11.7139 2.19393 12.0308 2.31375 12.3025C2.43356 12.5743 2.70246 12.7498 2.99947 12.75H14.9995C15.2964 12.7501 15.5655 12.575 15.6856 12.3034C15.8058 12.0318 15.7543 11.7149 15.5545 11.4952C14.557 10.467 13.4995 9.37425 13.4995 6C13.4995 3.51638 11.4831 1.5 8.99947 1.5C6.51585 1.5 4.49947 3.51638 4.49947 6C4.49947 9.37425 3.44122 10.467 2.44597 11.4945" stroke="#374151" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>

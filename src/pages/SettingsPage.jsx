@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import Sidebar from '../components/layout/Sidebar/Sidebar'
 import DashboardHeader from '../components/layout/DashboardHeader/DashboardHeader'
 import MerchantProfileForm from '../components/settings/MerchantProfileForm'
@@ -14,8 +15,15 @@ const TABS = [
 ]
 
 function SettingsPage() {
+  const location = useLocation()
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
-  const [activeTab, setActiveTab] = useState('profile')
+  const [activeTab, setActiveTab] = useState(location.state?.tab || 'profile')
+
+  useEffect(() => {
+    if (location.state?.tab) {
+      setActiveTab(location.state.tab)
+    }
+  }, [location.state])
 
   const handleSidebarToggle = (collapsed) => {
     setIsSidebarCollapsed(collapsed)
