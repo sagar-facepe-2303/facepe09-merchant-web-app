@@ -37,6 +37,9 @@ const transactionsSlice = createSlice({
       state.limit = action.payload || 10
       state.page = 1
     },
+    clearError(state) {
+      state.error = null
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -58,5 +61,5 @@ const transactionsSlice = createSlice({
   },
 })
 
-export const { setStatusFilter, setPage, setLimit } = transactionsSlice.actions
+export const { setStatusFilter, setPage, setLimit, clearError } = transactionsSlice.actions
 export default transactionsSlice.reducer

@@ -1,29 +1,27 @@
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import ChartCard from './ChartCard'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart, ReferenceLine } from 'recharts'
+import { fetchTransactionsThunk } from '../../features/transactions/transactionsSlice'
 import revenueResponse from '../../data/revenueData.json'
 
 function RevenueChart() {
+  const dispatch = useDispatch()
   const [period, setPeriod] = useState('week')
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
+  const { items: transactions } = useSelector((s) => s.transactions)
 
   useEffect(() => {
-    // Simulate API call - replace with real fetch when backend is ready
-    // e.g. fetch(`/api/revenue?period=${period}`).then(r => r.json()).then(...)
-    const fetchRevenue = async () => {
+    // Compute revenue trend from transaction list
+    if (transactions && transactions.length > 0) {
       setLoading(true)
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 300))
-        setData(revenueResponse[period].data)
-      } catch (err) {
-        console.error('Failed to load revenue data:', err)
-      } finally {
-        setLoading(false)
-      }
+      // For now, use mock data - replace with real computation when backend provides sufficient data
+      const periodData = revenueResponse[period]
+      setData(periodData.data)
+      setLoading(false)
     }
-    fetchRevenue()
-  }, [period])
+  }, [transactions, period])
 
   const weekDropdown = (
     <select
@@ -38,8 +36,8 @@ function RevenueChart() {
   )
 
   return (
-    <ChartCard 
-      title="Revenue Trend" 
+    <ChartCard
+      title="Revenue Trend"
       subtitle="67% increased this week"
       rightAction={weekDropdown}
     >
@@ -52,29 +50,29 @@ function RevenueChart() {
                 <stop offset="100%" stopColor="#9C6CFE" stopOpacity="0"/>
               </linearGradient>
             </defs>
-            <CartesianGrid 
-              horizontal={true} 
-              vertical={false} 
-              stroke="#E7E7E7" 
+            <CartesianGrid
+              horizontal={true}
+              vertical={false}
+              stroke="#E7E7E7"
               strokeWidth={1}
               strokeDasharray="0"
             />
-            <XAxis 
-              dataKey="name" 
+            <XAxis
+              dataKey="name"
               axisLine={false}
               tickLine={false}
               tick={{ fontSize: 12, fill: '#8C93A1', fontFamily: 'Inter, sans-serif' }}
               dy={5}
               interval={0}
             />
-            <YAxis 
+            <YAxis
               hide={true}
               domain={[0, 1100]}
             />
-            <Tooltip 
-              contentStyle={{ 
-                backgroundColor: '#100824', 
-                border: 'none', 
+            <Tooltip
+              contentStyle={{
+                backgroundColor: '#100824',
+                border: 'none',
                 borderRadius: '4px',
                 fontSize: '11px',
                 fontFamily: 'Inter, sans-serif',
@@ -83,10 +81,10 @@ function RevenueChart() {
               }}
               formatter={(value) => `$${value}`}
             />
-            <Area 
-              type="monotone" 
-              dataKey="value" 
-              stroke="#9C6CFE" 
+            <Area
+              type="monotone"
+              dataKey="value"
+              stroke="#9C6CFE"
               strokeWidth={2.5}
               fill="url(#revenueGradient)"
               dot={false}

@@ -6,6 +6,12 @@ export const transactionService = {
    * @param {'all'|'pending'|'completed'|'failed'} [params.status_filter]
    * @param {number} [params.page]
    * @param {number} [params.limit]
+   * @param {string} [params.date_from] - ISO date string
+   * @param {string} [params.date_to] - ISO date string
+   * @param {number} [params.amount_min]
+   * @param {number} [params.amount_max]
+   * @param {string} [params.kiosk]
+   * @param {string} [params.processor]
    */
   list: (params = {}) =>
     apiClient
