@@ -48,7 +48,7 @@ function TransactionDrawer({ isOpen, onClose, transaction }) {
     doc.setLineWidth(1)
 
     // FacePe logo (left side of header)
-    const logoSize = 40
+    const logoSize = 70
     const logoX = margin
     const logoY = (headerHeight - logoSize) / 2
     try {

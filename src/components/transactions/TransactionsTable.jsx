@@ -1,54 +1,94 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import StatusBadge from './StatusBadge'
 import TransactionDrawer from './TransactionDrawer'
-import transactionsResponse from '../../data/transactionsData.json'
+import {
+  fetchTransactionsThunk,
+  setStatusFilter,
+  setPage,
+} from '../../features/transactions/transactionsSlice'
+import { EmptyState, Button } from '../common'
+
+// Map UI status label → API `status_filter` value
+const UI_TO_API_STATUS = {
+  '': 'all',
+  Successful: 'completed',
+  Pending: 'pending',
+  Failed: 'failed',
+}
 
 function TransactionsTable() {
+  const dispatch = useDispatch()
+  const {
+    items: transactions,
+    total,
+    page: currentPage,
+    statusFilter,
+    loading,
+    error,
+  } = useSelector((s) => s.transactions)
+
+  const itemsPerPage = 7
+
+  // Local-only filters (date / amount / kiosk / processor are filtered client-side
+  // over the page returned from the API). Status filter is sent to the backend.
   const [filters, setFilters] = useState({
     date: '',
     amount: '',
     kiosk: '',
     processor: '',
-    status: ''
+    status: '',
   })
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 7
+
   const [selectedTransaction, setSelectedTransaction] = useState(null)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-  const [transactions, setTransactions] = useState([])
 
+  // Initial + status-filter-driven fetch
   useEffect(() => {
-    // Simulate API call - replace with real fetch when backend is ready
-    // e.g. fetch('/api/transactions').then(r => r.json()).then(...)
-    const fetchTransactions = async () => {
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 300))
-        setTransactions(transactionsResponse.transactions)
-      } catch (err) {
-        console.error('Failed to load transactions:', err)
-      }
-    }
-    fetchTransactions()
-  }, [])
+    dispatch(
+      fetchTransactionsThunk({
+        status_filter: statusFilter,
+        page: currentPage,
+        limit: itemsPerPage,
+      })
+    )
+  }, [dispatch, statusFilter, currentPage])
 
+  const retry = () =>
+    dispatch(
+      fetchTransactionsThunk({
+        status_filter: statusFilter,
+        page: currentPage,
+        limit: itemsPerPage,
+      })
+    )
 
-  const filteredTransactions = transactions.filter(transaction => {
-    if (filters.date && !transaction.datetime.includes(filters.date)) return false
-    if (filters.amount && !transaction.amount.includes(filters.amount)) return false
-    if (filters.kiosk && transaction.kiosk !== filters.kiosk) return false
-    if (filters.processor && transaction.processor !== filters.processor) return false
-    if (filters.status && transaction.status !== filters.status) return false
-    return true
-  })
+  const filteredTransactions = useMemo(
+    () =>
+      (transactions || []).filter((t) => {
+        if (filters.date && !String(t.datetime || '').includes(filters.date)) return false
+        if (filters.amount && !String(t.amount || '').includes(filters.amount)) return false
+        if (filters.kiosk && t.kiosk !== filters.kiosk) return false
+        if (filters.processor && t.processor !== filters.processor) return false
+        if (filters.status && t.status !== filters.status) return false
+        return true
+      }),
+    [transactions, filters]
+  )
 
-  const indexOfLastItem = currentPage * itemsPerPage
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = filteredTransactions.slice(indexOfFirstItem, indexOfLastItem)
-  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage)
+  const indexOfFirstItem = (currentPage - 1) * itemsPerPage
+  const indexOfLastItem = indexOfFirstItem + itemsPerPage
+  // If backend already paginates, items are already a single page; we still slice
+  // defensively so client-side filters render predictably.
+  const currentItems = filteredTransactions
+  const totalPages = Math.max(1, Math.ceil((total || filteredTransactions.length) / itemsPerPage))
 
   const handleFilterChange = (field, value) => {
-    setFilters(prev => ({ ...prev, [field]: value }))
-    setCurrentPage(1)
+    setFilters((prev) => ({ ...prev, [field]: value }))
+    if (field === 'status') {
+      dispatch(setStatusFilter(UI_TO_API_STATUS[value] ?? 'all'))
+    }
+    if (currentPage !== 1) dispatch(setPage(1))
   }
 
   const handleRowClick = (transaction) => {
@@ -164,9 +204,42 @@ function TransactionsTable() {
               </tr>
             </thead>
             <tbody>
+              {loading && currentItems.length === 0 && (
+                Array.from({ length: 5 }).map((_, i) => (
+                  <tr key={`sk-${i}`}>
+                    {Array.from({ length: 6 }).map((__, j) => (
+                      <td key={j}><span className="skeleton-bar" /></td>
+                    ))}
+                  </tr>
+                ))
+              )}
+
+              {!loading && error && (
+                <tr>
+                  <td colSpan={6} style={{ padding: 0 }}>
+                    <EmptyState
+                      title="Couldn't load transactions"
+                      description={error}
+                      action={<Button variant="primary" onClick={retry}>Retry</Button>}
+                    />
+                  </td>
+                </tr>
+              )}
+
+              {!loading && !error && currentItems.length === 0 && (
+                <tr>
+                  <td colSpan={6} style={{ padding: 0 }}>
+                    <EmptyState
+                      title="No transactions found"
+                      description="Try adjusting your filters or syncing data."
+                    />
+                  </td>
+                </tr>
+              )}
+
               {currentItems.map((transaction) => (
-                <tr 
-                  key={transaction.id} 
+                <tr
+                  key={transaction.id}
                   className="table-row-clickable"
                   onClick={() => handleRowClick(transaction)}
                 >
@@ -176,7 +249,7 @@ function TransactionsTable() {
                   <td className="table-kiosk">{transaction.kiosk}</td>
                   <td className="table-processor">{transaction.processor}</td>
                   <td className="table-status">
-                    <StatusBadge status={transaction.status.toLowerCase()} />
+                    <StatusBadge status={String(transaction.status || '').toLowerCase()} />
                   </td>
                 </tr>
               ))}
@@ -186,29 +259,32 @@ function TransactionsTable() {
 
         <div className="transactions-table-footer">
           <div className="transactions-table-info">
-            Showing {indexOfFirstItem + 1} - {Math.min(indexOfLastItem, filteredTransactions.length)} of {filteredTransactions.length} results
+            {currentItems.length === 0
+              ? `0 results`
+              : `Showing ${indexOfFirstItem + 1} - ${Math.min(indexOfLastItem, (total || filteredTransactions.length))} of ${total || filteredTransactions.length} results`}
           </div>
           <div className="transactions-table-pagination">
-            <button 
-              className="pagination-btn" 
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
+            <button
+              className="pagination-btn"
+              onClick={() => dispatch(setPage(Math.max(currentPage - 1, 1)))}
+              disabled={currentPage === 1 || loading}
             >
               Previous
             </button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button 
-                key={page} 
+              <button
+                key={page}
                 className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
-                onClick={() => setCurrentPage(page)}
+                onClick={() => dispatch(setPage(page))}
+                disabled={loading}
               >
                 {page}
               </button>
             ))}
-            <button 
+            <button
               className="pagination-btn pagination-btn-next"
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages}
+              onClick={() => dispatch(setPage(Math.min(currentPage + 1, totalPages)))}
+              disabled={currentPage === totalPages || loading}
             >
               Next
             </button>

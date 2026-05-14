@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
-import merchantProfileResponse from '../../data/merchantProfileData.json'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchProfileThunk, uploadLogoThunk } from '../../features/profile/profileSlice'
+import { profileService } from '../../api/services/profileService'
+import { parseApiError } from '../../utils/errorParser'
+import { toast } from '../../utils/toast'
 
 const EMPTY_FORM = {
   businessName: '',
@@ -14,37 +18,44 @@ const EMPTY_FORM = {
   country: '',
 }
 
+const MAX_LOGO_BYTES = 2 * 1024 * 1024 // 2MB
+const ALLOWED_LOGO_TYPES = ['image/png', 'image/jpeg', 'image/webp']
+
+// Map API profile shape → form fields
+const profileToForm = (p = {}) => ({
+  businessName: p.business_name || p.businessName || '',
+  type: p.type || '',
+  taxId: p.tax_id || p.taxId || '',
+  website: p.website || '',
+  email: p.email || '',
+  phone: p.mobile_number || p.phone || '',
+  city: p.city || '',
+  state: p.state || '',
+  zip: p.zip || '',
+  country: p.country || '',
+})
+
 function MerchantProfileForm() {
+  const dispatch = useDispatch()
+  const { data: profile, loading } = useSelector((s) => s.profile)
   const fileInputRef = useRef(null)
   const [avatar, setAvatar] = useState(null)
   const [form, setForm] = useState(EMPTY_FORM)
+  const [submitting, setSubmitting] = useState(false)
+  const [uploading, setUploading] = useState(false)
 
+  // Fetch on mount if missing
   useEffect(() => {
-    // Simulate API call - replace with real fetch when backend is ready
-    // e.g. fetch('/api/merchant/profile').then(r => r.json()).then(...)
-    const fetchProfile = async () => {
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 300))
-        const { profile } = merchantProfileResponse
-        setAvatar(profile.avatarUrl || null)
-        setForm({
-          businessName: profile.businessName || '',
-          type: profile.type || '',
-          taxId: profile.taxId || '',
-          website: profile.website || '',
-          email: profile.email || '',
-          phone: profile.phone || '',
-          city: profile.city || '',
-          state: profile.state || '',
-          zip: profile.zip || '',
-          country: profile.country || '',
-        })
-      } catch (err) {
-        console.error('Failed to load merchant profile:', err)
-      }
+    if (!profile) dispatch(fetchProfileThunk())
+  }, [dispatch, profile])
+
+  // Hydrate form when profile loads/changes
+  useEffect(() => {
+    if (profile) {
+      setForm(profileToForm(profile))
+      setAvatar(profile.logo_url || profile.avatarUrl || null)
     }
-    fetchProfile()
-  }, [])
+  }, [profile])
 
   const handleChange = (field) => (e) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }))
@@ -52,20 +63,62 @@ function MerchantProfileForm() {
 
   const handleUploadClick = () => fileInputRef.current?.click()
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = (ev) => setAvatar(ev.target.result)
-      reader.readAsDataURL(file)
+    if (!file) return
+    if (!ALLOWED_LOGO_TYPES.includes(file.type)) {
+      toast.error('Logo must be PNG, JPEG or WebP.')
+      return
+    }
+    if (file.size > MAX_LOGO_BYTES) {
+      toast.error('Logo must be 2MB or smaller.')
+      return
+    }
+
+    // Optimistic preview while uploading
+    const reader = new FileReader()
+    reader.onload = (ev) => setAvatar(ev.target.result)
+    reader.readAsDataURL(file)
+
+    setUploading(true)
+    try {
+      const result = await dispatch(uploadLogoThunk(file)).unwrap()
+      if (result?.logo_url) setAvatar(result.logo_url)
+      toast.success('Logo updated.')
+    } catch (err) {
+      toast.error(err?.message || 'Failed to upload logo.')
+    } finally {
+      setUploading(false)
+      if (fileInputRef.current) fileInputRef.current.value = ''
     }
   }
 
   const handleRemove = () => setAvatar(null)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Update merchant profile:', form)
+    setSubmitting(true)
+    try {
+      await profileService.updateProfile({
+        business_name: form.businessName,
+        type: form.type,
+        tax_id: form.taxId,
+        website: form.website,
+        email: form.email,
+        mobile_number: form.phone,
+        city: form.city,
+        state: form.state,
+        zip: form.zip,
+        country: form.country,
+      })
+      // Refresh profile in store
+      dispatch(fetchProfileThunk())
+      toast.success('Profile updated.')
+    } catch (err) {
+      toast.error(parseApiError(err).message)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -96,11 +149,11 @@ function MerchantProfileForm() {
             )}
           </div>
           <div className="profile-image-actions">
-            <button type="button" className="upload-new-btn" onClick={handleUploadClick}>
+            <button type="button" className="upload-new-btn" onClick={handleUploadClick} disabled={uploading}>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M8 10.667V2m0 0L4.667 5.333M8 2l3.333 3.333M2 10.667V12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1.333" stroke="#374151" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-              Upload New Image
+              {uploading ? 'Uploading…' : 'Upload New Image'}
             </button>
             {avatar && (
               <button type="button" className="remove-logo-btn" onClick={handleRemove}>
@@ -170,7 +223,9 @@ function MerchantProfileForm() {
       </div>
 
       <div className="settings-form-footer">
-        <button type="submit" className="update-details-btn">Update Details</button>
+        <button type="submit" className="update-details-btn" disabled={submitting || loading}>
+          {submitting ? 'Saving…' : 'Update Details'}
+        </button>
       </div>
     </form>
   )

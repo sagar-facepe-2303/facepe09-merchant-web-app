@@ -1,9 +1,109 @@
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import facePeLogo from '../assets/FacePe Logo SVG.svg'
 import { StepHeader } from '../components/common'
+import { gatewayService } from '../api/services/gatewayService'
+import { authService } from '../api/services/authService'
+import { tokenService } from '../utils/tokenService'
+import { fetchProfileThunk } from '../features/profile/profileSlice'
+import { ROUTES } from '../routes/paths'
+import { parseApiError } from '../utils/errorParser'
+import { toast } from '../utils/toast'
+
+const GATEWAYS = [
+  { value: '', label: 'Select your Payment gateway' },
+  { value: 'basistheory', label: 'Basis Theory' },
+  { value: 'stripe', label: 'Stripe (direct)' },
+  { value: 'square', label: 'Square (direct)' },
+]
 
 function ConnectGatewayPage() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const registration = useSelector((s) => s.auth.registration)
+
+  const [form, setForm] = useState({
+    gateway_type: '',
+    name: 'Main Gateway',
+    publishable_key: '',
+    secret_key: '',
+    is_default: true,
+  })
+  const [errors, setErrors] = useState({})
+  const [submitting, setSubmitting] = useState(false)
+  const [testing, setTesting] = useState(false)
+
+  useEffect(() => {
+    if (!registration?.vsid) navigate(ROUTES.SIGNUP, { replace: true })
+  }, [registration, navigate])
+
+  const onChange = (key) => (e) => {
+    const v = e.target.type === 'checkbox' ? e.target.checked : e.target.value
+    setForm((f) => ({ ...f, [key]: v }))
+    if (errors[key]) setErrors((p) => ({ ...p, [key]: undefined }))
+  }
+
+  const buildPayload = () => ({
+    gateway_type: form.gateway_type,
+    name: form.name,
+    credentials: { bt_api_key: form.publishable_key },
+    target_psp: 'stripe',
+    target_psp_credentials: { api_key: form.secret_key },
+    is_default: form.is_default,
+  })
+
+  const handleTest = async () => {
+    if (!form.gateway_type || !form.publishable_key || !form.secret_key) {
+      toast.error('Fill gateway, publishable key, and secret key first.')
+      return
+    }
+    setTesting(true)
+    try {
+      await gatewayService.testConnection(buildPayload())
+      toast.success('Connection successful!')
+    } catch (err) {
+      toast.error(parseApiError(err).message)
+    } finally {
+      setTesting(false)
+    }
+  }
+
+  const handleSubmit = async () => {
+    const newErrors = {}
+    if (!form.gateway_type) newErrors.gateway_type = 'Please select a payment gateway.'
+    if (!form.publishable_key) newErrors.publishable_key = 'Please enter the publishable key.'
+    if (!form.secret_key) newErrors.secret_key = 'Please enter the secret key.'
+    setErrors(newErrors)
+    if (Object.keys(newErrors).length > 0) return
+
+    setSubmitting(true)
+    try {
+      // 1) Create gateway
+      await gatewayService.create(buildPayload())
+      // 2) Complete registration → expect tokens back
+      const completion = await authService.completeRegistration({
+        vsid: registration.vsid,
+        session_secret: registration.session_secret,
+      })
+      if (completion?.access_token) {
+        tokenService.setRememberMe(true)
+        tokenService.setTokens(completion)
+        // refresh profile and reload to pick up auth state from store
+        await dispatch(fetchProfileThunk())
+        toast.success('Onboarding complete!')
+        // Hard navigation to ensure protected routes pick up token
+        window.location.replace(ROUTES.DASHBOARD_TRANSACTIONS)
+        return
+      }
+      toast.success('Gateway saved.')
+      navigate(ROUTES.LOGIN, { replace: true })
+    } catch (err) {
+      toast.error(parseApiError(err).message)
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   return (
     <main className="gateway-page">
@@ -33,9 +133,18 @@ function ConnectGatewayPage() {
               Select Payment Gateway
             </label>
             <div className="gateway-select-wrap">
-              <select id="gateway-select" className="gateway-input gateway-select">
-                <option>Select your Payment gateway</option>
+              <select
+                id="gateway-select"
+                className="gateway-input gateway-select"
+                value={form.gateway_type}
+                onChange={onChange('gateway_type')}
+                disabled={submitting || testing}
+              >
+                {GATEWAYS.map((g) => (
+                  <option key={g.value} value={g.value}>{g.label}</option>
+                ))}
               </select>
+              {errors.gateway_type && <p className="gateway-error">{errors.gateway_type}</p>}
             </div>
 
             <h2 className="gateway-section-title">
@@ -58,7 +167,16 @@ function ConnectGatewayPage() {
               </span>
               API Key (Publishable Key)<span className="required-mark">*</span>
             </label>
-            <input id="publishable-key" className="gateway-input" placeholder="pk_live_...." />
+            <input
+              id="publishable-key"
+              className="gateway-input"
+              placeholder="pk_live_...."
+              value={form.publishable_key}
+              onChange={onChange('publishable_key')}
+              disabled={submitting || testing}
+              autoComplete="off"
+            />
+            {errors.publishable_key && <p className="gateway-error">{errors.publishable_key}</p>}
             <p className="gateway-help">Your publishable API key from square dashboard</p>
 
             <label className="gateway-label" htmlFor="secret-key">
@@ -70,7 +188,17 @@ function ConnectGatewayPage() {
               </span>
               API Secret (Secret Key)<span className="required-mark">*</span>
             </label>
-            <input id="secret-key" className="gateway-input" placeholder="sk_live_...." />
+            <input
+              id="secret-key"
+              type="password"
+              className="gateway-input"
+              placeholder="sk_live_...."
+              value={form.secret_key}
+              onChange={onChange('secret_key')}
+              disabled={submitting || testing}
+              autoComplete="off"
+            />
+            {errors.secret_key && <p className="gateway-error">{errors.secret_key}</p>}
             <p className="gateway-help">Your secret API key (will be encrypted and stored securely)</p>
 
             {/* <label className="gateway-label" htmlFor="webhook-url">
@@ -139,20 +267,30 @@ function ConnectGatewayPage() {
               </ul>
             </div>
 
-            <button type="button" className="gateway-secondary-btn">
-              Test connection
+            <button
+              type="button"
+              className="gateway-secondary-btn"
+              onClick={handleTest}
+              disabled={testing || submitting}
+            >
+              {testing ? 'Testing…' : 'Test connection'}
             </button>
-            <button type="button" className="gateway-primary-btn">
-              Verify Phone Number
+            <button
+              type="button"
+              className="gateway-primary-btn"
+              onClick={handleSubmit}
+              disabled={testing || submitting}
+            >
+              {submitting ? 'Saving…' : 'Save & Continue'}
             </button>
           </div>
 
           <button
             type="button"
             className="gateway-back-btn"
-            onClick={() => navigate('/signup/verify-phone')}
+            onClick={() => navigate(ROUTES.SIGNUP_VERIFY_EMAIL)}
           >
-            <span aria-hidden="true">&larr;</span> Back to Phone Verification
+            <span aria-hidden="true">&larr;</span> Back to Email Verification
           </button>
         </section>
       </section>

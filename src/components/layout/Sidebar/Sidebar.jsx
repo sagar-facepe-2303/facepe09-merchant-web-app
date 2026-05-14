@@ -1,10 +1,29 @@
 import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { logoutThunk } from '../../../features/auth/authSlice'
+import { ROUTES } from '../../../routes/paths'
+
+const getInitials = (profile) => {
+  if (!profile) return 'JD'
+  const source = profile.business_name || profile.email || ''
+  const parts = source.trim().split(/\s+/)
+  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase()
+  return (source.slice(0, 2) || 'JD').toUpperCase()
+}
 
 function Sidebar({ onToggle }) {
   const location = useLocation()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const profile = useSelector((s) => s.profile.data)
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
+
+  const handleLogout = async () => {
+    await dispatch(logoutThunk())
+    navigate(ROUTES.LOGIN, { replace: true })
+  }
 
   const isActive = (path) => location.pathname === path
 
@@ -225,13 +244,15 @@ function Sidebar({ onToggle }) {
         {!isCollapsed && (
           <div className="sidebar-user-card">
             <div className="sidebar-user-avatar">
-              <span>JD</span>
+              {profile?.logo_url
+                ? <img src={profile.logo_url} alt={getInitials(profile)} />
+                : <span>{getInitials(profile)}</span>}
             </div>
             <div className="sidebar-user-info">
-              <p className="sidebar-user-name">John Doe</p>
-              <p className="sidebar-user-role">Admin</p>
+              <p className="sidebar-user-name">{profile?.business_name || 'Merchant'}</p>
+              <p className="sidebar-user-role">{profile?.email ? 'Admin' : ''}</p>
             </div>
-            <button className="sidebar-logout" aria-label="Logout">
+            <button className="sidebar-logout" aria-label="Logout" onClick={handleLogout}>
               {logoutIcon}
             </button>
           </div>

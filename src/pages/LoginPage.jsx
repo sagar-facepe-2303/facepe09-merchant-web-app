@@ -1,9 +1,57 @@
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import facePeLogo from '../assets/FacePe Logo SVG.svg'
 import { Button, Input } from '../components/common'
+import { loginThunk, clearAuthError } from '../features/auth/authSlice'
+import { ROUTES } from '../routes/paths'
+import { validateForm, required, emailOrPhone } from '../utils/validators'
+import { toast } from '../utils/toast'
 
 function LoginPage() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const dispatch = useDispatch()
+  const { loading, error, fieldErrors, isAuthenticated } = useSelector((s) => s.auth)
+
+  const [form, setForm] = useState({ username: '', password: '' })
+  const [remember, setRemember] = useState(false)
+  const [errors, setErrors] = useState({})
+
+  useEffect(() => {
+    dispatch(clearAuthError())
+  }, [dispatch])
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const target = location.state?.from || ROUTES.DASHBOARD_TRANSACTIONS
+      navigate(target, { replace: true })
+    }
+  }, [isAuthenticated, navigate, location.state])
+
+  useEffect(() => {
+    if (error) toast.error(error)
+  }, [error])
+
+  const onChange = (key) => (e) => {
+    setForm((f) => ({ ...f, [key]: e.target.value }))
+    if (errors[key]) setErrors((p) => ({ ...p, [key]: undefined }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const { ok, errors: localErrors } = validateForm(form, {
+      username: [required('Email or phone is required'), emailOrPhone()],
+      password: [required('Password is required')],
+    })
+    setErrors(localErrors)
+    if (!ok) return
+
+    const result = await dispatch(loginThunk({ ...form, remember }))
+    if (loginThunk.fulfilled.match(result)) {
+      toast.success('Welcome back!')
+    }
+  }
 
   return (
     <main className="login-page">
@@ -18,17 +66,18 @@ function LoginPage() {
             <p className="login-subtitle">Enter your credentials to access your account</p>
           </div>
 
-          <form className="login-form" onSubmit={(event) => {
-            event.preventDefault()
-            navigate('/dashboard')
-          }}>
+          <form className="login-form" onSubmit={handleSubmit} noValidate>
             <Input
-              id="email"
-              name="email"
-              type="email"
-              label="Email"
+              id="username"
+              name="username"
+              type="text"
+              label="Email or Phone"
               placeholder="admin@gmail.com"
-              autoComplete="email"
+              autoComplete="username"
+              value={form.username}
+              onChange={onChange('username')}
+              error={errors.username || fieldErrors?.username}
+              disabled={loading}
             />
 
             <Input
@@ -38,23 +87,49 @@ function LoginPage() {
               label="Password"
               placeholder="********"
               autoComplete="current-password"
+              value={form.password}
+              onChange={onChange('password')}
+              error={errors.password || fieldErrors?.password}
+              disabled={loading}
             />
 
             <div className="login-options">
               <label className="remember-row" htmlFor="remember-me">
-                <input id="remember-me" type="checkbox" />
+                <input
+                  id="remember-me"
+                  type="checkbox"
+                  checked={remember}
+                  onChange={(e) => setRemember(e.target.checked)}
+                />
                 <span>Remember me</span>
               </label>
-              <button type="button" className="forgot-link" onClick={() => navigate('/forgot-password')}>
+              <button
+                type="button"
+                className="forgot-link"
+                onClick={() => navigate(ROUTES.FORGOT_PASSWORD)}
+              >
                 Forgot password?
               </button>
             </div>
 
-            <Button type="submit" variant="primary" fullWidth className="login-submit">
-              Sign In
+            <Button
+              type="submit"
+              variant="primary"
+              fullWidth
+              className="login-submit"
+              disabled={loading}
+            >
+              {loading ? 'Signing in…' : 'Sign In'}
             </Button>
           </form>
         </section>
+
+        <p className="login-footer">
+          Don&apos;t have an account?{' '}
+          <button type="button" className="create-account-link" onClick={() => navigate(ROUTES.SIGNUP)}>
+            Create new account
+          </button>
+        </p>
       </section>
     </main>
   )

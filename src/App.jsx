@@ -14,6 +14,10 @@ import PasswordUpdatedPage from './pages/PasswordUpdatedPage'
 import DashboardPage from './pages/DashboardPage'
 import SettingsPage from './pages/SettingsPage'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import ProtectedRoute from './routes/ProtectedRoute'
+import AuthBootstrap from './routes/AuthBootstrap'
+import { ROUTES } from './routes/paths'
+import { ToastContainer } from './components/common'
 import './styles/theme.css'
 import './styles/landing.css'
 import './styles/login.css'
@@ -43,21 +47,33 @@ import './components/layout/DashboardHeader/DashboardHeader.css'
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/forgot-password" element={<ResetPasswordPage />} />
-        <Route path="/forgot-password/verify-code" element={<EnterSecurityCodePage />} />
-        <Route path="/forgot-password/new-password" element={<NewPasswordPage />} />
-        <Route path="/forgot-password/success" element={<PasswordUpdatedPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/dashboard/transactions" element={<TransactionsPage />} />
-        <Route path="/dashboard/settings" element={<SettingsPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/signup/verify-email" element={<VerifyEmailPage />} />
-        <Route path="/signup/verify-phone" element={<VerifyPhonePage />} />
-        <Route path="/signup/connect-gateway" element={<ConnectGatewayPage />} />
-      </Routes>
+      <AuthBootstrap>
+        <Routes>
+          {/* Public */}
+          <Route path={ROUTES.ROOT} element={<LandingPage />} />
+          <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+          <Route path={ROUTES.FORGOT_PASSWORD} element={<ResetPasswordPage />} />
+          <Route path={ROUTES.FORGOT_PASSWORD_VERIFY_CODE} element={<EnterSecurityCodePage />} />
+          <Route path={ROUTES.FORGOT_PASSWORD_NEW_PASSWORD} element={<NewPasswordPage />} />
+          <Route path={ROUTES.FORGOT_PASSWORD_SUCCESS} element={<PasswordUpdatedPage />} />
+          <Route path={ROUTES.SIGNUP} element={<SignupPage />} />
+          <Route path={ROUTES.SIGNUP_VERIFY_EMAIL} element={<VerifyEmailPage />} />
+          <Route path={ROUTES.SIGNUP_VERIFY_PHONE} element={<VerifyPhonePage />} />
+          <Route path={ROUTES.SIGNUP_CONNECT_GATEWAY} element={<ConnectGatewayPage />} />
+
+          {/* Protected */}
+          <Route path={ROUTES.DASHBOARD} element={
+            <ProtectedRoute><DashboardPage /></ProtectedRoute>
+          } />
+          <Route path={ROUTES.DASHBOARD_TRANSACTIONS} element={
+            <ProtectedRoute><TransactionsPage /></ProtectedRoute>
+          } />
+          <Route path={ROUTES.DASHBOARD_SETTINGS} element={
+            <ProtectedRoute><SettingsPage /></ProtectedRoute>
+          } />
+        </Routes>
+        <ToastContainer />
+      </AuthBootstrap>
     </BrowserRouter>
   )
 }

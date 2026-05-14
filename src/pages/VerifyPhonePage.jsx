@@ -1,9 +1,83 @@
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import facePeLogo from '../assets/FacePe Logo SVG.svg'
-import { StepHeader } from '../components/common'
+import { StepHeader, OTP } from '../components/common'
+import {
+  verifyRegistrationPhoneThunk,
+  clearAuthError,
+} from '../features/auth/authSlice'
+import { authService } from '../api/services/authService'
+import { ROUTES } from '../routes/paths'
+import { RESEND_OTP_COOLDOWN_SECONDS } from '../utils/constants'
+import { parseApiError } from '../utils/errorParser'
+import { toast } from '../utils/toast'
 
 function VerifyPhonePage() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { loading, error, registration } = useSelector((s) => s.auth)
+
+  const [otp, setOtp] = useState('')
+  const [cooldown, setCooldown] = useState(0)
+  const [resending, setResending] = useState(false)
+
+  useEffect(() => { dispatch(clearAuthError()) }, [dispatch])
+  useEffect(() => { if (error) toast.error(error) }, [error])
+  useEffect(() => {
+    if (!registration?.vsid) navigate(ROUTES.SIGNUP, { replace: true })
+  }, [registration, navigate])
+
+  useEffect(() => {
+    if (cooldown <= 0) return undefined
+    const t = setInterval(() => setCooldown((c) => c - 1), 1000)
+    return () => clearInterval(t)
+  }, [cooldown])
+
+  const handleSubmit = async () => {
+    if (otp.length !== 6) {
+      toast.error('Please enter the 6-digit OTP.')
+      return
+    }
+    const result = await dispatch(
+      verifyRegistrationPhoneThunk({
+        vsid: registration.vsid,
+        session_secret: registration.session_secret,
+        code: otp,
+      })
+    )
+    if (verifyRegistrationPhoneThunk.fulfilled.match(result)) {
+      // Trigger email OTP send after phone verification
+      try {
+        await authService.sendRegistrationOtp({
+          vsid: registration.vsid,
+          session_secret: registration.session_secret,
+          channel: 'email',
+        })
+        toast.success('Phone verified. Email OTP sent.')
+      } catch (err) {
+        toast.error('Phone verified, but failed to send email OTP. Please try resending.')
+      }
+      navigate(ROUTES.SIGNUP_VERIFY_EMAIL)
+    }
+  }
+
+  const handleResend = async () => {
+    if (cooldown > 0 || resending) return
+    setResending(true)
+    try {
+      await authService.resendRegistrationPhone({
+        vsid: registration.vsid,
+        session_secret: registration.session_secret,
+      })
+      toast.success('A new OTP has been sent.')
+      setCooldown(RESEND_OTP_COOLDOWN_SECONDS)
+    } catch (err) {
+      toast.error(parseApiError(err).message)
+    } finally {
+      setResending(false)
+    }
+  }
 
   return (
     <main className="verify-phone-page">
@@ -12,22 +86,22 @@ function VerifyPhonePage() {
           <img className="signup-brand-image" src={facePeLogo} alt="FacePe" />
         </header>
 
-        <StepHeader currentStep={3} />
+        <StepHeader currentStep={2} />
 
         <section className="verify-phone-card">
           <h1>Verify your Phone Number</h1>
           <p className="verify-phone-subtext">We&apos;ve sent an OTP to</p>
-          <p className="verify-phone-number">+1 (XX) XX-7890</p>
+          <p className="verify-phone-number">{registration?.mobile_number || ''}</p>
 
-          <label className="verify-phone-label" htmlFor="phone-number">
-            Phone Number
-          </label>
-          <input id="phone-number" className="verify-phone-input" defaultValue="+1 (XX) XX-7890" />
-
-          <label className="verify-phone-label" htmlFor="otp-input">
-            Enter OTP
-          </label>
-          <input id="otp-input" className="verify-phone-input" defaultValue="+1 (XX) XX-7890" />
+          <label className="verify-phone-label">Enter OTP</label>
+          <OTP
+            length={6}
+            value={otp}
+            onChange={setOtp}
+            onComplete={(v) => setOtp(v)}
+            disabled={loading}
+            autoFocus
+          />
 
           <p className="verify-phone-hint">Enter the 6-digit OTP sent via SMS</p>
 
@@ -48,31 +122,37 @@ function VerifyPhonePage() {
 
           <p className="verify-phone-resend">
             Didn&apos;t receive OTP?{' '}
-            <button type="button" className="verify-phone-link">
-              Resend OTP
+            <button
+              type="button"
+              className="verify-phone-link"
+              onClick={handleResend}
+              disabled={cooldown > 0 || resending || loading}
+            >
+              {cooldown > 0 ? `Resend in ${cooldown}s` : resending ? 'Sending…' : 'Resend OTP'}
             </button>
           </p>
 
           <button
             type="button"
             className="verify-phone-submit"
-            onClick={() => navigate('/signup/connect-gateway')}
+            onClick={handleSubmit}
+            disabled={loading || otp.length !== 6}
           >
-            Verify Phone Number
+            {loading ? 'Verifying…' : 'Verify Phone Number'}
           </button>
 
           <button
             type="button"
             className="verify-phone-back"
-            onClick={() => navigate('/signup/verify-email')}
+            onClick={() => navigate(ROUTES.SIGNUP)}
           >
-            <span aria-hidden="true">&larr;</span> Back to Email Verification
+            <span aria-hidden="true">&larr;</span> Back to Account Setup
           </button>
         </section>
 
         <p className="verify-phone-support">
           Need to change your phone number ?{' '}
-          <button type="button" className="verify-phone-link">
+          <button type="button" className="verify-phone-link" onClick={() => navigate(ROUTES.SIGNUP)}>
             Update Phone Number
           </button>
         </p>

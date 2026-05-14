@@ -143,6 +143,15 @@
   color: #8a93a7;
 }
 
+.gateway-error {
+  margin: 4px auto 0;
+  max-width: 423px;
+  text-align: left;
+  font-size: 13px;
+  line-height: 1;
+  color: #ff5b5b;
+}
+
 .webhook-row {
   max-width: 423px;
   margin: 0 auto;
