@@ -79,7 +79,7 @@ function TransactionsPage() {
             <button className="btn-secondary" onClick={handleExportCsv} disabled={transactions.length === 0}>
               Export CSV
             </button>
-            <button className="btn-primary">Sync Data</button>
+            {/* <button className="btn-primary">Sync Data</button> */}
           </div>
         </div>
 
