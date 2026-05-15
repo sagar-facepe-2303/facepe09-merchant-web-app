@@ -1,28 +1,64 @@
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
+import { useSelector } from 'react-redux'
 import ChartCard from './ChartCard'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import volumeResponse from '../../data/volumeData.json'
+
+const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+// Count transactions by status into period buckets
+function computeVolume(transactions, period) {
+  const now = new Date()
+  let buckets = []
+
+  if (period === 'week') {
+    buckets = Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(now)
+      d.setDate(now.getDate() - (6 - i))
+      d.setHours(0, 0, 0, 0)
+      return { name: DAY_NAMES[d.getDay()], start: d, end: new Date(d.getTime() + 86400000), successful: 0, pending: 0, failed: 0 }
+    })
+  } else if (period === 'month') {
+    buckets = Array.from({ length: 4 }, (_, i) => {
+      const start = new Date(now)
+      start.setDate(now.getDate() - (28 - i * 7))
+      start.setHours(0, 0, 0, 0)
+      const end = new Date(start)
+      end.setDate(start.getDate() + 7)
+      return { name: `Wk ${i + 1}`, start, end, successful: 0, pending: 0, failed: 0 }
+    })
+  } else {
+    buckets = Array.from({ length: 12 }, (_, i) => {
+      const start = new Date(now.getFullYear(), now.getMonth() - (11 - i), 1)
+      const end = new Date(now.getFullYear(), now.getMonth() - (11 - i) + 1, 1)
+      return { name: MONTH_NAMES[start.getMonth()], start, end, successful: 0, pending: 0, failed: 0 }
+    })
+  }
+
+  ;(transactions || []).forEach((t) => {
+    const td = new Date(t.created_at)
+    const bucket = buckets.find((b) => td >= b.start && td < b.end)
+    if (!bucket) return
+    if (t.status === 'completed') bucket.successful += 1
+    else if (t.status === 'pending') bucket.pending += 1
+    else if (t.status === 'failed') bucket.failed += 1
+  })
+
+  return buckets.map(({ name, successful, pending, failed }) => ({ name, successful, pending, failed }))
+}
 
 function VolumeBarChart() {
   const [period, setPeriod] = useState('week')
-  const [data, setData] = useState([])
-  const [maxValue, setMaxValue] = useState(10000)
+  const { items: transactions } = useSelector((s) => s.transactions)
 
-  useEffect(() => {
-    // Simulate API call - replace with real fetch when backend is ready
-    // e.g. fetch(`/api/volume?period=${period}`).then(r => r.json()).then(...)
-    const fetchVolume = async () => {
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 300))
-        const periodData = volumeResponse[period]
-        setData(periodData.data)
-        setMaxValue(periodData.max)
-      } catch (err) {
-        console.error('Failed to load volume data:', err)
-      }
-    }
-    fetchVolume()
-  }, [period])
+  const data = useMemo(() => computeVolume(transactions, period), [transactions, period])
+  const maxValue = useMemo(() => {
+    const m = Math.max(
+      ...data.map((d) => (d.successful || 0) + (d.pending || 0) + (d.failed || 0)),
+      0
+    )
+    return m > 0 ? Math.ceil(m * 1.2) : 10
+  }, [data])
 
   const weekDropdown = (
     <select
@@ -39,7 +75,13 @@ function VolumeBarChart() {
   return (
     <ChartCard 
       title="Transaction volume" 
-      subtitle="Transaction peaked on Friday"
+      subtitle={(() => {
+        const peak = data.reduce((max, d) => {
+          const total = (d.successful || 0) + (d.pending || 0) + (d.failed || 0)
+          return total > max.total ? { name: d.name, total } : max
+        }, { name: '-', total: 0 })
+        return peak.total > 0 ? `Peaked on ${peak.name} (${peak.total} txns)` : 'No transactions'
+      })()}
       rightAction={weekDropdown}
     >
       {/* Legend */}
@@ -74,7 +116,8 @@ function VolumeBarChart() {
               tick={{ fontSize: 11, fill: '#8C93A1', fontFamily: 'Inter, sans-serif' }}
               tickLine={false}
               axisLine={false}
-              tickFormatter={(v) => v === 0 ? '0k' : v / 1000 + 'k'}
+              tickFormatter={(v) => `${v}`}
+              allowDecimals={false}
               domain={[0, maxValue]}
             />
             <Tooltip 
