@@ -11,12 +11,18 @@ import { fetchProfileThunk, clearProfile } from '../features/profile/profileSlic
 import { clearNotifications } from '../features/notifications/notificationsSlice'
 import { ROUTES } from './paths'
 import { toast } from '../utils/toast'
+import { initProactiveRefresh } from '../api/axiosClient'
 
 function AuthBootstrap({ children }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const isAuthenticated = useSelector((s) => s.auth.isAuthenticated)
   const profileLoaded = useSelector((s) => !!s.profile.data)
+
+  useEffect(() => {
+    // Initialize proactive token refresh on app load
+    initProactiveRefresh()
+  }, [])
 
   useEffect(() => {
     const onLogout = (e) => {

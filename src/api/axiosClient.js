@@ -37,6 +37,7 @@ apiClient.interceptors.request.use(
 
 // ─── Refresh-token coordination ──────────────────────────────────────────────
 let refreshPromise = null
+let refreshTimeoutId = null
 
 const performTokenRefresh = async () => {
   const refresh_token = tokenService.getRefreshToken()
@@ -53,21 +54,55 @@ const performTokenRefresh = async () => {
   )
 
   if (!data?.access_token) throw new Error('INVALID_REFRESH_RESPONSE')
+  // Per API doc: Refresh Token Rotation - always replace both tokens
   tokenService.setTokens({
     access_token: data.access_token,
-    refresh_token: data.refresh_token || refresh_token,
+    refresh_token: data.refresh_token,
   })
   return data.access_token
 }
 
+// Schedule proactive refresh before token expiration (30min - 5min = 25min buffer)
+const scheduleProactiveRefresh = (expiresInSeconds = 1800) => {
+  if (refreshTimeoutId) clearTimeout(refreshTimeoutId)
+  const refreshBeforeMs = (expiresInSeconds - 300) * 1000 // Refresh 5min before expiry
+  refreshTimeoutId = setTimeout(async () => {
+    try {
+      await performTokenRefresh()
+    } catch (err) {
+      // If proactive refresh fails, let the 401 interceptor handle it
+      console.warn('Proactive token refresh failed:', err)
+    }
+  }, Math.max(0, refreshBeforeMs))
+}
+
+// Initialize proactive refresh on app load
+export const initProactiveRefresh = () => {
+  const token = tokenService.getAccessToken()
+  if (token) {
+    // Default to 30min if we can't decode token expiry
+    scheduleProactiveRefresh(1800)
+  }
+}
+
 const broadcastLogout = (reason = 'session_expired') => {
+  if (refreshTimeoutId) clearTimeout(refreshTimeoutId)
   tokenService.clear()
   window.dispatchEvent(new CustomEvent('auth:logout', { detail: { reason } }))
 }
 
 // ─── Response interceptor ────────────────────────────────────────────────────
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // If this is a login or refresh response, schedule proactive refresh
+    const isAuthResponse =
+      response.config?.url?.includes('/auth/login') ||
+      response.config?.url?.includes('/auth/refresh')
+    if (isAuthResponse && response.data?.expires_in) {
+      scheduleProactiveRefresh(response.data.expires_in)
+    }
+    return response
+  },
   async (error) => {
     const originalRequest = error.config || {}
     const status = error.response?.status
