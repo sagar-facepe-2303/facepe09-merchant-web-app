@@ -106,7 +106,7 @@ function TransactionDrawer({ isOpen, onClose, transaction }) {
     doc.text('DATE / TIME', margin + 16, y + 68)
     doc.setTextColor(16, 8, 36)
     doc.setFontSize(10)
-    doc.text(String(transaction.datetime || ''), margin + 80, y + 68)
+    doc.text(String(transaction.created_at ? new Date(transaction.created_at).toLocaleString() : 'N/A'), margin + 80, y + 68)
 
     // Status pill (right side of card)
     const status = String(transaction.status || '')
@@ -137,13 +137,13 @@ function TransactionDrawer({ isOpen, onClose, transaction }) {
     y += 18
 
     const details = [
-      ['Processor Name', transaction.processor],
-      ['Processor ID', transaction.processorId || 'N/A'],
-      ['Currency Type', transaction.currency || 'USD'],
-      ['Kiosk Name', transaction.kiosk],
-      ['Device ID', transaction.deviceId || 'N/A'],
-      ['Face ID', transaction.faceId || 'N/A'],
-      ['Email ID', transaction.email || 'N/A'],
+      ['Customer Name', transaction.customer_name || 'N/A'],
+      ['Currency', transaction.currency || 'N/A'],
+      ['Description', transaction.description || 'N/A'],
+      ['User ID', transaction.user_id || 'N/A'],
+      ['Face Scan ID', transaction.face_scan_id || 'N/A'],
+      ['Gateway Transaction ID', transaction.gateway_transaction_id || 'N/A'],
+      ['Raw Status', transaction.raw_status || 'N/A'],
     ]
 
     doc.setFontSize(10)
@@ -239,9 +239,9 @@ function TransactionDrawer({ isOpen, onClose, transaction }) {
         <div className="drawer-content">
           {/* Summary Section */}
           <div className="drawer-summary">
-            <div className="summary-amount">{transaction.amount}</div>
-            <div className="summary-datetime">{transaction.datetime}</div>
-            <div className={`summary-status summary-status-${transaction.status.toLowerCase()}`}>
+            <div className="summary-amount">{transaction.currency} {transaction.amount}</div>
+            <div className="summary-datetime">{new Date(transaction.created_at).toLocaleString()}</div>
+            <div className={`summary-status summary-status-${String(transaction.status || '').toLowerCase()}`}>
               {transaction.status}
             </div>
           </div>
@@ -251,32 +251,32 @@ function TransactionDrawer({ isOpen, onClose, transaction }) {
             <h3 className="details-title">More Details</h3>
             <div className="details-grid">
               <div className="detail-item">
-                <span className="detail-label">Processor Name</span>
-                <span className="detail-value">{transaction.processor}</span>
+                <span className="detail-label">Customer Name</span>
+                <span className="detail-value">{transaction.customer_name || 'N/A'}</span>
               </div>
               <div className="detail-item">
-                <span className="detail-label">Processor ID</span>
-                <span className="detail-value">{transaction.processorId || 'N/A'}</span>
+                <span className="detail-label">Currency</span>
+                <span className="detail-value">{transaction.currency || 'N/A'}</span>
               </div>
               <div className="detail-item">
-                <span className="detail-label">Currency Type</span>
-                <span className="detail-value">{transaction.currency || 'USD'}</span>
+                <span className="detail-label">Description</span>
+                <span className="detail-value">{transaction.description || 'N/A'}</span>
               </div>
               <div className="detail-item">
-                <span className="detail-label">Kiosk Name</span>
-                <span className="detail-value">{transaction.kiosk}</span>
+                <span className="detail-label">User ID</span>
+                <span className="detail-value">{transaction.user_id || 'N/A'}</span>
               </div>
               <div className="detail-item">
-                <span className="detail-label">Device ID</span>
-                <span className="detail-value">{transaction.deviceId || 'N/A'}</span>
+                <span className="detail-label">Face Scan ID</span>
+                <span className="detail-value">{transaction.face_scan_id || 'N/A'}</span>
               </div>
               <div className="detail-item">
-                <span className="detail-label">Face ID</span>
-                <span className="detail-value">{transaction.faceId || 'N/A'}</span>
+                <span className="detail-label">Gateway Transaction ID</span>
+                <span className="detail-value">{transaction.gateway_transaction_id || 'N/A'}</span>
               </div>
               <div className="detail-item">
-                <span className="detail-label">Email ID</span>
-                <span className="detail-value">{transaction.email || 'N/A'}</span>
+                <span className="detail-label">Raw Status</span>
+                <span className="detail-value">{transaction.raw_status || 'N/A'}</span>
               </div>
             </div>
           </div>
