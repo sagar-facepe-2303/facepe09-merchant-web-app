@@ -28,6 +28,10 @@ export function useNotificationStream() {
       if (cancelled) return
       try {
         es = notificationService.openStream()
+        if (!es) {
+          console.warn('[notifications] No EventSource created (no token)')
+          return
+        }
       } catch (err) {
         console.warn('[notifications] open failed', err)
         scheduleReconnect()

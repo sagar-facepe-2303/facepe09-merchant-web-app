@@ -18,8 +18,7 @@ function DashboardHeader({ currentPage, currentPagePath, userName }) {
   const unreadCount = useSelector((s) => s.notifications.unreadCount)
 
   // Activate the SSE notifications stream while the dashboard is mounted
-  // Temporarily disabled due to continuous API errors
-  // useNotificationStream()
+  useNotificationStream()
 
   const initials = userName || getInitials(profile)
 
@@ -37,13 +36,13 @@ function DashboardHeader({ currentPage, currentPagePath, userName }) {
       </nav>
 
       <div className="dashboard-header-actions">
-        <div className="search-input-wrapper">
+        {/* <div className="search-input-wrapper">
           <input type="text" placeholder="Search..." className="search-input" />
           <svg className="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path d="M13.9988 13.9998L11.1055 11.1064" stroke="#8C93A1" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M2 7.33333C2 10.2769 4.38979 12.6667 7.33333 12.6667C10.2769 12.6667 12.6667 10.2769 12.6667 7.33333C12.6667 4.38979 10.2769 2 7.33333 2C4.38979 2 2 4.38979 2 7.33333V7.33333" stroke="#8C93A1" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
-        </div>
+        </div> */}
 
         <button
           className="notification-btn"

@@ -1,9 +1,9 @@
 /**
  * Notifications via Server-Sent Events.
- * Tokens are sent via query param because browsers' EventSource API
- * does not allow custom headers.
+ * Uses event-source-polyfill to support Authorization header.
  */
 import { tokenService } from '../../utils/tokenService'
+import { EventSourcePolyfill } from 'event-source-polyfill'
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.dev.facepe.ai/mb'
 
@@ -14,7 +14,16 @@ export const notificationService = {
    */
   openStream() {
     const token = tokenService.getAccessToken()
-    const url = `${BASE_URL}/notifications/stream${token ? `?token=${encodeURIComponent(token)}` : ''}`
-    return new EventSource(url, { withCredentials: true })
+    if (!token) {
+      console.warn('[notifications] No access token available')
+      return null
+    }
+    const url = `${BASE_URL}/notifications/stream`
+    return new EventSourcePolyfill(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    })
   },
 }

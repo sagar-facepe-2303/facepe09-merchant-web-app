@@ -795,6 +795,57 @@
   border-color: #5000EA;
 }
 
+/* Notification History */
+.notif-history-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.notif-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #E5E5E5;
+  border-radius: 12px;
+}
+
+.notif-history-item {
+  padding: 14px 20px;
+  border-bottom: 1px solid #F0F0F0;
+  background: #FFFFFF;
+  transition: background 0.2s ease;
+}
+
+.notif-history-item:hover {
+  background: #F9FAFB;
+}
+
+.notif-history-item:last-child {
+  border-bottom: none;
+}
+
+.notif-history-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.notif-history-message {
+  font-family: Satoshi;
+  font-size: 14px;
+  color: #1A1C29;
+  line-height: 1.4;
+}
+
+.notif-history-time {
+  font-family: Satoshi;
+  font-size: 12px;
+  color: #9CA3AF;
+}
+
 /* ==== Responsive ==== */
 @media (max-width: 768px) {
   .settings-header,

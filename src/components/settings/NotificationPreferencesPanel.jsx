@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { markAllRead, clearNotifications } from '../../features/notifications/notificationsSlice'
 import notificationsResponse from '../../data/notificationsData.json'
 
 const BellIcon = () => (
@@ -56,6 +58,10 @@ function Checkbox({ checked, onChange }) {
 }
 
 function NotificationPreferencesPanel() {
+  const dispatch = useDispatch()
+  const notifications = useSelector((s) => s.notifications.items)
+  const unreadCount = useSelector((s) => s.notifications.unreadCount)
+  
   const [settings, setSettings] = useState({
     email: '',
     phone: '',
@@ -99,6 +105,56 @@ function NotificationPreferencesPanel() {
 
   return (
     <div className="notifications-panel">
+{/* Notification History */}
+      <div className="security-card">
+        <div className="security-card-header">
+          <BellIcon />
+          <h3 className="security-card-title">Notification History</h3>
+          <div className="notif-history-actions">
+            {unreadCount > 0 && (
+              <button
+                className="btn-secondary"
+                onClick={() => dispatch(markAllRead())}
+                style={{ padding: '6px 12px', fontSize: '12px' }}
+              >
+                Mark All Read
+              </button>
+            )}
+            {notifications.length > 0 && (
+              <button
+                className="btn-secondary"
+                onClick={() => dispatch(clearNotifications())}
+                style={{ padding: '6px 12px', fontSize: '12px' }}
+              >
+                Clear All
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div className="notif-history-list">
+          {notifications.length === 0 ? (
+            <div style={{ padding: '40px 20px', textAlign: 'center', color: '#8C93A1' }}>
+              No notifications yet
+            </div>
+          ) : (
+            notifications.map((notif, index) => (
+              <div key={index} className="notif-history-item">
+                <div className="notif-history-content">
+                  <div className="notif-history-message">
+                    {notif.message || JSON.stringify(notif)}
+                  </div>
+                  <div className="notif-history-time">
+                    {notif.ts ? new Date(notif.ts).toLocaleString() : 'Just now'}
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
+
       {/* Notification Settings */}
       <div className="security-card">
         <div className="security-card-header">
@@ -184,6 +240,8 @@ function NotificationPreferencesPanel() {
           </div>
         </div>
       ))}
+
+      
     </div>
   )
 }
