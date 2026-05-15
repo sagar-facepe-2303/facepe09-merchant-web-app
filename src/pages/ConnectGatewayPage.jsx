@@ -32,7 +32,6 @@ function ConnectGatewayPage() {
   })
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
-  const [testing, setTesting] = useState(false)
 
   useEffect(() => {
     if (!registration?.vsid) navigate(ROUTES.SIGNUP, { replace: true })
@@ -52,22 +51,6 @@ function ConnectGatewayPage() {
     target_psp_credentials: { api_key: form.secret_key },
     is_default: form.is_default,
   })
-
-  const handleTest = async () => {
-    if (!form.gateway_type || !form.publishable_key || !form.secret_key) {
-      toast.error('Fill gateway, publishable key, and secret key first.')
-      return
-    }
-    setTesting(true)
-    try {
-      await gatewayService.testConnection(buildPayload())
-      toast.success('Connection successful!')
-    } catch (err) {
-      toast.error(parseApiError(err).message)
-    } finally {
-      setTesting(false)
-    }
-  }
 
   const handleSubmit = async () => {
     const newErrors = {}
@@ -158,7 +141,7 @@ function ConnectGatewayPage() {
                 className="gateway-input gateway-select"
                 value={form.gateway_type}
                 onChange={onChange('gateway_type')}
-                disabled={submitting || testing}
+                disabled={submitting}
               >
                 {GATEWAYS.map((g) => (
                   <option key={g.value} value={g.value}>{g.label}</option>
@@ -193,7 +176,7 @@ function ConnectGatewayPage() {
               placeholder="pk_live_...."
               value={form.publishable_key}
               onChange={onChange('publishable_key')}
-              disabled={submitting || testing}
+              disabled={submitting}
               autoComplete="off"
             />
             {errors.publishable_key && <p className="gateway-error">{errors.publishable_key}</p>}
@@ -215,7 +198,7 @@ function ConnectGatewayPage() {
               placeholder="sk_live_...."
               value={form.secret_key}
               onChange={onChange('secret_key')}
-              disabled={submitting || testing}
+              disabled={submitting}
               autoComplete="off"
             />
             {errors.secret_key && <p className="gateway-error">{errors.secret_key}</p>}
@@ -289,17 +272,9 @@ function ConnectGatewayPage() {
 
             <button
               type="button"
-              className="gateway-secondary-btn"
-              onClick={handleTest}
-              disabled={testing || submitting}
-            >
-              {testing ? 'Testing…' : 'Test connection'}
-            </button>
-            <button
-              type="button"
               className="gateway-primary-btn"
               onClick={handleSubmit}
-              disabled={testing || submitting}
+              disabled={submitting}
             >
               {submitting ? 'Saving…' : 'Save & Continue'}
             </button>

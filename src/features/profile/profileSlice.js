@@ -56,6 +56,9 @@ const profileSlice = createSlice({
           state.data.logo_url = action.payload?.logo_url || state.data.logo_url
         }
       })
+      .addCase(uploadLogoThunk.rejected, (state, action) => {
+        state.error = action.payload?.message || 'Failed to upload logo'
+      })
   },
 })
 

@@ -6,33 +6,46 @@ import { parseApiError } from '../../utils/errorParser'
 import { toast } from '../../utils/toast'
 
 const EMPTY_FORM = {
-  businessName: '',
-  type: '',
-  taxId: '',
-  website: '',
+  merchantId: '',
   email: '',
-  phone: '',
-  city: '',
-  state: '',
-  zip: '',
-  country: '',
+  businessName: '',
+  mobileNumber: '',
+  mobileVerified: false,
+  logoUrl: null,
+  createdAt: '',
+  updatedAt: '',
 }
 
 const MAX_LOGO_BYTES = 2 * 1024 * 1024 // 2MB
 const ALLOWED_LOGO_TYPES = ['image/png', 'image/jpeg', 'image/webp']
 
+// Format ISO date to readable format
+const formatDate = (isoDate) => {
+  if (!isoDate) return 'N/A'
+  try {
+    const date = new Date(isoDate)
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    })
+  } catch {
+    return isoDate
+  }
+}
+
 // Map API profile shape → form fields
 const profileToForm = (p = {}) => ({
-  businessName: p.business_name || p.businessName || '',
-  type: p.type || '',
-  taxId: p.tax_id || p.taxId || '',
-  website: p.website || '',
+  merchantId: p.merchant_id || '',
   email: p.email || '',
-  phone: p.mobile_number || p.phone || '',
-  city: p.city || '',
-  state: p.state || '',
-  zip: p.zip || '',
-  country: p.country || '',
+  businessName: p.business_name || '',
+  mobileNumber: p.mobile_number || '',
+  mobileVerified: p.mobile_verified || false,
+  logoUrl: p.logo_url || null,
+  createdAt: formatDate(p.created_at),
+  updatedAt: formatDate(p.updated_at),
 })
 
 function MerchantProfileForm() {
@@ -58,7 +71,7 @@ function MerchantProfileForm() {
   }, [profile])
 
   const handleChange = (field) => (e) => {
-    setForm((prev) => ({ ...prev, [field]: e.target.value }))
+    // No editable fields except logo
   }
 
   const handleUploadClick = () => fileInputRef.current?.click()
@@ -97,32 +110,11 @@ function MerchantProfileForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setSubmitting(true)
-    try {
-      await profileService.updateProfile({
-        business_name: form.businessName,
-        type: form.type,
-        tax_id: form.taxId,
-        website: form.website,
-        email: form.email,
-        mobile_number: form.phone,
-        city: form.city,
-        state: form.state,
-        zip: form.zip,
-        country: form.country,
-      })
-      // Refresh profile in store
-      dispatch(fetchProfileThunk())
-      toast.success('Profile updated.')
-    } catch (err) {
-      toast.error(parseApiError(err).message)
-    } finally {
-      setSubmitting(false)
-    }
+    // No profile update API - only logo is editable
   }
 
   return (
-    <form className="merchant-profile-card" onSubmit={handleSubmit}>
+    <div className="merchant-profile-card">
       <div className="profile-image-section">
         <h3 className="profile-image-title">Profile Image Section</h3>
         <div className="profile-image-row">
@@ -173,61 +165,36 @@ function MerchantProfileForm() {
 
       <div className="settings-form-grid">
         <div className="form-field">
-          <label className="form-label">Business name <span className="required">*</span></label>
-          <input className="form-input" value={form.businessName} onChange={handleChange('businessName')} />
-          <span className="form-hint">Full name not needed.</span>
+          <label className="form-label">Merchant ID</label>
+          <input className="form-input" value={form.merchantId} readOnly />
         </div>
         <div className="form-field">
-          <label className="form-label">Type <span className="required">*</span></label>
-          <input className="form-input" value={form.type} onChange={handleChange('type')} />
-        </div>
-
-        <div className="form-field">
-          <label className="form-label">Tax ID <span className="required">*</span></label>
-          <input className="form-input" value={form.taxId} onChange={handleChange('taxId')} />
+          <label className="form-label">Business Name</label>
+          <input className="form-input" value={form.businessName} readOnly />
         </div>
         <div className="form-field">
-          <label className="form-label">Website <span className="required">*</span></label>
-          <input className="form-input" value={form.website} onChange={handleChange('website')} />
-        </div>
-
-        <div className="form-field">
-          <label className="form-label">Business email <span className="required">*</span></label>
-          <input className="form-input" value={form.email} onChange={handleChange('email')} />
+          <label className="form-label">Email</label>
+          <input className="form-input" value={form.email} readOnly />
         </div>
         <div className="form-field">
-          <label className="form-label">Phone number <span className="required">*</span></label>
+          <label className="form-label">Mobile Number</label>
           <div className="phone-input-wrapper">
-            <span className="phone-flag">🇮🇳 <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="#6B7280" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
-            <input className="form-input phone-input" value={form.phone} onChange={handleChange('phone')} />
+            <input className="form-input phone-input" value={form.mobileNumber} readOnly />
+            {form.mobileVerified && (
+              <span style={{ marginLeft: 8, color: '#00A63E', fontSize: 12 }}>✓ Verified</span>
+            )}
           </div>
         </div>
-
         <div className="form-field">
-          <label className="form-label">City</label>
-          <input className="form-input" value={form.city} onChange={handleChange('city')} />
+          <label className="form-label">Created At</label>
+          <input className="form-input" value={form.createdAt} readOnly />
         </div>
         <div className="form-field">
-          <label className="form-label">State / Province</label>
-          <input className="form-input" value={form.state} onChange={handleChange('state')} />
-        </div>
-
-        <div className="form-field">
-          <label className="form-label">ZIP / Postal Code</label>
-          <input className="form-input" value={form.zip} onChange={handleChange('zip')} />
-        </div>
-        <div className="form-field">
-          <label className="form-label">Country</label>
-          <input className="form-input" value={form.country} onChange={handleChange('country')} />
+          <label className="form-label">Updated At</label>
+          <input className="form-input" value={form.updatedAt} readOnly />
         </div>
       </div>
-
-      <div className="settings-form-footer">
-        <button type="submit" className="update-details-btn" disabled={submitting || loading}>
-          {submitting ? 'Saving…' : 'Update Details'}
-        </button>
-      </div>
-    </form>
+    </div>
   )
 }
 

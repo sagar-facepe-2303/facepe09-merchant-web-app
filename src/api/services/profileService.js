@@ -10,7 +10,7 @@ export const profileService = {
     const form = new FormData()
     form.append('logo', file)
     return apiClient
-      .put('/me/logo', form, { headers: { 'Content-Type': 'multipart/form-data' } })
+      .put('/me/logo', form)
       .then((r) => r.data)
   },
 }

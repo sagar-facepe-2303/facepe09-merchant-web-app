@@ -13,7 +13,4 @@ export const gatewayService = {
    * @param {boolean} [payload.is_default]
    */
   create: (payload) => apiClient.post('/gateways', payload).then((r) => r.data),
-
-  testConnection: (payload) =>
-    apiClient.post('/gateways/test', payload).then((r) => r.data),
 }
