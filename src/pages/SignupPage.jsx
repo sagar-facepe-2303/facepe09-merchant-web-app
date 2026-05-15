@@ -20,9 +20,9 @@ function SignupPage() {
 
   const [form, setForm] = useState({
     businessName: '',
-    adminName: '',
-    businessTaxId: '',
-    businessUrl: '',
+    // adminName: '',
+    // businessTaxId: '',
+    // businessUrl: '',
     email: '',
     mobileNumber: '',
     password: '',
@@ -41,7 +41,7 @@ function SignupPage() {
     e.preventDefault()
     const { ok, errors: localErrors } = validateForm(form, {
       businessName: [required('Business name is required')],
-      adminName: [required('Admin name is required')],
+      // adminName: [required('Admin name is required')],
       email: [required('Email is required'), emailRule()],
       mobileNumber: [required('Mobile number is required'), phoneRule()],
       password: [required('Password is required'), strongPassword()],
@@ -85,35 +85,44 @@ function SignupPage() {
 
         <section className="signup-card">
           <form className="signup-form" onSubmit={handleSubmit} noValidate>
-            <div className="signup-grid">
-              <Input
+             {/*  <div className="signup-grid">
+              {/* <Input
                 id="business-name" name="businessName" type="text"
-                label="Business name" placeholder="Walmart Inc" required
+                label="Business name" placeholder="FacePe" required
                 helper="Full name not needed"
                 value={form.businessName} onChange={onChange('businessName')}
                 error={errors.businessName || fieldErrors?.business_name}
                 disabled={loading}
-              />
-              <Input
+              /> */}
+              {/* <Input
                 id="admin-name" name="adminName" type="text"
                 label="Admin name" placeholder="John Doe" required
                 value={form.adminName} onChange={onChange('adminName')}
                 error={errors.adminName} disabled={loading}
-              />
-              <Input
+              /> */}
+              {/* <Input
                 id="business-tax-id" name="businessTaxId" type="text"
                 label="Business Tax ID" placeholder="4817XXX77"
                 helper="Enter your business tax ID"
                 value={form.businessTaxId} onChange={onChange('businessTaxId')}
                 error={errors.businessTaxId} disabled={loading}
-              />
-              <Input
+              /> */}
+              {/* <Input
                 id="business-url" name="businessUrl" type="url"
                 label="Business Website URL" placeholder="www.walmart.com"
                 value={form.businessUrl} onChange={onChange('businessUrl')}
                 error={errors.businessUrl} disabled={loading}
+              /> 
+            </div> */}
+
+             <Input
+                id="business-name" name="businessName" type="text"
+                label="Business name" placeholder="FacePe" required
+                helper="Full name not needed"
+                value={form.businessName} onChange={onChange('businessName')}
+                error={errors.businessName || fieldErrors?.business_name}
+                disabled={loading}
               />
-            </div>
 
             <Input
               id="business-email" name="email" type="email"
