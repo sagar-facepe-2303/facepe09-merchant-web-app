@@ -1,30 +1,50 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
-import statusBreakdownResponse from '../../data/statusBreakdownData.json'
 import './StatusBreakdownCard.css'
+
+const STATUS_COLORS = {
+  Success: '#34A853',
+  Pending: '#FBBC04',
+  Failed: '#EA4335',
+}
+
+// Filter transactions to those falling within the selected period
+function filterByPeriod(transactions, period) {
+  const now = new Date()
+  const cutoff = new Date(now)
+  if (period === 'week') cutoff.setDate(now.getDate() - 7)
+  else if (period === 'month') cutoff.setDate(now.getDate() - 30)
+  else cutoff.setFullYear(now.getFullYear() - 1)
+  return (transactions || []).filter((t) => {
+    const td = new Date(t.created_at)
+    return td >= cutoff && td <= now
+  })
+}
 
 function StatusBreakdownCard() {
   const [period, setPeriod] = useState('week')
-  const [mainData, setMainData] = useState([])
-  const [totals, setTotals] = useState({ success: 0, pending: 0, failed: 0 })
   const [selected, setSelected] = useState({ name: 'Success', value: 0 })
+  const { items: transactions } = useSelector((s) => s.transactions)
+
+  const { mainData, totals } = useMemo(() => {
+    const filtered = filterByPeriod(transactions, period)
+    const success = filtered.filter((t) => t.status === 'completed').length
+    const pending = filtered.filter((t) => t.status === 'pending').length
+    const failed = filtered.filter((t) => t.status === 'failed').length
+    return {
+      totals: { success, pending, failed },
+      mainData: [
+        { name: 'Success', value: success, fill: STATUS_COLORS.Success },
+        { name: 'Pending', value: pending, fill: STATUS_COLORS.Pending },
+        { name: 'Failed', value: failed, fill: STATUS_COLORS.Failed },
+      ].filter((d) => d.value > 0),
+    }
+  }, [transactions, period])
 
   useEffect(() => {
-    // Simulate API call - replace with real fetch when backend is ready
-    // e.g. fetch(`/api/status-breakdown?period=${period}`).then(r => r.json()).then(...)
-    const fetchStatus = async () => {
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 300))
-        const periodData = statusBreakdownResponse[period]
-        setMainData(periodData.data)
-        setTotals(periodData.totals)
-        setSelected({ name: 'Success', value: periodData.totals.success })
-      } catch (err) {
-        console.error('Failed to load status breakdown:', err)
-      }
-    }
-    fetchStatus()
-  }, [period])
+    setSelected({ name: 'Success', value: totals.success })
+  }, [totals.success])
 
   const weekDropdown = (
     <select
@@ -46,7 +66,7 @@ function StatusBreakdownCard() {
       <div className="status-breakdown-header">
         <div className="status-breakdown-title-section">
           <h2 className="status-breakdown-title">Status Breakdown</h2>
-          <p className="status-breakdown-subtitle">67% increased this week</p>
+          <p className="status-breakdown-subtitle">{totals.success + totals.pending + totals.failed} transactions this {period}</p>
         </div>
         {weekDropdown}
       </div>
@@ -157,9 +177,9 @@ function StatusBreakdownCard() {
         </ResponsiveContainer>
 
         {/* Floating Badge */}
-        <div className="status-breakdown-badge" title={selected.name}>
+        {/* <div className="status-breakdown-badge" title={selected.name}>
           <span className="status-breakdown-badge-value">{selected.value}</span>
-        </div>
+        </div> */}
       </div>
     </div>
   )
