@@ -49,9 +49,15 @@ const transactionsSlice = createSlice({
       })
       .addCase(fetchTransactionsThunk.fulfilled, (state, action) => {
         state.loading = false
-        const data = action.payload || {}
-        state.items = data.transactions || data.items || []
-        state.total = data.total ?? state.items.length
+        const data = action.payload
+        // API may return a plain array OR an object with transactions/items
+        if (Array.isArray(data)) {
+          state.items = data
+          state.total = data.length
+        } else {
+          state.items = data?.transactions || data?.items || []
+          state.total = data?.total ?? state.items.length
+        }
         state.lastFetchedAt = Date.now()
       })
       .addCase(fetchTransactionsThunk.rejected, (state, action) => {

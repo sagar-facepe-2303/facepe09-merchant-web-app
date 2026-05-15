@@ -12,9 +12,28 @@ import { EmptyState, Button } from '../common'
 // Map UI status label → API `status_filter` value
 const UI_TO_API_STATUS = {
   '': 'all',
-  Successful: 'completed',
-  Pending: 'pending',
-  Failed: 'failed',
+  completed: 'completed',
+  pending: 'pending',
+  failed: 'failed',
+}
+
+const formatAmount = (amount, currency = 'USD') => {
+  if (amount == null) return '-'
+  try {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(amount)
+  } catch {
+    return `${currency} ${amount}`
+  }
+}
+
+const formatDateTime = (iso) => {
+  if (!iso) return '-'
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return iso
+  return d.toLocaleString('en-US', {
+    year: 'numeric', month: 'short', day: '2-digit',
+    hour: '2-digit', minute: '2-digit',
+  })
 }
 
 function TransactionsTable() {
@@ -66,22 +85,22 @@ function TransactionsTable() {
   const filteredTransactions = useMemo(
     () =>
       (transactions || []).filter((t) => {
-        if (filters.date && !String(t.datetime || '').includes(filters.date)) return false
+        const dateStr = t.created_at ? new Date(t.created_at).toISOString().slice(0, 10) : ''
+        if (filters.date && dateStr !== filters.date) return false
         if (filters.amount && !String(t.amount || '').includes(filters.amount)) return false
         if (filters.kiosk && t.kiosk !== filters.kiosk) return false
         if (filters.processor && t.processor !== filters.processor) return false
-        if (filters.status && t.status !== filters.status) return false
+        if (filters.status && t.status !== filters.status.toLowerCase()) return false
         return true
       }),
     [transactions, filters]
   )
 
+  // Client-side pagination over filtered results
   const indexOfFirstItem = (currentPage - 1) * itemsPerPage
   const indexOfLastItem = indexOfFirstItem + itemsPerPage
-  // If backend already paginates, items are already a single page; we still slice
-  // defensively so client-side filters render predictably.
-  const currentItems = filteredTransactions
-  const totalPages = Math.max(1, Math.ceil((total || filteredTransactions.length) / itemsPerPage))
+  const currentItems = filteredTransactions.slice(indexOfFirstItem, indexOfLastItem)
+  const totalPages = Math.max(1, Math.ceil(filteredTransactions.length / itemsPerPage))
 
   const handleFilterChange = (field, value) => {
     setFilters((prev) => ({ ...prev, [field]: value }))
@@ -184,9 +203,9 @@ function TransactionsTable() {
               className="filter-input"
             >
               <option value="">All</option>
-              <option value="Successful">Successful</option>
-              <option value="Pending">Pending</option>
-              <option value="Failed">Failed</option>
+              <option value="completed">Successful</option>
+              <option value="pending">Pending</option>
+              <option value="failed">Failed</option>
             </select>
           </div>
         </div>
@@ -198,8 +217,8 @@ function TransactionsTable() {
                 <th>Transaction ID</th>
                 <th>Date / Time</th>
                 <th>Amount</th>
-                <th>Kiosk</th>
-                <th>Processor</th>
+                <th>Customer</th>
+                <th>Gateway / Description</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -243,11 +262,17 @@ function TransactionsTable() {
                   className="table-row-clickable"
                   onClick={() => handleRowClick(transaction)}
                 >
-                  <td className="table-id">{transaction.id}</td>
-                  <td className="table-date">{transaction.datetime}</td>
-                  <td className="table-amount">{transaction.amount}</td>
-                  <td className="table-kiosk">{transaction.kiosk}</td>
-                  <td className="table-processor">{transaction.processor}</td>
+                  <td className="table-id" title={transaction.id}>
+                    {String(transaction.id || '').slice(0, 18)}{String(transaction.id || '').length > 18 ? '…' : ''}
+                  </td>
+                  <td className="table-date">{formatDateTime(transaction.created_at)}</td>
+                  <td className="table-amount">{formatAmount(transaction.amount, transaction.currency)}</td>
+                  <td className="table-kiosk">{transaction.customer_name || '-'}</td>
+                  <td className="table-processor" title={transaction.gateway_transaction_id || ''}>
+                    {transaction.gateway_transaction_id
+                      ? String(transaction.gateway_transaction_id).slice(0, 18) + '…'
+                      : (transaction.description || '-')}
+                  </td>
                   <td className="table-status">
                     <StatusBadge status={String(transaction.status || '').toLowerCase()} />
                   </td>
@@ -259,9 +284,9 @@ function TransactionsTable() {
 
         <div className="transactions-table-footer">
           <div className="transactions-table-info">
-            {currentItems.length === 0
+            {filteredTransactions.length === 0
               ? `0 results`
-              : `Showing ${indexOfFirstItem + 1} - ${Math.min(indexOfLastItem, (total || filteredTransactions.length))} of ${total || filteredTransactions.length} results`}
+              : `Showing ${indexOfFirstItem + 1} - ${Math.min(indexOfLastItem, filteredTransactions.length)} of ${filteredTransactions.length} results`}
           </div>
           <div className="transactions-table-pagination">
             <button

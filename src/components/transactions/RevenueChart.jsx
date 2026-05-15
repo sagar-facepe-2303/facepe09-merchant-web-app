@@ -1,27 +1,75 @@
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useMemo, useState } from 'react'
+import { useSelector } from 'react-redux'
 import ChartCard from './ChartCard'
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart, ReferenceLine } from 'recharts'
-import { fetchTransactionsThunk } from '../../features/transactions/transactionsSlice'
-import revenueResponse from '../../data/revenueData.json'
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts'
+
+const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+// Compute revenue trend buckets from completed transactions
+function computeRevenueTrend(transactions, period) {
+  const completed = (transactions || []).filter((t) => t.status === 'completed')
+  const now = new Date()
+
+  if (period === 'week') {
+    // Last 7 days
+    const buckets = Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(now)
+      d.setDate(now.getDate() - (6 - i))
+      d.setHours(0, 0, 0, 0)
+      return { name: DAY_NAMES[d.getDay()], date: d, value: 0 }
+    })
+    completed.forEach((t) => {
+      const td = new Date(t.created_at)
+      const bucket = buckets.find(
+        (b) => td >= b.date && td < new Date(b.date.getTime() + 86400000)
+      )
+      if (bucket) bucket.value += Number(t.amount || 0)
+    })
+    return buckets.map(({ name, value }) => ({ name, value: Math.round(value * 100) / 100 }))
+  }
+
+  if (period === 'month') {
+    // Last 30 days, grouped into 4 weekly buckets
+    const buckets = Array.from({ length: 4 }, (_, i) => {
+      const start = new Date(now)
+      start.setDate(now.getDate() - (28 - i * 7))
+      start.setHours(0, 0, 0, 0)
+      const end = new Date(start)
+      end.setDate(start.getDate() + 7)
+      return { name: `Wk ${i + 1}`, start, end, value: 0 }
+    })
+    completed.forEach((t) => {
+      const td = new Date(t.created_at)
+      const bucket = buckets.find((b) => td >= b.start && td < b.end)
+      if (bucket) bucket.value += Number(t.amount || 0)
+    })
+    return buckets.map(({ name, value }) => ({ name, value: Math.round(value * 100) / 100 }))
+  }
+
+  // year - last 12 months
+  const buckets = Array.from({ length: 12 }, (_, i) => {
+    const d = new Date(now.getFullYear(), now.getMonth() - (11 - i), 1)
+    return { name: MONTH_NAMES[d.getMonth()], year: d.getFullYear(), month: d.getMonth(), value: 0 }
+  })
+  completed.forEach((t) => {
+    const td = new Date(t.created_at)
+    const bucket = buckets.find((b) => b.year === td.getFullYear() && b.month === td.getMonth())
+    if (bucket) bucket.value += Number(t.amount || 0)
+  })
+  return buckets.map(({ name, value }) => ({ name, value: Math.round(value * 100) / 100 }))
+}
 
 function RevenueChart() {
-  const dispatch = useDispatch()
   const [period, setPeriod] = useState('week')
-  const [data, setData] = useState([])
-  const [loading, setLoading] = useState(true)
   const { items: transactions } = useSelector((s) => s.transactions)
 
-  useEffect(() => {
-    // Compute revenue trend from transaction list
-    if (transactions && transactions.length > 0) {
-      setLoading(true)
-      // For now, use mock data - replace with real computation when backend provides sufficient data
-      const periodData = revenueResponse[period]
-      setData(periodData.data)
-      setLoading(false)
-    }
-  }, [transactions, period])
+  const data = useMemo(() => computeRevenueTrend(transactions, period), [transactions, period])
+  const total = useMemo(() => data.reduce((sum, d) => sum + d.value, 0), [data])
+  const yMax = useMemo(() => {
+    const m = Math.max(...data.map((d) => d.value), 0)
+    return m > 0 ? Math.ceil(m * 1.2) : 100
+  }, [data])
 
   const weekDropdown = (
     <select
@@ -38,7 +86,7 @@ function RevenueChart() {
   return (
     <ChartCard
       title="Revenue Trend"
-      subtitle="67% increased this week"
+      subtitle={`Total: $${total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
       rightAction={weekDropdown}
     >
       <div className="revenue-chart">
@@ -67,7 +115,7 @@ function RevenueChart() {
             />
             <YAxis
               hide={true}
-              domain={[0, 1100]}
+              domain={[0, yMax]}
             />
             <Tooltip
               contentStyle={{
