@@ -18,7 +18,8 @@ function DashboardHeader({ currentPage, currentPagePath, userName }) {
   const unreadCount = useSelector((s) => s.notifications.unreadCount)
 
   // Activate the SSE notifications stream while the dashboard is mounted
-  useNotificationStream()
+  // Temporarily disabled due to continuous API errors
+  // useNotificationStream()
 
   const initials = userName || getInitials(profile)
 

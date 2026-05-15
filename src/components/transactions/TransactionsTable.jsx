@@ -120,6 +120,60 @@ function TransactionsTable() {
     setSelectedTransaction(null)
   }
 
+  const renderPageNumbers = () => {
+    const pages = []
+    const maxVisiblePages = 7 // Maximum number of page buttons to show
+
+    if (totalPages <= maxVisiblePages) {
+      // Show all pages if total is small
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i)
+      }
+    } else {
+      // Always show first page
+      pages.push(1)
+
+      if (currentPage > 3) {
+        pages.push('...')
+      }
+
+      // Show pages around current page
+      const startPage = Math.max(2, currentPage - 1)
+      const endPage = Math.min(totalPages - 1, currentPage + 1)
+
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i)
+      }
+
+      if (currentPage < totalPages - 2) {
+        pages.push('...')
+      }
+
+      // Always show last page
+      pages.push(totalPages)
+    }
+
+    return pages.map((page, index) => {
+      if (page === '...') {
+        return (
+          <span key={`ellipsis-${index}`} className="pagination-ellipsis">
+            ...
+          </span>
+        )
+      }
+      return (
+        <button
+          key={page}
+          className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+          onClick={() => dispatch(setPage(page))}
+          disabled={loading}
+        >
+          {page}
+        </button>
+      )
+    })
+  }
+
   return (
     <>
       <div className="transactions-table-section">
@@ -296,16 +350,7 @@ function TransactionsTable() {
             >
               Previous
             </button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
-                onClick={() => dispatch(setPage(page))}
-                disabled={loading}
-              >
-                {page}
-              </button>
-            ))}
+            {renderPageNumbers()}
             <button
               className="pagination-btn pagination-btn-next"
               onClick={() => dispatch(setPage(Math.min(currentPage + 1, totalPages)))}
