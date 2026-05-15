@@ -110,6 +110,26 @@ function ConnectGatewayPage() {
       <section className="signup-shell">
         <header className="signup-brand" aria-label="FacePe">
           <img className="signup-brand-image" src={facePeLogo} alt="FacePe" />
+          <button
+            type="button"
+            onClick={() => window.location.replace(ROUTES.DASHBOARD_TRANSACTIONS)}
+            style={{
+              position: 'absolute',
+              top: 24,
+              right: 24,
+              background: 'transparent',
+              color: '#5B6273',
+              border: '1px solid #E5E7EB',
+              borderRadius: 8,
+              padding: '8px 16px',
+              fontSize: 14,
+              fontWeight: 500,
+              cursor: 'pointer',
+              fontFamily: 'Inter, sans-serif',
+            }}
+          >
+            Skip
+          </button>
         </header>
 
         <StepHeader currentStep={4} />

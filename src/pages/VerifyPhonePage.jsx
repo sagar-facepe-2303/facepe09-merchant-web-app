@@ -34,16 +34,18 @@ function VerifyPhonePage() {
     return () => clearInterval(t)
   }, [cooldown])
 
-  const handleSubmit = async () => {
-    if (otp.length !== 6) {
+  const handleSubmit = async (codeArg) => {
+    const code = typeof codeArg === 'string' ? codeArg : otp
+    if (code.length !== 6) {
       toast.error('Please enter the 6-digit OTP.')
       return
     }
+    if (loading) return
     const result = await dispatch(
       verifyRegistrationPhoneThunk({
         vsid: registration.vsid,
         session_secret: registration.session_secret,
-        code: otp,
+        code,
       })
     )
     if (verifyRegistrationPhoneThunk.fulfilled.match(result)) {
@@ -98,7 +100,7 @@ function VerifyPhonePage() {
             length={6}
             value={otp}
             onChange={setOtp}
-            onComplete={(v) => setOtp(v)}
+            onComplete={(v) => { setOtp(v); handleSubmit(v) }}
             disabled={loading}
             autoFocus
           />

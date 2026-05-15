@@ -7,7 +7,9 @@ import {
   verifyRegistrationEmailThunk,
   clearAuthError,
 } from '../features/auth/authSlice'
+import { fetchProfileThunk } from '../features/profile/profileSlice'
 import { authService } from '../api/services/authService'
+import { tokenService } from '../utils/tokenService'
 import { ROUTES } from '../routes/paths'
 import { RESEND_OTP_COOLDOWN_SECONDS } from '../utils/constants'
 import { parseApiError } from '../utils/errorParser'
@@ -21,6 +23,8 @@ function VerifyEmailPage() {
   const [otp, setOtp] = useState('')
   const [cooldown, setCooldown] = useState(0)
   const [resending, setResending] = useState(false)
+  const [completing, setCompleting] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
 
   useEffect(() => { dispatch(clearAuthError()) }, [dispatch])
   useEffect(() => { if (error) toast.error(error) }, [error])
@@ -34,21 +38,43 @@ function VerifyEmailPage() {
     return () => clearInterval(t)
   }, [cooldown])
 
-  const handleSubmit = async () => {
-    if (otp.length !== 6) {
+  const handleSubmit = async (codeArg) => {
+    const code = typeof codeArg === 'string' ? codeArg : otp
+    if (code.length !== 6) {
       toast.error('Please enter the 6-digit code.')
       return
     }
+    if (loading || completing) return
     const result = await dispatch(
       verifyRegistrationEmailThunk({
         vsid: registration.vsid,
         session_secret: registration.session_secret,
-        code: otp,
+        code,
       })
     )
-    if (verifyRegistrationEmailThunk.fulfilled.match(result)) {
-      toast.success('Email verified.')
-      navigate(ROUTES.SIGNUP_CONNECT_GATEWAY)
+    if (!verifyRegistrationEmailThunk.fulfilled.match(result)) return
+
+    // Behind the scenes: complete the registration to receive tokens
+    setCompleting(true)
+    try {
+      const completion = await authService.completeRegistration({
+        vsid: registration.vsid,
+        session_secret: registration.session_secret,
+      })
+      if (completion?.access_token) {
+        tokenService.setRememberMe(true)
+        tokenService.setTokens(completion)
+        await dispatch(fetchProfileThunk())
+        setShowSuccess(true)
+      } else {
+        // No tokens returned — fall back to gateway connection step
+        toast.success('Email verified.')
+        navigate(ROUTES.SIGNUP_CONNECT_GATEWAY)
+      }
+    } catch (err) {
+      toast.error(parseApiError(err).message)
+    } finally {
+      setCompleting(false)
     }
   }
 
@@ -88,8 +114,8 @@ function VerifyEmailPage() {
             length={6}
             value={otp}
             onChange={setOtp}
-            onComplete={(v) => setOtp(v)}
-            disabled={loading}
+            onComplete={(v) => { setOtp(v); handleSubmit(v) }}
+            disabled={loading || completing || showSuccess}
             autoFocus
           />
 
@@ -124,9 +150,9 @@ function VerifyEmailPage() {
             type="button"
             className="verify-submit"
             onClick={handleSubmit}
-            disabled={loading || otp.length !== 6}
+            disabled={loading || completing || otp.length !== 6}
           >
-            {loading ? 'Verifying…' : 'Verify Email'}
+            {completing ? 'Finalizing…' : loading ? 'Verifying…' : 'Verify Email'}
           </button>
 
           <button type="button" className="verify-back" onClick={() => navigate(ROUTES.SIGNUP_VERIFY_PHONE)}>
@@ -141,6 +167,85 @@ function VerifyEmailPage() {
           </button>
         </p>
       </section>
+
+      {showSuccess && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="reg-success-title"
+          style={{
+            position: 'fixed', inset: 0, background: 'rgba(16, 8, 36, 0.55)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            zIndex: 9999, padding: 16,
+          }}
+        >
+          <div
+            style={{
+              background: '#fff', borderRadius: 16, padding: '32px 28px',
+              maxWidth: 420, width: '100%', textAlign: 'center',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
+              fontFamily: 'Inter, sans-serif',
+            }}
+          >
+            <div
+              style={{
+                width: 64, height: 64, borderRadius: '50%',
+                background: '#E6F4EA', color: '#1E8E3E',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                margin: '0 auto 16px',
+              }}
+            >
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2.5"
+                  strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <h2 id="reg-success-title" style={{ margin: 0, fontSize: 22, color: '#100824' }}>
+              Registration Completed
+            </h2>
+            <p style={{ marginTop: 8, color: '#5B6273', fontSize: 14 }}>
+              Your merchant account is ready.
+            </p>
+            <button
+              type="button"
+              onClick={() => window.location.replace(ROUTES.DASHBOARD_TRANSACTIONS)}
+              style={{
+                marginTop: 24,
+                background: '#100824',
+                color: '#fff',
+                border: 'none',
+                borderRadius: 8,
+                padding: '12px 24px',
+                fontSize: 15,
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontFamily: 'Inter, sans-serif',
+                width: '100%',
+              }}
+            >
+              Go to Dashboard
+            </button>
+            <button
+              type="button"
+              onClick={() => window.location.replace(ROUTES.SIGNUP_CONNECT_GATEWAY)}
+              style={{
+                marginTop: 12,
+                background: 'transparent',
+                color: '#5B6273',
+                border: 'none',
+                borderRadius: 8,
+                padding: '12px 24px',
+                fontSize: 14,
+                fontWeight: 500,
+                cursor: 'pointer',
+                fontFamily: 'Inter, sans-serif',
+              }}
+            >
+              Skip
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   )
 }
