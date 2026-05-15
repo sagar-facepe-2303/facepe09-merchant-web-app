@@ -10,7 +10,7 @@ import '../components/settings/settings.css'
 
 const TABS = [
   { id: 'profile', label: 'Merchant Profile' },
-  { id: 'security', label: 'Security' },
+  // { id: 'security', label: 'Security' },
   { id: 'notifications', label: 'Notification preferences' },
 ]
 

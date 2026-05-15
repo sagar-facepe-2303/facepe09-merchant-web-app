@@ -49,13 +49,14 @@ function TransactionsTable() {
 
   const itemsPerPage = 7
 
-  // Local-only filters (date / amount / kiosk / processor are filtered client-side
+  // Local-only filters (date / amount / transactionId / customer / gateway are filtered client-side
   // over the page returned from the API). Status filter is sent to the backend.
   const [filters, setFilters] = useState({
     date: '',
     amount: '',
-    kiosk: '',
-    processor: '',
+    transactionId: '',
+    customer: '',
+    gateway: '',
     status: '',
   })
 
@@ -88,8 +89,9 @@ function TransactionsTable() {
         const dateStr = t.created_at ? new Date(t.created_at).toISOString().slice(0, 10) : ''
         if (filters.date && dateStr !== filters.date) return false
         if (filters.amount && !String(t.amount || '').includes(filters.amount)) return false
-        if (filters.kiosk && t.kiosk !== filters.kiosk) return false
-        if (filters.processor && t.processor !== filters.processor) return false
+        if (filters.transactionId && !String(t.id || '').includes(filters.transactionId)) return false
+        if (filters.customer && !String(t.customer_name || '').toLowerCase().includes(filters.customer.toLowerCase())) return false
+        if (filters.gateway && !String(t.gateway_transaction_id || '').toLowerCase().includes(filters.gateway.toLowerCase())) return false
         if (filters.status && t.status !== filters.status.toLowerCase()) return false
         return true
       }),
@@ -225,29 +227,34 @@ function TransactionsTable() {
             </div>
           </div>
           <div className="filter-field">
-            <label>Search by Kiosk</label>
-            <select 
-              value={filters.kiosk}
-              onChange={(e) => handleFilterChange('kiosk', e.target.value)}
+            <label>Search by Transaction ID</label>
+            <input 
+              type="text" 
+              placeholder="Enter transaction ID"
+              value={filters.transactionId}
+              onChange={(e) => handleFilterChange('transactionId', e.target.value)}
               className="filter-input"
-            >
-              <option value="">All</option>
-              <option value="JGL124">JGL124</option>
-              <option value="ABC456">ABC456</option>
-              <option value="ZXC123">ZXC123</option>
-            </select>
+            />
           </div>
           <div className="filter-field">
-            <label>Search by Processor</label>
-            <select 
-              value={filters.processor}
-              onChange={(e) => handleFilterChange('processor', e.target.value)}
+            <label>Search by Customer</label>
+            <input 
+              type="text" 
+              placeholder="Enter customer name"
+              value={filters.customer}
+              onChange={(e) => handleFilterChange('customer', e.target.value)}
               className="filter-input"
-            >
-              <option value="">All</option>
-              <option value="PayPal">PayPal</option>
-              <option value="Stripe">Stripe</option>
-            </select>
+            />
+          </div>
+          <div className="filter-field">
+            <label>Search by Gateway</label>
+            <input 
+              type="text" 
+              placeholder="Enter gateway ID"
+              value={filters.gateway}
+              onChange={(e) => handleFilterChange('gateway', e.target.value)}
+              className="filter-input"
+            />
           </div>
           <div className="filter-field">
             <label>Search by Status</label>
