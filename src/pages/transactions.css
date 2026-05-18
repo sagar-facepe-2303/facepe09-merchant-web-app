@@ -478,19 +478,19 @@
   font-family: Satoshi;
 }
 
-.status-badge-success {
-  background: #ecfdf3;
-  color: #16a34a;
+.status-badge.status-badge-success {
+  background: #A3D18B !important;
+  color: #ffffff !important;
 }
 
-.status-badge-pending {
-  background: #fef3c7;
-  color: #d97706;
+.status-badge.status-badge-pending {
+  background: #F59E0B !important;
+  color: #ffffff !important;
 }
 
-.status-badge-failed {
-  background: #fee2e2;
-  color: #dc2626;
+.status-badge.status-badge-failed {
+  background: #EF4444 !important;
+  color: #ffffff !important;
 }
 
 /* Transactions Table */

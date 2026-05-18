@@ -226,7 +226,7 @@ function Sidebar({ onToggle }) {
 
       {/* Footer */}
       <div className="sidebar-footer">
-        <ul className="sidebar-footer-menu">
+        {/* <ul className="sidebar-footer-menu">
           <li className="sidebar-menu-item">
             <Link to="/help" className="sidebar-link">
               <span className="sidebar-icon" aria-hidden="true">{helpIcon}</span>
@@ -239,7 +239,7 @@ function Sidebar({ onToggle }) {
               {!isCollapsed && <span className="sidebar-label">Feedback</span>}
             </Link>
           </li>
-        </ul>
+        </ul> */}
 
         {!isCollapsed && (
           <div className="sidebar-user-card">

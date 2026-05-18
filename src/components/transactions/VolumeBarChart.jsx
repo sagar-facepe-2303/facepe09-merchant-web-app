@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import ChartCard from './ChartCard'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
-const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 // Count transactions by status into period buckets
@@ -12,11 +12,16 @@ function computeVolume(transactions, period) {
   let buckets = []
 
   if (period === 'week') {
+    const dayOfWeek = now.getDay()
+    const daysFromMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1
+    const monday = new Date(now)
+    monday.setDate(now.getDate() - daysFromMonday)
+    monday.setHours(0, 0, 0, 0)
+
     buckets = Array.from({ length: 7 }, (_, i) => {
-      const d = new Date(now)
-      d.setDate(now.getDate() - (6 - i))
-      d.setHours(0, 0, 0, 0)
-      return { name: DAY_NAMES[d.getDay()], start: d, end: new Date(d.getTime() + 86400000), successful: 0, pending: 0, failed: 0 }
+      const d = new Date(monday)
+      d.setDate(monday.getDate() + i)
+      return { name: DAY_NAMES[i], start: d, end: new Date(d.getTime() + 86400000), successful: 0, pending: 0, failed: 0 }
     })
   } else if (period === 'month') {
     buckets = Array.from({ length: 4 }, (_, i) => {

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import ChartCard from './ChartCard'
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts'
 
-const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 // Compute revenue trend buckets from completed transactions
@@ -12,12 +12,17 @@ function computeRevenueTrend(transactions, period) {
   const now = new Date()
 
   if (period === 'week') {
-    // Last 7 days
+    // Last 7 days, always ordered Mon-Sun
+    const dayOfWeek = now.getDay()
+    const daysFromMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1
+    const monday = new Date(now)
+    monday.setDate(now.getDate() - daysFromMonday)
+    monday.setHours(0, 0, 0, 0)
+
     const buckets = Array.from({ length: 7 }, (_, i) => {
-      const d = new Date(now)
-      d.setDate(now.getDate() - (6 - i))
-      d.setHours(0, 0, 0, 0)
-      return { name: DAY_NAMES[d.getDay()], date: d, value: 0 }
+      const d = new Date(monday)
+      d.setDate(monday.getDate() + i)
+      return { name: DAY_NAMES[i], date: d, value: 0 }
     })
     completed.forEach((t) => {
       const td = new Date(t.created_at)
