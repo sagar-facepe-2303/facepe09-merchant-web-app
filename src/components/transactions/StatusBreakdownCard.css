@@ -1,0 +1,164 @@
+/* Card Container */
+.status-breakdown-card {
+  background: #FFFFFF;
+  border: 1px solid #E7E7E7;
+  border-radius: 16px;
+  padding: 20px;
+  position: relative;
+}
+
+/* Header Section */
+.status-breakdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-breakdown-title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.status-breakdown-title {
+  margin: 0;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #100824;
+}
+
+.status-breakdown-subtitle {
+  margin: 0;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6B7280;
+}
+
+/* Dropdown */
+.status-breakdown-dropdown {
+  width: 74px;
+  height: 29px;
+  padding: 6px 10px;
+  border: 1px solid #E5E7EB;
+  border-radius: 4px;
+  background: #F8F8FB;
+  font-size: 12px;
+  font-family: Satoshi;
+  color: #100824;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Stats Row */
+.status-breakdown-stats {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-top: 30px;
+}
+
+.status-breakdown-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.status-breakdown-stat-number {
+  font-size: 16px;
+  font-weight: 600;
+  color: #100824;
+  font-family: 'Satoshi', sans-serif;
+}
+
+.status-breakdown-stat-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-breakdown-dot {
+  width: 16px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.status-breakdown-dot-success {
+  background: #A3D18B;
+}
+
+.status-breakdown-dot-pending {
+  background: #F59E0B;
+}
+
+.status-breakdown-dot-failed {
+  background: #EF4444;
+}
+
+.status-breakdown-stat-text {
+  font-size: 14px;
+  color: #6B7280;
+  font-family: Satoshi;
+}
+
+/* Chart Wrapper */
+.status-breakdown-chart-wrapper {
+  margin-top: 20px;
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 180px;
+}
+
+.status-breakdown-chart-wrapper .recharts-responsive-container {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Floating Badge */
+.status-breakdown-badge {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 10%;
+  bottom: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .status-breakdown-stats {
+    gap: 16px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .status-breakdown-chart-wrapper {
+    max-width: 260px;
+  }
+
+  .status-breakdown-badge {
+    width: 48px;
+    height: 48px;
+    right: 6%;
+  }
+
+  .status-breakdown-badge-value {
+    font-size: 16px;
+  }
+}
+
+.status-breakdown-badge-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #100824;
+  font-family: 'Satoshi', sans-serif;
+}

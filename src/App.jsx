@@ -1,121 +1,80 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import LandingPage from './pages/LandingPage'
+import LoginPage from './pages/LoginPage'
+import ResetPasswordPage from './pages/ResetPasswordPage'
+import SignupPage from './pages/SignupPage'
+import VerifyEmailPage from './pages/VerifyEmailPage'
+import VerifyPhonePage from './pages/VerifyPhonePage'
+import TransactionsPage from './pages/TransactionsPage'
+import './pages/transactions.css'
+import './components/transactions/StatusBreakdownCard.css'
+import ConnectGatewayPage from './pages/ConnectGatewayPage'
+import EnterSecurityCodePage from './pages/EnterSecurityCodePage'
+import NewPasswordPage  from './pages/NewPasswordPage'
+import PasswordUpdatedPage from './pages/PasswordUpdatedPage'
+import DashboardPage from './pages/DashboardPage'
+import SettingsPage from './pages/SettingsPage'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import ProtectedRoute from './routes/ProtectedRoute'
+import AuthBootstrap from './routes/AuthBootstrap'
+import { ROUTES } from './routes/paths'
+import { ToastContainer } from './components/common'
+import './styles/theme.css'
+import './styles/landing.css'
+import './styles/login.css'
+import './styles/reset-password.css'
+import './styles/security-code.css'
+import './styles/new-password.css'
+import './styles/password-updated.css'
+import './styles/dashboard.css'
+import './styles/signup.css'
+import './styles/verify-email.css'
+import './styles/verify-phone.css'
+import './styles/connect-gateway.css'
+
+// Common component styles
+import './components/common/Button/Button.css'
+import './components/common/Input/Input.css'
+import './components/common/Loader/Loader.css'
+import './components/common/Card/Card.css'
+import './components/common/StepHeader/StepHeader.css'
+
+// Layout component styles
+import './components/layout/Header/Header.css'
+import './components/layout/Layout/Layout.css'
+import './components/layout/Sidebar/Sidebar.css'
+import './components/layout/DashboardHeader/DashboardHeader.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <BrowserRouter>
+      <AuthBootstrap>
+        <Routes>
+          {/* Public */}
+          <Route path={ROUTES.ROOT} element={<LandingPage />} />
+          <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+          <Route path={ROUTES.FORGOT_PASSWORD} element={<ResetPasswordPage />} />
+          <Route path={ROUTES.FORGOT_PASSWORD_VERIFY_CODE} element={<EnterSecurityCodePage />} />
+          <Route path={ROUTES.FORGOT_PASSWORD_NEW_PASSWORD} element={<NewPasswordPage />} />
+          <Route path={ROUTES.FORGOT_PASSWORD_SUCCESS} element={<PasswordUpdatedPage />} />
+          <Route path={ROUTES.SIGNUP} element={<SignupPage />} />
+          <Route path={ROUTES.SIGNUP_VERIFY_EMAIL} element={<VerifyEmailPage />} />
+          <Route path={ROUTES.SIGNUP_VERIFY_PHONE} element={<VerifyPhonePage />} />
+          <Route path={ROUTES.SIGNUP_CONNECT_GATEWAY} element={<ConnectGatewayPage />} />
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+          {/* Protected */}
+          <Route path={ROUTES.DASHBOARD} element={
+            <ProtectedRoute><DashboardPage /></ProtectedRoute>
+          } />
+          <Route path={ROUTES.DASHBOARD_TRANSACTIONS} element={
+            <ProtectedRoute><TransactionsPage /></ProtectedRoute>
+          } />
+          <Route path={ROUTES.DASHBOARD_SETTINGS} element={
+            <ProtectedRoute><SettingsPage /></ProtectedRoute>
+          } />
+        </Routes>
+        <ToastContainer />
+      </AuthBootstrap>
+    </BrowserRouter>
   )
 }
 

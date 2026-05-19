@@ -1,0 +1,29 @@
+/* Dashboard Layout */
+.dashboard-layout {
+  min-height: 100vh;
+  border-radius: 12px 0 0 0;
+  border: 1px solid #E7E7E7;
+  background: #FFF;
+  margin-left: 20px;
+    margin-top: 20px;
+}
+
+/* Dashboard Main Content */
+.dashboard-main {
+  /* padding: 2rem; */
+
+}
+
+/* Dashboard Container */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Page Title */
+.dashboard-page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-900);
+  margin-bottom: 1.5rem;
+}

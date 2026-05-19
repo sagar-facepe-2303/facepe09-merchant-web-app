@@ -1,0 +1,41 @@
+{
+  "status": "success",
+  "week": {
+    "period": "week",
+    "data": [
+      { "name": "Mon", "value": 650 },
+      { "name": "Tue", "value": 720 },
+      { "name": "Wed", "value": 680 },
+      { "name": "Thu", "value": 890 },
+      { "name": "Fri", "value": 990 },
+      { "name": "Sat", "value": 750 },
+      { "name": "Sun", "value": 800 }
+    ]
+  },
+  "month": {
+    "period": "month",
+    "data": [
+      { "name": "Week 1", "value": 4200 },
+      { "name": "Week 2", "value": 5100 },
+      { "name": "Week 3", "value": 4800 },
+      { "name": "Week 4", "value": 6300 }
+    ]
+  },
+  "year": {
+    "period": "year",
+    "data": [
+      { "name": "Jan", "value": 18500 },
+      { "name": "Feb", "value": 21000 },
+      { "name": "Mar", "value": 19800 },
+      { "name": "Apr", "value": 24500 },
+      { "name": "May", "value": 26200 },
+      { "name": "Jun", "value": 23100 },
+      { "name": "Jul", "value": 27800 },
+      { "name": "Aug", "value": 29400 },
+      { "name": "Sep", "value": 25600 },
+      { "name": "Oct", "value": 28900 },
+      { "name": "Nov", "value": 31200 },
+      { "name": "Dec", "value": 33500 }
+    ]
+  }
+}

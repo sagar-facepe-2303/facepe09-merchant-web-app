@@ -1,0 +1,17 @@
+{
+  "status": "success",
+  "profile": {
+    "avatarUrl": null,
+    "businessName": "Walmart Inc.",
+    "type": "Limited Liability Company (LLC)",
+    "taxId": "4817XXX77",
+    "website": "www.walmart.com",
+    "email": "admin@walmart.com",
+    "phone": "(+91) 98439 34402",
+    "phoneCountry": "IN",
+    "city": "Bentonville",
+    "state": "Arkansas",
+    "zip": "72716",
+    "country": "United States"
+  }
+}

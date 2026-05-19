@@ -1,0 +1,255 @@
+.dashboard-page {
+  display: flex;
+  min-height: 100vh;
+  background: #f9fafb;
+}
+
+.dashboard-content {
+  flex: 1;
+  margin-left: 227px;
+  background: #f9fafb;
+  transition: margin-left 0.3s ease;
+}
+
+.dashboard-content.sidebar-collapsed {
+  margin-left: 80px;
+}
+
+.dashboard-welcome {
+  padding: 32px 40px 24px;
+}
+
+.dashboard-title {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  font-family: 'Satoshi', sans-serif;
+}
+
+.dashboard-subtitle {
+  margin: 0;
+  font-size: 16px;
+  color: #6b7280;
+  font-family: Satoshi;
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  padding: 0 40px 32px;
+}
+
+.stat-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-icon-purple {
+  background: linear-gradient(90deg, #9c6cfe 0.01%, #5000ea 98%);
+}
+
+.stat-icon-blue {
+  background: linear-gradient(90deg, #3b82f6 0.01%, #1d4ed8 98%);
+}
+
+.stat-icon-green {
+  background: linear-gradient(90deg, #10b981 0.01%, #059669 98%);
+}
+
+.stat-icon-orange {
+  background: linear-gradient(90deg, #f59e0b 0.01%, #d97706 98%);
+}
+
+.stat-info {
+  flex: 1;
+}
+
+.stat-label {
+  margin: 0 0 4px;
+  font-size: 14px;
+  color: #6b7280;
+  font-family: Satoshi;
+  font-weight: 500;
+}
+
+.stat-value {
+  margin: 0 0 4px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  font-family: 'Satoshi', sans-serif;
+}
+
+.stat-change {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: Satoshi;
+}
+
+.stat-change-positive {
+  color: #10b981;
+}
+
+.stat-change-negative {
+  color: #ef4444;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  padding: 0 40px 40px;
+}
+
+.dashboard-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+}
+
+.card-title {
+  margin: 0 0 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  font-family: 'Satoshi', sans-serif;
+}
+
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f9fafb;
+}
+
+.transaction-info {
+  flex: 1;
+}
+
+.transaction-name {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  font-family: Satoshi;
+}
+
+.transaction-date {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+  font-family: Satoshi;
+}
+
+.transaction-amount {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Satoshi', sans-serif;
+}
+
+.transaction-amount-success {
+  color: #10b981;
+}
+
+.transaction-amount-negative {
+  color: #ef4444;
+}
+
+.quick-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quick-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  font-family: Satoshi;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quick-action-btn:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.quick-action-icon {
+  font-size: 20px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .dashboard-content {
+    margin-left: 80px;
+  }
+
+  .dashboard-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-content {
+    margin-left: 0;
+    padding-top: 64px;
+  }
+
+  .dashboard-welcome {
+    padding: 24px 20px;
+  }
+
+  .dashboard-stats {
+    padding: 0 20px 24px;
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-grid {
+    padding: 0 20px 32px;
+  }
+
+  .dashboard-title {
+    font-size: 24px;
+  }
+}

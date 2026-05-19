@@ -1,0 +1,38 @@
+:root {
+  /* Brand palette from shared design */
+  --brand-50: #f3ecff;
+  --brand-300: #c8b2ff;
+  --brand-400: #9c6cfe;
+  --brand-500: #6f4dff;
+  --brand-600: #4f38ff;
+  --brand-700: #3f2be0;
+
+  --text-900: #111428;
+  --text-700: #667085;
+  --stroke-200: #e6e8f0;
+  --surface-0: #ffffff;
+
+  --brand-gradient: linear-gradient(94deg, var(--brand-400) 0%, var(--brand-600) 100%);
+  --brand-gradient-hover: linear-gradient(
+    94deg,
+    var(--brand-500) 0%,
+    var(--brand-700) 100%
+  );
+}
+
+/* Reusable theme button variants */
+.btn-theme-outline {
+  background: var(--surface-0);
+  color: #1f2231;
+  border: 1px solid #dde0ea;
+}
+
+.btn-theme-primary {
+  background: var(--brand-gradient);
+  color: #ffffff;
+  border: 1px solid transparent;
+}
+
+.btn-theme-primary:hover {
+  background: var(--brand-gradient-hover);
+}

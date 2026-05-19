@@ -1,0 +1,60 @@
+/* Loader Base */
+.loader {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+/* Loader Sizes */
+.loader-sm .loader-spinner {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-width: 2px;
+}
+
+.loader-md .loader-spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-width: 3px;
+}
+
+.loader-lg .loader-spinner {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-width: 4px;
+}
+
+/* Spinner */
+.loader-spinner {
+  border-style: solid;
+  border-color: var(--brand-300);
+  border-top-color: var(--brand-600);
+  border-radius: 50%;
+  animation: loader-spin 1s linear infinite;
+}
+
+@keyframes loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Loader Text */
+.loader-text {
+  font-size: 0.875rem;
+  color: var(--text-700);
+  font-weight: 500;
+}
+
+/* Full Page Loader */
+.loader-full-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 9999;
+}
