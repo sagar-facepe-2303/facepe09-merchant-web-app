@@ -60,11 +60,19 @@ function DashboardHeader({ currentPage, currentPagePath, userName }) {
           )}
         </button>
 
-        {profile?.logo_url ? (
-          <img className="user-badge user-badge-img" src={profile.logo_url} alt={initials} />
-        ) : (
-          <div className="user-badge" title={profile?.business_name || ''}>{initials}</div>
-        )}
+        <button
+          type="button"
+          className="user-badge-button"
+          onClick={() => navigate('/dashboard/settings', { state: { tab: 'profile' } })}
+          aria-label="Open Merchant Profile"
+          title={profile?.business_name || 'Merchant Profile'}
+        >
+          {profile?.logo_url ? (
+            <img className="user-badge user-badge-img" src={profile.logo_url} alt={initials} />
+          ) : (
+            <div className="user-badge">{initials}</div>
+          )}
+        </button>
       </div>
     </header>
   )

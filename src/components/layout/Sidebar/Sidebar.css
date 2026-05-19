@@ -215,6 +215,15 @@
   font-weight: 600;
   font-family: Satoshi;
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+.sidebar-user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
 }
 
 .sidebar-user-info {
@@ -263,6 +272,27 @@
 .sidebar-logout svg {
   width: 18px;
   height: 18px;
+}
+
+.sidebar-user-card-collapsed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 0;
+}
+
+.sidebar-logout-collapsed {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  padding: 8px;
+  color: #8c93a1;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar-logout-collapsed:hover {
+  background: #f3f4f6;
+  color: #100824;
 }
 
 /* Collapsed State */

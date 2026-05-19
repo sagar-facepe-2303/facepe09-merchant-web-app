@@ -232,6 +232,25 @@
   color: #c07a00;
 }
 
+.gateway-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 423px;
+  margin: 8px auto 16px;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+  user-select: none;
+}
+
+.gateway-toggle-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #5000EA;
+  cursor: pointer;
+}
+
 .gateway-secondary-btn,
 .gateway-primary-btn {
   display: block;

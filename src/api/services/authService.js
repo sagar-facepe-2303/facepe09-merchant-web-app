@@ -7,20 +7,25 @@ import apiClient from '../axiosClient'
 /**
  * Send OTP for the given channel (triggers SMS/email delivery).
  * Backend requires { vsid, session_secret, channel }.
+ * Optionally pass email/mobile_number so backend can route to the correct destination.
  */
-const sendOtp = ({ vsid, session_secret, channel }) =>
-  apiClient
-    .post('/auth/register/send-otp', { vsid, session_secret, channel })
-    .then((r) => r.data)
+const sendOtp = ({ vsid, session_secret, channel, email, mobile_number }) => {
+  const body = { vsid, session_secret, channel }
+  if (email) body.email = email
+  if (mobile_number) body.mobile_number = mobile_number
+  return apiClient.post('/auth/register/send-otp', body).then((r) => r.data)
+}
 
 /**
  * Resend the registration OTP for the currently pending step.
  * Backend requires { vsid, session_secret }.
  */
-const resend = ({ vsid, session_secret }) =>
-  apiClient
-    .post('/auth/register/resend', { vsid, session_secret })
-    .then((r) => r.data)
+const resend = ({ vsid, session_secret, email, mobile_number }) => {
+  const body = { vsid, session_secret }
+  if (email) body.email = email
+  if (mobile_number) body.mobile_number = mobile_number
+  return apiClient.post('/auth/register/resend', body).then((r) => r.data)
+}
 
 /**
  * Verify the registration OTP for the given channel.

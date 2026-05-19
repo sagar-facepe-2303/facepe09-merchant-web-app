@@ -103,6 +103,14 @@ function Sidebar({ onToggle }) {
     </svg>
   )
 
+  const gatewayIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path d="M8.33301 5H4.99967C3.15873 5 1.66634 6.49238 1.66634 8.33333C1.66634 10.1743 3.15873 11.6667 4.99967 11.6667H8.33301" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M11.667 15H15.0003C16.8413 15 18.3337 13.5076 18.3337 11.6667C18.3337 9.82572 16.8413 8.33334 15.0003 8.33334H11.667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M6.66634 10H13.333" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  )
+
   const settingsIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
       <path d="M8.05843 3.44744C8.15284 2.44644 8.99346 1.68164 9.99916 1.68164C11.0049 1.68164 11.8455 2.44644 11.9399 3.44744C11.9962 4.08179 12.3574 4.64799 12.907 4.96459C13.4566 5.28119 14.1276 5.31053 14.7061 5.04208C15.6196 4.62846 16.6988 4.97459 17.2007 5.84328C17.7026 6.71197 17.4633 7.81981 16.6477 8.40402C16.1275 8.76907 15.8184 9.36474 15.8184 9.99996C15.8184 10.6352 16.1275 11.2309 16.6477 11.5959C17.4633 12.1801 17.7026 13.288 17.2007 14.1567C16.6988 15.0254 15.6196 15.3715 14.7061 14.9579C14.1276 14.6894 13.4566 14.7188 12.907 15.0354C12.3574 15.352 11.9962 15.9182 11.9399 16.5525C11.8455 17.5535 11.0049 18.3183 9.99916 18.3183C8.99346 18.3183 8.15284 17.5535 8.05843 16.5525C8.00224 15.9198 7.64088 15.3532 7.09065 15.0355C6.54042 14.7177 5.86851 14.6885 5.28957 14.9579C4.37609 15.3715 3.2969 15.0254 2.79501 14.1567C2.29312 13.288 2.53237 12.1801 3.34794 11.5959C3.86817 11.2309 4.17728 10.6352 4.17728 9.99996C4.17728 9.36474 3.86817 8.76907 3.34794 8.40402C2.53463 7.81947 2.29587 6.71273 2.79717 5.84464C3.29847 4.97655 4.37685 4.63001 5.29005 5.04208C5.86859 5.31053 6.53966 5.28119 7.08924 4.96459C7.63882 4.64799 7.99989 4.08179 8.05622 3.44744" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -203,6 +211,17 @@ function Sidebar({ onToggle }) {
                 {!isCollapsed && <span className="sidebar-label">Transactions</span>}
               </Link>
             </li>
+            <li className="sidebar-menu-item">
+              <Link
+                to="/signup/connect-gateway"
+                className={`sidebar-link ${isActive('/signup/connect-gateway') ? 'active' : ''}`}
+                aria-current={isActive('/signup/connect-gateway') ? 'page' : undefined}
+                title="Connect Gateway"
+              >
+                <span className="sidebar-icon" aria-hidden="true">{gatewayIcon}</span>
+                {!isCollapsed && <span className="sidebar-label">Connect Gateway</span>}
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -241,7 +260,7 @@ function Sidebar({ onToggle }) {
           </li>
         </ul> */}
 
-        {!isCollapsed && (
+        {!isCollapsed ? (
           <div className="sidebar-user-card">
             <div className="sidebar-user-avatar">
               {profile?.logo_url
@@ -253,6 +272,17 @@ function Sidebar({ onToggle }) {
               <p className="sidebar-user-role">{profile?.email ? 'Admin' : ''}</p>
             </div>
             <button className="sidebar-logout" aria-label="Logout" onClick={handleLogout}>
+              {logoutIcon}
+            </button>
+          </div>
+        ) : (
+          <div className="sidebar-user-card sidebar-user-card-collapsed">
+            <button
+              className="sidebar-logout sidebar-logout-collapsed"
+              aria-label="Logout"
+              title="Logout"
+              onClick={handleLogout}
+            >
               {logoutIcon}
             </button>
           </div>

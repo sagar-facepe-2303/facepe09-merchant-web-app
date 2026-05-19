@@ -156,7 +156,7 @@ function NotificationPreferencesPanel() {
 
 
       {/* Notification Settings */}
-      <div className="security-card">
+      {/* <div className="security-card">
         <div className="security-card-header">
           <BellIcon />
           <h3 className="security-card-title">Notification Settings</h3>
@@ -206,10 +206,10 @@ function NotificationPreferencesPanel() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Alert Groups */}
-      {groups.map((group) => (
+      {/* {groups.map((group) => (
         <div key={group.id} className="security-card notif-group-card">
           <div className="security-card-header">
             {GROUP_ICONS[group.id]}
@@ -239,7 +239,7 @@ function NotificationPreferencesPanel() {
             ))}
           </div>
         </div>
-      ))}
+      ))} */}
 
       
     </div>

@@ -12,6 +12,7 @@ import { Button, Input, StepHeader } from '../components/common'
 import {
   validateForm, required, email as emailRule, phone as phoneRule, strongPassword,
 } from '../utils/validators'
+import countryCodes from '../data/countryCodes.json'
 
 function SignupPage() {
   const navigate = useNavigate()
@@ -28,13 +29,28 @@ function SignupPage() {
     password: '',
   })
   const [errors, setErrors] = useState({})
+  const [dialCode, setDialCode] = useState('+91')
+  const [localNumber, setLocalNumber] = useState('')
 
   useEffect(() => { dispatch(clearAuthError()) }, [dispatch])
   useEffect(() => { if (error) toast.error(error) }, [error])
 
+  // Keep form.mobileNumber in sync with selected dial code + local number
+  useEffect(() => {
+    setForm((f) => ({ ...f, mobileNumber: localNumber ? `${dialCode}${localNumber}` : '' }))
+    if (errors.mobileNumber) setErrors((p) => ({ ...p, mobileNumber: undefined }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dialCode, localNumber])
+
   const onChange = (key) => (e) => {
     setForm((f) => ({ ...f, [key]: e.target.value }))
     if (errors[key]) setErrors((p) => ({ ...p, [key]: undefined }))
+  }
+
+  const onLocalNumberChange = (e) => {
+    // Strip non-digit characters from the local part
+    const digits = e.target.value.replace(/\D/g, '')
+    setLocalNumber(digits)
   }
 
   const handleSubmit = async (e) => {
@@ -132,13 +148,43 @@ function SignupPage() {
               error={errors.email || fieldErrors?.email} disabled={loading}
             />
 
-            <Input
-              id="mobile-number" name="mobileNumber" type="tel"
-              label="Mobile Number" placeholder="+15551234567" required
-              autoComplete="tel"
-              value={form.mobileNumber} onChange={onChange('mobileNumber')}
-              error={errors.mobileNumber || fieldErrors?.mobile_number} disabled={loading}
-            />
+            <div className="input-wrapper">
+              <label htmlFor="mobile-number" className="input-label">
+                Mobile Number<span className="input-required"> *</span>
+              </label>
+              <div className={`input-field signup-mobile-combo ${(errors.mobileNumber || fieldErrors?.mobile_number) ? 'input-error' : ''}`}>
+                <select
+                  className="signup-dial-select"
+                  value={dialCode}
+                  onChange={(e) => setDialCode(e.target.value)}
+                  disabled={loading}
+                  aria-label="Country code"
+                >
+                  {countryCodes.map((c) => (
+                    <option key={`${c.code}-${c.dial_code}`} value={c.dial_code}>
+                      {c.flag} {c.dial_code} 
+                    </option>
+                  ))}
+                </select>
+                <input
+                  id="mobile-number"
+                  name="mobileNumber"
+                  type="tel"
+                  className="signup-mobile-input"
+                  placeholder="5551234567"
+                  autoComplete="tel-national"
+                  value={localNumber}
+                  onChange={onLocalNumberChange}
+                  disabled={loading}
+                  required
+                />
+              </div>
+              {(errors.mobileNumber || fieldErrors?.mobile_number) && (
+                <small className="input-error-message">
+                  {errors.mobileNumber || fieldErrors?.mobile_number}
+                </small>
+              )}
+            </div>
 
             <Input
               id="business-password" name="password" type="password"

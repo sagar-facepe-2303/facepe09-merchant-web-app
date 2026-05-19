@@ -8,6 +8,7 @@ import { authService } from '../api/services/authService'
 import { tokenService } from '../utils/tokenService'
 import { fetchProfileThunk } from '../features/profile/profileSlice'
 import { ROUTES } from '../routes/paths'
+import { useMemo } from 'react'
 import { parseApiError } from '../utils/errorParser'
 import { toast } from '../utils/toast'
 
@@ -33,9 +34,17 @@ function ConnectGatewayPage() {
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
 
+  // Detect if the user reached this page after logging in (already authenticated)
+  // vs. via the signup flow (still has a registration session).
+  const isLoggedIn = useMemo(() => Boolean(tokenService.getAccessToken()), [])
+
   useEffect(() => {
-    if (!registration?.vsid) navigate(ROUTES.SIGNUP, { replace: true })
-  }, [registration, navigate])
+    // Only bounce back to signup if the user is NOT already logged in AND has no
+    // registration session. Logged-in users can open this page directly from the sidebar.
+    if (!isLoggedIn && !registration?.vsid) {
+      navigate(ROUTES.SIGNUP, { replace: true })
+    }
+  }, [registration, navigate, isLoggedIn])
 
   const onChange = (key) => (e) => {
     const v = e.target.type === 'checkbox' ? e.target.checked : e.target.value
@@ -45,16 +54,20 @@ function ConnectGatewayPage() {
 
   const buildPayload = () => ({
     gateway_type: form.gateway_type,
-    name: form.name,
-    credentials: { bt_api_key: form.publishable_key },
-    target_psp: 'stripe',
-    target_psp_credentials: { api_key: form.secret_key },
+    name: form.name?.trim(),
+    credentials: { bt_api_key: '' },
+    target_psp: form.gateway_type || 'stripe',
+    target_psp_credentials: {
+      publishable_key: form.publishable_key,
+      secret_key: form.secret_key,
+    },
     is_default: form.is_default,
   })
 
   const handleSubmit = async () => {
     const newErrors = {}
     if (!form.gateway_type) newErrors.gateway_type = 'Please select a payment gateway.'
+    if (!form.name?.trim()) newErrors.name = 'Please enter a gateway name.'
     if (!form.publishable_key) newErrors.publishable_key = 'Please enter the publishable key.'
     if (!form.secret_key) newErrors.secret_key = 'Please enter the secret key.'
     setErrors(newErrors)
@@ -64,7 +77,16 @@ function ConnectGatewayPage() {
     try {
       // 1) Create gateway
       await gatewayService.create(buildPayload())
-      // 2) Complete registration → expect tokens back
+
+      // If the user is already logged in (came from sidebar), skip registration completion.
+      if (isLoggedIn) {
+        await dispatch(fetchProfileThunk())
+        toast.success('Gateway connected!')
+        navigate(ROUTES.DASHBOARD_TRANSACTIONS)
+        return
+      }
+
+      // 2) Complete registration → expect tokens back (signup flow only)
       const completion = await authService.completeRegistration({
         vsid: registration.vsid,
         session_secret: registration.session_secret,
@@ -149,6 +171,26 @@ function ConnectGatewayPage() {
               </select>
               {errors.gateway_type && <p className="gateway-error">{errors.gateway_type}</p>}
             </div>
+
+            <label className="gateway-label" htmlFor="gateway-name">
+              <span className="gateway-label-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M2 4h12M2 8h12M2 12h8" stroke="#6A7282" strokeWidth="1.33" strokeLinecap="round"/>
+                </svg>
+              </span>
+              Gateway Name<span className="required-mark">*</span>
+            </label>
+            <input
+              id="gateway-name"
+              className="gateway-input"
+              placeholder="Main Gateway"
+              value={form.name}
+              onChange={onChange('name')}
+              disabled={submitting}
+              autoComplete="off"
+            />
+            {errors.name && <p className="gateway-error">{errors.name}</p>}
+            <p className="gateway-help">A friendly name to identify this gateway (must be unique)</p>
 
             <h2 className="gateway-section-title">
               <span className="gateway-section-icon" aria-hidden="true">
@@ -270,6 +312,17 @@ function ConnectGatewayPage() {
               </ul>
             </div>
 
+            <label className="gateway-toggle-row" htmlFor="is-default-toggle">
+              <input
+                id="is-default-toggle"
+                type="checkbox"
+                checked={form.is_default}
+                onChange={onChange('is_default')}
+                disabled={submitting}
+              />
+              <span>Set as default gateway</span>
+            </label>
+
             <button
               type="button"
               className="gateway-primary-btn"
@@ -283,9 +336,9 @@ function ConnectGatewayPage() {
           <button
             type="button"
             className="gateway-back-btn"
-            onClick={() => navigate(ROUTES.SIGNUP_VERIFY_EMAIL)}
+            onClick={() => navigate(isLoggedIn ? ROUTES.DASHBOARD_TRANSACTIONS : ROUTES.SIGNUP_VERIFY_EMAIL)}
           >
-            <span aria-hidden="true">&larr;</span> Back to Email Verification
+            <span aria-hidden="true">&larr;</span> {isLoggedIn ? 'Back to Dashboard' : 'Back to Email Verification'}
           </button>
         </section>
       </section>
